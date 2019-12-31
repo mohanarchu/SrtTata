@@ -1,0 +1,29 @@
+<resources>
+    <array name="week_array">
+        <item>SUN</item>
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WED</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SAT</item>
+
+    </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="log_in">LOG IN</string>
+
+    <string name="company_name">@CBOT Solutions Pvt Lmt </string>
+
+    <string name="app_name">SrtTata</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="message">message</string>
+    <string name="salaried">SALARIED</string>
+    <string name="remarks">Remarks :</string>
+    <string name="alternate_number">Alternate number</string>
+</resources>

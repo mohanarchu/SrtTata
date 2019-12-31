@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HorizontalCalendarView"><attr format="color" name="textColorNormal"/><attr format="color" name="colorTopText"/><attr format="color" name="colorMiddleText"/><attr format="color" name="colorBottomText"/><attr format="color" name="textColorSelected"/><attr format="color" name="colorTopTextSelected"/><attr format="color" name="colorMiddleTextSelected"/><attr format="color" name="colorBottomTextSelected"/><attr format="reference" name="selectedDateBackground"/><attr format="color" name="selectorColor"/><attr format="dimension" name="sizeTopText"/><attr format="dimension" name="sizeMiddleText"/><attr format="dimension" name="sizeBottomText"/></declare-styleable>
+</resources>

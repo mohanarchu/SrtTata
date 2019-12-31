@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/circlerdious"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical"
+    tools:context=".appointmant.received.ReceivedAlerm">
+
+
+    <RelativeLayout
+        android:layout_weight="0.9"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:weightSum="2"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+
+                <RelativeLayout
+
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    tools:ignore="NestedWeights">
+
+
+                    <LinearLayout
+                        android:paddingLeft="20dp"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:textFontWeight="400"
+                            android:fontFamily="@font/"
+                            android:textSize="35dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+
+                            android:text="Reminder"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/alermTime"
+                                android:textFontWeight="250"
+                                android:fontFamily="@font/"
+                                android:textSize="52dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+
+                                android:text="12:10"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"/>
+
+                            <TextView
+                                android:id="@+id/alermAmPm"
+                                android:textFontWeight="250"
+                                android:fontFamily="@font/"
+                                android:textSize="39dp"
+                                android:textStyle="bold"
+                                android:paddingLeft="8dp"
+                                android:textColor="@color/white"
+                                android:gravity="bottom"
+                                android:text="AM"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"/>
+                        </LinearLayout>
+
+
+
+                        <TextView
+
+                            android:id="@+id/alermDate"
+                            android:textFontWeight="250"
+                            android:fontFamily="@font/"
+                            android:textSize="27dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:alpha="0.5"
+                            android:text="Tue,APr 9"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dismissAlerm"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ciccle"
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+
+
+            <TextView
+                android:textFontWeight="500"
+                android:fontFamily="@font/"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/dismiss"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

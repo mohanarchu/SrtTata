@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_gravity="top"
+    android:id="@+id/layout_alerm"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".appointmant.alerm.Alerm">
+
+    <androidx.cardview.widget.CardView
+        android:layout_gravity="center"
+        app:cardElevation="10dp"
+
+      app:cardBackgroundColor="@color/background_black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+       <LinearLayout
+
+           android:weightSum="1"
+           android:gravity="top"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <RelativeLayout
+               android:layout_weight="0.07"
+
+               android:layout_width="match_parent"
+               android:layout_height="0dp">
+               <include layout="@layout/tool_bar"/>
+           </RelativeLayout>
+
+           <LinearLayout
+               android:weightSum="1"
+               android:layout_weight="0.93"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="0dp">
+
+               <RelativeLayout
+                   android:weightSum="3"
+                   android:layout_weight="0.33"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp">
+
+                   <LinearLayout
+                       android:weightSum="3"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_gravity="center"
+                       android:gravity="center"
+                       android:orientation="horizontal"
+                       tools:ignore="Suspicious0dp">
+
+
+
+                       <androidx.recyclerview.widget.RecyclerView
+                           android:id="@+id/hours"
+                           android:layout_weight="1"
+                           android:paddingLeft="6dp"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:clipToPadding="true"
+                           />
+
+                       <TextView
+
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginBottom="1dp"
+                           android:text=":"
+                           android:fontFamily="@font/"
+                           android:textStyle="bold"
+
+                           android:textFontWeight="300"
+                           android:textColor="@color/white"
+                           android:textSize="60dp"
+
+                           tools:ignore="HardcodedText"
+                           />
+
+                       <androidx.recyclerview.widget.RecyclerView
+                           android:id="@+id/minutes"
+                           android:layout_weight="1"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:clipToPadding="false"
+                           android:overScrollMode="never"
+                           />
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginBottom="1dp"
+                           android:text="/"
+                           android:textColor="?cmtpTextColor"
+                           android:textSize="?cmtpTextSize"
+                           android:theme="@style/CmtpViewTheme"
+                           tools:ignore="HardcodedText" />
+                       <androidx.recyclerview.widget.RecyclerView
+                           android:id="@+id/AmPm"
+                           android:paddingTop="8sp"
+                           android:layout_weight="1"
+                           android:layout_width="0dp"
+                           android:layout_height="match_parent"
+                           android:clipToPadding="false"
+                           android:overScrollMode="never" />
+                   </LinearLayout>
+
+                   <FrameLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent">
+                       <LinearLayout
+                           android:weightSum="3"
+                           android:orientation="vertical"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent">
+
+                           <LinearLayout
+                               android:alpha="0.8"
+                               android:background="@color/background_black"
+                               android:layout_weight="1"
+                               android:layout_width="match_parent"
+                               android:layout_height="0dp"/>
+                           <LinearLayout
+
+
+                               android:layout_weight="1"
+                               android:layout_width="match_parent"
+                               android:layout_height="0dp">
+                               <LinearLayout
+                                   android:id="@+id/timerVisibility"
+                                   android:weightSum="3"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent">
+                                   <EditText
+                                       android:layout_weight="1"
+                                       android:singleLine="true"
+                                       android:orientation="vertical"
+                                       android:layout_width="0dp"
+                                       android:layout_height="wrap_content"
+                                       android:id="@+id/timerChange"
+                                       android:gravity="center"
+                                       android:paddingLeft="6dp"
+                                       android:selectAllOnFocus="true"
+                                       android:text="5"
+
+                                       android:textIsSelectable="true"
+                                       android:fontFamily="@font/"
+                                       android:inputType="number"
+                                       android:textColorHighlight="#ff0000"
+                                       android:background="@null"
+                                       android:layout_marginTop="2dp"
+                                       android:textFontWeight="300"
+                                       android:maxLength="2"
+                                       android:layout_gravity="center"
+                                       android:textColor="@color/white"
+                                       android:textSize="55dp"
+                                       android:textStyle="normal">
+
+                                   </EditText>
+
+
+                                   <EditText
+                                       android:layout_weight="1"
+                                       android:layout_marginTop="2dp"
+                                       android:orientation="vertical"
+                                       android:layout_width="0dp"
+                                       android:layout_height="wrap_content"
+                                       android:id="@+id/minuteChange"
+                                       android:gravity="center"
+                                       android:singleLine="true"
+                                       android:textColorHighlight="#ff0000"
+                                       android:paddingLeft="6dp"
+                                       android:selectAllOnFocus="true"
+                                       android:text="5"
+                                       android:maxLength="2"
+                                       android:fontFamily="@font/"
+                                       android:inputType="number"
+                                       android:background="@null"
+                                       android:textFontWeight="300"
+                                       android:layout_gravity="center"
+                                       android:textColor="@color/white"
+                                       android:textSize="55dp"
+                                       android:textStyle="normal">
+
+                                   </EditText>
+
+
+
+                               </LinearLayout>
+
+                           </LinearLayout>
+                           <LinearLayout
+
+                               android:background="@color/background_black"
+                               android:alpha="0.8"
+                               android:layout_weight="1"
+                               android:layout_width="match_parent"
+                               android:layout_height="0dp"/>
+
+                       </LinearLayout>
+                   </FrameLayout>
+               </RelativeLayout>
+
+
+               <LinearLayout
+                   android:weightSum="1"
+                   android:orientation="vertical"
+                   android:layout_weight="0.7"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp">
+                   <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                       android:id="@+id/calendarView"
+                       android:layout_weight="0.85"
+                       android:layout_margin="5dp"
+                       app:mcv_calendarMode="month"
+                       app:mcv_tileWidth="match_parent"
+                       app:mcv_leftArrowMask="@drawable/ic_left_arrow"
+                       app:mcv_rightArrowMask="@drawable/right"
+                       app:mcv_firstDayOfWeek="sunday"
+                       app:mcv_selectionColor="@color/white"
+                       app:mcv_weekDayLabels="@array/week_array"
+                       android:importantForAutofill="auto"
+                       app:mcv_headerTextAppearance="@style/CustomTextAppearances"
+                       app:mcv_weekDayTextAppearance="@style/CustomTextAppearance"
+                       app:mcv_dateTextAppearance="@style/CustomTextAppearance"
+                       android:background="@color/white"
+                       android:layout_width="match_parent"
+                       android:layout_height="0dp"
+                       tools:ignore="NestedWeights" />
+
+                   <LinearLayout
+                       android:weightSum="2"
+                       android:layout_weight="0.11"
+                       android:layout_width="match_parent"
+                       android:layout_height="0dp">
+
+
+                       <TextView
+                           android:text="@string/cancel"
+                           android:gravity="center"
+                           android:textSize="20dp"
+                           android:textStyle="bold"
+                           android:id="@+id/cancel"
+                           android:textColor="@color/lavender"
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="match_parent"/>
+
+                       <TextView
+                           android:gravity="center"
+                           android:textStyle="bold"
+                           android:textColor="@color/lavender"
+                           android:text="@string/save"
+                           android:textSize="20dp"
+                           android:id="@+id/save"
+                           android:layout_weight="1"
+                           android:layout_width="wrap_content"
+                           android:layout_height="match_parent"/>
+                   </LinearLayout>
+
+               </LinearLayout>
+
+
+           </LinearLayout>
+
+
+
+
+       </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

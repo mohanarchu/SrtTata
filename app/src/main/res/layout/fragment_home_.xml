@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:weightSum="1"
+    android:background="@color/black"
+    android:orientation="vertical"
+    tools:context=".home.Home_Frag">
+
+
+    <LinearLayout
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="0dp">
+
+        <RelativeLayout
+
+
+            android:orientation="vertical"
+            android:gravity="center|bottom"
+            android:layout_marginLeft="20dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.github.mikephil.charting.charts.BarChart
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+
+                android:layout_width="match_parent"
+                android:id="@+id/barChart"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/searchActivities"
+                 android:layout_marginRight="5dp"
+                android:tint="@color/black"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_search"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+
+
+
+
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="0.8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+
+        <LinearLayout
+            android:layout_margin="5dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:background="@color/smoke"
+                android:id="@+id/activity_recycler"
+                android:layout_height="match_parent"/>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

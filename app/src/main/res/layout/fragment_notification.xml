@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:background="@color/black"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".notification.Notification">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center|top"
+        android:layout_height="140dp">
+
+
+
+        <LinearLayout
+            app:layout_constraintBottom_toTopOf="@id/myCalender"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+
+            tools:ignore="MissingConstraints">
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/searchNotifi"
+                    android:layout_marginRight="8dp"
+                    android:tint="@color/white"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_search"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"/>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp">
+                    <ImageView
+                        android:id="@+id/previousMonth"
+                        android:paddingLeft="10dp"
+                        android:rotation="180"
+                        android:tint="@color/white"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_right_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:text="----"
+                        android:textSize="17dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+
+                        android:id="@+id/calanderMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                    <ImageView
+                        android:id="@+id/nextMonth"
+                        android:paddingLeft="10dp"
+                        android:tint="@color/white"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_right_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+
+
+        <com.example.srttata.calendar.HorizontalCalendarView
+            android:id="@+id/myCalender"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:textColorSelected="#000000"
+            app:sizeBottomText="14sp"
+            app:sizeMiddleText="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:id="@+id/notoficationRecycler"
+        android:background="@color/smoke"
+        android:layout_height="match_parent">
+
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

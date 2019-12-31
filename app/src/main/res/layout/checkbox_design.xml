@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:weightSum="2"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+    <TextView
+        android:layout_weight="1"
+        android:textSize="14dp"
+        android:gravity="end|center"
+        android:textStyle="bold"
+        android:paddingRight="5dp"
+        android:textColor="@color/white"
+        android:text="12 Jan 19, 9:30 PM"
+        android:id="@+id/collectedTime"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+    </TextView>
+    <CheckBox
+        android:gravity="center"
+        android:buttonTint="@color/white"
+        android:layout_width="wrap_content"
+        android:id="@+id/docCheck"
+
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:paddingLeft="5dp"
+        android:textSize="14dp"
+        android:layout_weight="1"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="Aadhar card"
+        android:gravity="center|start"
+        android:id="@+id/documentType"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+
+
+
+</LinearLayout>
