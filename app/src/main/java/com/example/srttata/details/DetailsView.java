@@ -103,7 +103,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
     boolean alternareState;
     UpdatePresenter updatePresenter;
     public static boolean[] booleans,addBooleans;
-    public static String[] dates,addDates;
+    public static String[] dates1,addDates;
      List<UploadDatas> uploadData,addData;
     DataPojo.Results results;
     @Override
@@ -136,22 +136,24 @@ public class DetailsView extends BaseActivity implements UpdateModel {
             JsonArray  jsonElements = new JsonArray();
             for (int i=0;i<uploadData.size();i++){
                 JsonObject jsons= new JsonObject();
-                jsons.addProperty("date",uploadData.get(i).getDate());
+                jsons.addProperty("date",DateConversion.getServerDate(dates1[i]));
                 jsons.addProperty("proof",uploadData.get(i).getProof());
-                jsons.addProperty("checked",uploadData.get(i).getDate());
+                jsons.addProperty("checked",uploadData.get(i).getChecked());
                 jsons.addProperty("collected",booleans[i]);
                 jsonElements.add(jsons);
             }
 
+            JsonArray addDocsElements = new JsonArray();
             for (int i=0;i<addData.size();i++){
                 JsonObject jsons= new JsonObject();
-                jsons.addProperty("date",uploadData.get(i).getDate());
+                jsons.addProperty("date",DateConversion.getServerDate(addDates[i]));
                 jsons.addProperty("proof",uploadData.get(i).getProof());
-                jsons.addProperty("checked",uploadData.get(i).getDate());
+                jsons.addProperty("checked",uploadData.get(i).getChecked());
                 jsons.addProperty("collected",booleans[i]);
-                jsonElements.add(jsons);
+                addDocsElements.add(jsons);
             }
             jsonObject.add("docs",jsonElements);
+            jsonObject.add("addDocs",addDocsElements);
             if (results != null){
                 updatePresenter.update(results.getOrderNo(),jsonObject);
             }
@@ -181,6 +183,8 @@ public class DetailsView extends BaseActivity implements UpdateModel {
         alternareState = Boolean.valueOf(result.getAlternateMobileToggle());
         booleans = new boolean[result.getDocs().length];
         addBooleans = new boolean[result.getAddDocs().length];
+        dates1 = new String[result.getDocs().length];
+        addDates = new String[result.getAddDocs().length];
         if (result.getDocs() != null) {
             for (int i=0;i<result.getDocs().length;i++){
                 UploadDatas uploadDatas = new UploadDatas();
@@ -188,6 +192,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
                 uploadDatas.setCollected(Boolean.valueOf(result.getDocs()[i].getCollected()));
                 uploadDatas.setDate(result.getDocs()[i].getDate() == null ? "" : result.getDocs()[i].getDate());
                 uploadDatas.setProof(result.getDocs()[i].getProof());
+                dates1[i] = result.getDocs()[i].getDate() == null ? "" : result.getDocs()[i].getDate();
                 booleans[i] = Boolean.valueOf(result.getDocs()[i].getCollected());
                 uploadData.add(uploadDatas);
             }
@@ -199,6 +204,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
                 uploadDatas.setCollected(Boolean.valueOf(result.getAddDocs()[i].getCollected()));
                 uploadDatas.setDate(result.getAddDocs()[i].getDate() == null ? "" : result.getAddDocs()[i].getDate());
                 uploadDatas.setProof(result.getAddDocs()[i].getProof());
+                addDates[i] = result.getAddDocs()[i].getDate() == null ? "" : result.getAddDocs()[i].getDate();
                 addBooleans[i] = Boolean.valueOf(result.getAddDocs()[i].getCollected());
                 addData.add(uploadDatas);
             }

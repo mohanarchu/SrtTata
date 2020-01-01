@@ -79,6 +79,7 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (b){
                         viewHolder.docCheck.setChecked(true);
                         DetailsView.booleans[position - 1] = true;
+                        DetailsView.dates1[position - 1] = setCurrentDate(viewHolder.collectedTime);
                         setCurrentDate(viewHolder.collectedTime);
 
                     }else {
@@ -120,10 +121,11 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (b){
                         DetailsView.addBooleans[position - docs.length - 2] = true;
                         viewHolder.docCheck.setChecked(true);
+                        DetailsView.addDates[position - docs.length - 2] = setCurrentDate(viewHolder.collectedTime);
                         setCurrentDate(viewHolder.collectedTime);
                     }else {
                         DetailsView.addBooleans[position - docs.length - 2] = false;
-                        if (docs1.getDate() != null){
+                        if (docs1.getDate() != null) {
                             viewHolder.collectedTime.setText(docs1.getDate());
                         } else {
                             viewHolder.collectedTime.setText("");
@@ -156,7 +158,7 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         }
 
-    private void setCurrentDate(TextView textView){
+    private String setCurrentDate(TextView textView){
         Calendar calendar = Calendar.getInstance();
         int date = calendar.get(Calendar.YEAR);
         NumberFormat f = new DecimalFormat("00");
@@ -166,8 +168,8 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 dayLongName, calendar.get(Calendar.YEAR) ,
                          calendar.get(Calendar.HOUR), f.format(calendar.get(Calendar.MINUTE)) ,calendar.get(Calendar.AM_PM) ==
                         Calendar.PM ? "PM" : "AM"  );
-        textView.setText(formats);
-
+        textView.setText(formats);;
+        return formats;
     }
 
     class HeaderHolder extends RecyclerView.ViewHolder {
