@@ -21,7 +21,7 @@ public class MySelectorDecorator implements DayViewDecorator {
   CalendarDay calendarDay;
 
   public MySelectorDecorator(Activity context, CalendarDay day) {
-    drawable = context.getResources().getDrawable(R.drawable.date_insets);
+    drawable = context.getResources().getDrawable(R.drawable.date_selecter);
     calendarDay = day;
 
   }
