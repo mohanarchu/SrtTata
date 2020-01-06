@@ -125,7 +125,6 @@ public class HorizontalCalendarView extends RecyclerView {
         TypedValue typedValue = new TypedValue();
         TypedArray a = getContext().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
         int color = a.getColor(0, 0);
-
         a.recycle();
 
         return color;
@@ -135,12 +134,10 @@ public class HorizontalCalendarView extends RecyclerView {
         horizontalCalendar.getConfig().setupDefaultValues(config);
         horizontalCalendar.getDefaultStyle().setupDefaultValues(defaultStyle);
         horizontalCalendar.getSelectedItemStyle().setupDefaultValues(selectedItemStyle);
-
         // clean, not needed anymore
         config = null;
         defaultStyle = null;
         selectedItemStyle = null;
-
         this.shiftCells = horizontalCalendar.getNumberOfDatesOnScreen() / 2;
 
     }

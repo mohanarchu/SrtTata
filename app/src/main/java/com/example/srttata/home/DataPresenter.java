@@ -12,6 +12,8 @@ import com.example.srttata.MainActivity;
 import com.example.srttata.R;
 import com.example.srttata.base.ViewModel;
 import com.example.srttata.config.Checkers;
+import com.example.srttata.config.DateConversion;
+import com.example.srttata.details.SharedArray;
 import com.example.srttata.login.LoginPojo;
 
 import org.json.JSONException;
@@ -19,9 +21,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -55,7 +62,6 @@ public class DataPresenter  {
                     for (int i=0;i<dataPojo.getResults().length;i++){
                         if (dataPojo.getResults()[i].getDocs() != null){
                             for (int j=0;j<dataPojo.getResults()[i].getDocs().length;j++){
-
                             if (!Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getChecked()) &&
                                     Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getCollected()) ){
                                 value++;
@@ -65,25 +71,39 @@ public class DataPresenter  {
                         if (dataPojo.getResults()[i].getAddDocs() != null){
                             for (int j=0;j<dataPojo.getResults()[i].getAddDocs().length;j++){
                                 if (!Boolean.valueOf(dataPojo.getResults()[i].getAddDocs()[j].getChecked()) &&
-                                        Boolean.valueOf(dataPojo.getResults()[i].getAddDocs()[j].getCollected()) ){
+                                        Boolean.valueOf(dataPojo.getResults()[i].getAddDocs()[j].getCollected()) ) {
                                     addDocus++;
                                 }
                             }
                         }
                     }
+                    NumberFormat f = new DecimalFormat("00");
+                    Calendar calendar = Calendar.getInstance();
                     for (int i=0;i<dataPojo.getResults().length;i++){
-                        if (Boolean.valueOf(dataPojo.getResults()[i].getAlarm()))
-                            alermCount++;
+                        if (dataPojo.getResults()[i] .getAlarmDate() != null){
+                            List<String> elephantList = Arrays.asList(dataPojo.getResults()[i] .getAlarmDate().split(","));
+                            if (elephantList.get(0).equals(f.format(calendar.get(Calendar.DATE)) + "/" +f.format(calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.YEAR)))
+                                if (Boolean.valueOf(dataPojo.getResults()[i].getAlarm()))
+                                    alermCount++;
+                        }
                     }
-                   dataModel.showDatas(dataPojo.getResults(),dataPojo.getCount(),value+addDocus,alermCount);
+
+
+                    MainActivity.addSecondView(value+addDocus,context);
+                    MainActivity.addThirdView( alermCount,context);
+                    ArrayList<DataPojo.Results>  list = new ArrayList<DataPojo.Results>(Arrays.asList(dataPojo.getResults()));
+                    SharedArray.setArray(list);
+                    List<DataPojo.Results>  lists = new ArrayList<DataPojo.Results>(Arrays.asList(dataPojo.getResults()));
+                    lists = lists.stream().filter(pulse -> pulse.getPendingDocsCount() == null ||  !pulse.getPendingDocsCount().equals("0")
+                          ).collect(Collectors.toList());
+                    MainActivity.addFirstView(lists.size(),context);
+                    dataModel.showDatas(dataPojo.getResults(),dataPojo.getCount(),value+addDocus,alermCount);
                 } else {
                     dataModel.showMessage(dataPojo.getStatus());
                 }
             }
             @Override
             public void onError(Throwable e) {
-
-
                 dataModel.showMessage("Try again or login again");
                 Checkers.clearLoggedInEmailAddress(context);
                 Intent myAct = new Intent(context, LoginScreen.class);

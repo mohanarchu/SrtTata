@@ -6,7 +6,7 @@ public class VisibleData {
     private int visibility = View.VISIBLE;
     private int visibilitys = View.GONE;
     public VisibleData(  int longitude) {
-        this.visibilitys =longitude;
+        this.visibilitys = longitude;
 
     }
     public int getVisibility() {

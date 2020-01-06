@@ -13,4 +13,6 @@ public interface UpdateModel extends ViewModel {
     @Override
     void showMessage(String message);
 
+    void success(int pos);
+
 }

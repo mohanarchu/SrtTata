@@ -1,6 +1,7 @@
 package com.example.srttata.calendar.utils;
 
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -21,6 +22,8 @@ public class HorizontalSnapHelper extends LinearSnapHelper {
 
         if (calendarView.getScrollState() != RecyclerView.SCROLL_STATE_DRAGGING){
             int selectedItemPosition;
+            notifyCalendarListener(horizontalCalendar.getSelectedDatePosition());
+
             if (snapView == null){
                 // no snapping required
                 selectedItemPosition = horizontalCalendar.getSelectedDatePosition();
@@ -39,6 +42,7 @@ public class HorizontalSnapHelper extends LinearSnapHelper {
     }
 
     private void notifyCalendarListener(int selectedItemPosition){
+
         if (!horizontalCalendar.isItemDisabled(selectedItemPosition)){
             horizontalCalendar.getCalendarListener()
                     .onDateSelected(horizontalCalendar.getDateAt(selectedItemPosition), selectedItemPosition);

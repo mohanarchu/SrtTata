@@ -39,18 +39,35 @@ import com.example.srttata.appointmant.CenterZoomLayoutManager;
 import com.example.srttata.base.KeyboardSensitiveRelativeLayout;
 import com.example.srttata.decorations.MySelectorDecorator;
 import com.example.srttata.decorations.OffsetItemDecoration;
+import com.example.srttata.decorations.calendar_selectedDates;
+import com.example.srttata.details.SharedArray;
+import com.example.srttata.details.UpdateModel;
+import com.example.srttata.details.UpdatePresenter;
 import com.example.srttata.holder.AmPmAdapter;
 import com.example.srttata.holder.TimeAdapter;
 import com.example.srttata.holder.TimerClicked;
+import com.example.srttata.home.DataPojo;
+import com.google.gson.JsonObject;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import org.threeten.bp.LocalDate;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 
 import butterknife.BindView;
@@ -60,7 +77,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 @SuppressLint("Registered")
-public class Alerm extends BaseActivity implements OnDateSelectedListener, TimerClicked {
+public class Alerm extends BaseActivity implements OnDateSelectedListener, TimerClicked , UpdateModel {
 
 
     @BindView(R.id.hours)
@@ -83,16 +100,14 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
     EditText minuteChange;
     @BindView(R.id.timerVisibility)
     LinearLayout timerVisibility;
-    @BindView(R.id.exit)
-    ImageView exit;
-    @BindView(R.id.commonSearch)
-    ImageView commonSearch;
+
+
     private int prevCenterPos;
     ArrayList<String> hoursArray, minuteArray, AmPmArray = new ArrayList<>();
     MySelectorDecorator mySelectorDecorator;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     int selectedHour, selectedMinute, selectedPm;
-    boolean initail = false;
+
     KeyboardSensitiveRelativeLayout keyboardSensitiveRelativeLayout;
     TimeAdapter timeAdapter;
     CenterZoomLayoutManager centerZoomLayoutManager;
@@ -101,19 +116,35 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
     Calendar calendar;
     int[] InputetdHour;
     boolean isOpened = false;
+    List<DataPojo.Results> commonArray;
+    DataPojo.Results  results ;
+    UpdatePresenter updatePresenter;
 
     @Override
     protected void onViewBound() {
         ButterKnife.bind(this);
-        exit.setVisibility(View.GONE);
-        commonSearch.setVisibility(View.GONE);
+        commonArray = SharedArray.getFilterResult();
+        Intent intent = getIntent();
+        if (intent != null){
+            if (commonArray != null)
+            results = commonArray.get(intent.getIntExtra("position",0));
+        }
         calendar = Calendar.getInstance();
-        initail = false;
+
         timerVisibility.setVisibility(View.GONE);
+        updatePresenter = new UpdatePresenter(getApplicationContext(),this);
         localData = new LocalData(getApplicationContext());
         mySelectorDecorator = new MySelectorDecorator(this, CalendarDay.today());
         calendarView.addDecorators(mySelectorDecorator, oneDayDecorator);
         calendarView.setOnDateChangedListener(this);
+        org.threeten.bp.LocalDate min =  getLocalDate(calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+1+"-"+calendar.get(Calendar.DATE));
+        calendarView.state().edit()
+                .setMinimumDate(CalendarDay.from(min.getYear(),   min.getMonthValue(), 1))
+                .setMaximumDate(CalendarDay.from(min.getYear(),   min.getMonthValue()+5, min.getDayOfMonth()))
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
+
+        calendarView.addDecorator(new calendar_selectedDates(CalendarDay.from(min.getYear(),   min.getMonthValue(), min.getDayOfMonth())));
         Calendar currentTime = Calendar.getInstance();
         int hour = currentTime.get(Calendar.HOUR);
         int minute = currentTime.get(Calendar.MINUTE);
@@ -127,12 +158,16 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
             selectedHour = 11;
         }
 
+
+
         centerZoomLayoutManagers =
                 new CenterZoomLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false, minutes);
         hoursArray = new ArrayList<>();
         for (int i = 1; i < 13; i++) {
             hoursArray.add(i + "");
+
         }
+
         addDecorates(hours, hoursArray, false, false, hour, centerZoomLayoutManager);
         minuteArray = new ArrayList<>();
         for (int i = 0; i <= 59; i++) {
@@ -154,35 +189,73 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
                 calendar.set(Calendar.MINUTE, selectedMinute);
                 //calendar.setTimeZone(TimeZone.getTimeZone("GMT-7.30"));
                 calendar.setTimeZone(TimeZone.getDefault());
-                if (minuteArray.get(selectedPm).equals("AM")) {
-                    calendar.set(Calendar.AM_PM, 1);
-                } else {
-                    calendar.set(Calendar.AM_PM, 0);
-                }
+                if (calendar.get(Calendar.HOUR_OF_DAY) == 0){
+                    if (selectedPm ==  2) {
+                        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);
+                        calendar.set(Calendar.AM_PM, Calendar.AM);
+                    } else {
 
-                Log.i("TAG", "Get Times" + minuteArray.get(selectedMinute) + " " + hoursArray.get(selectedHour)
-                        + "   " + minuteArray.get(selectedPm) + "  " + calendar.getTimeInMillis() + "   " + date);
-                Intent intent = new Intent(Alerm.this, Notification2.class);
-                PendingIntent p1 = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                if (Build.VERSION.SDK_INT >= 23) {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                            calendar.getTimeInMillis(), p1);
-                } else if (Build.VERSION.SDK_INT >= 19) {
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
-                } else {
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                        calendar.set(Calendar.AM_PM, Calendar.AM);
+                    }
+                }else {
+                    if (selectedPm ==  1) {
+                        calendar.set(Calendar.AM_PM, Calendar.AM);
+                    } else {
+                        calendar.set(Calendar.AM_PM, Calendar.PM);
+                    }
                 }
+                Log.i("TAG", "Get Times" + calendar.get(Calendar.HOUR_OF_DAY)   +"  "+minuteArray.get(selectedPm) +
+                        "  " + calendar.getTimeInMillis() + " " );
+
+               if (checkTime(calendar)){
+                   showMessage("kindly choose future time");
+               }else {
+                   if (commonArray != null){
+                       assert results.getAlarmInt() != null;
+                       if (!results.getAlarmInt().equals("")  ){
+                           Intent intent = new Intent(getApplicationContext(), Notification2.class);
+                           PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Integer.valueOf(results.getAlarmInt()), intent, 0);
+                           AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                           alarmManager.cancel(pendingIntent);
+                           localData.deleteId(results.getAlarmInt());
+                           Intent intents = new Intent(Alerm.this, Notification2.class);
+                           int randomCode = getRandom();
+                           intents.putExtra("requestCode",randomCode);
+                           PendingIntent p1 = PendingIntent.getBroadcast(getApplicationContext(), randomCode, intents, PendingIntent.FLAG_UPDATE_CURRENT);
+                           AlarmManager alarmManagers = (AlarmManager) getSystemService(ALARM_SERVICE);
+                           if (Build.VERSION.SDK_INT >= 23) {
+                               alarmManagers.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                                       calendar.getTimeInMillis(), p1);
+                           } else if (Build.VERSION.SDK_INT >= 19) {
+                               alarmManagers.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                           } else {
+                               alarmManagers.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                           }
+                           updateAlarm(calendar,randomCode,results);
+                       }  else {
+                           int randomCode = getRandom();
+                           Intent intents = new Intent(Alerm.this, Notification2.class);
+                           intents.putExtra("requestCode",randomCode);
+                           PendingIntent p1 = PendingIntent.getBroadcast(getApplicationContext(),randomCode, intents, PendingIntent.FLAG_UPDATE_CURRENT);
+                           AlarmManager alarmManagers = (AlarmManager) getSystemService(ALARM_SERVICE);
+                           if (Build.VERSION.SDK_INT >= 23) {
+                               alarmManagers.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                                       calendar.getTimeInMillis(), p1);
+                           } else if (Build.VERSION.SDK_INT >= 19) {
+                               alarmManagers.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                           } else {
+                               alarmManagers.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                           }
+                           updateAlarm(calendar,randomCode,results);
+                       }
+                   }
+               }
             }
         });
         cancel.setOnClickListener(view -> finish());
-
         keyboardSensitiveRelativeLayout = new KeyboardSensitiveRelativeLayout(getApplicationContext());
-        keyboardSensitiveRelativeLayout.setKeyboardListener(new KeyboardSensitiveRelativeLayout.OnKeyboardShowHideListener() {
-            @Override
-            public void onKeyboardShowHide(boolean visible) {
-                Log.i("TAG", "Keyboard Visible" + visible);
-            }
+        keyboardSensitiveRelativeLayout.setKeyboardListener(visible -> {
+
         });
         layoutAlerm.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -206,7 +279,69 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
                 }
             }
         });
+       // @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    }
 
+    boolean checkTime(Calendar calendar){
+        Calendar calendar1 = Calendar.getInstance();
+        return calendar1.getTimeInMillis() > calendar.getTimeInMillis();
+    }
+
+    @SuppressLint("NewApi")
+    org.threeten.bp.LocalDate getLocalDate(String date) {
+        final String DATE_FORMAT = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
+        try {
+            Date input = sdf.parse(date);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(input);
+            return org.threeten.bp.LocalDate.of(cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH) + 1,
+                    cal.get(Calendar.DAY_OF_MONTH));
+
+
+        } catch (NullPointerException e) {
+            return null;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    int getRandom(){
+        final int min = 10;
+        final int max = 1000;
+        final int random = new Random().nextInt((max - min) + 1) + min;
+        return random;
+    }
+
+    void updateAlarm(Calendar calendar,int random, DataPojo.Results commonArray){
+
+        NumberFormat f = new DecimalFormat("00");
+
+        String value ="";
+        if (calendar.get(Calendar.HOUR_OF_DAY) == 0){
+             value = "PM";
+        }else {
+             value =  calendar.get(Calendar.AM_PM) == Calendar.PM ? "PM" : "AM";
+        }
+
+
+        calendar.setTimeZone(TimeZone.getDefault());
+        String date  =f.format(calendar.get(Calendar.DATE))+"/"+calendar.get(Calendar.MONTH)+1+ "/"+calendar.get(Calendar.YEAR)+", "+
+                calendar.get(Calendar.HOUR)+":"+ f.format(calendar.get(Calendar.MINUTE))+" "+ value;
+                JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("alarm",true);
+        jsonObject.addProperty("alarmDate", date);
+        jsonObject.addProperty("alarmInt",random);
+
+
+        Log.i("TAG", "Get Times" + calendar.get(Calendar.HOUR_OF_DAY)  + minuteArray.get(selectedMinute) + " " + hoursArray.get(selectedHour)
+                + "   " + minuteArray.get(selectedPm) + "  " + calendar.getTimeInMillis() + " " );
+
+        updatePresenter.update(results.getOrderNo(),jsonObject,0);
+        List<String> dates = Arrays.asList(commonArray.getContactFullAddress().split(","));
+        localData.addItems(commonArray.getContactName(),date,commonArray.getOrderNo() ,
+                String.valueOf(random),"true",dates.get(0)+","+dates.get(1),commonArray.getContactPhones());
     }
 
     @Override
@@ -335,7 +470,6 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
         for (int i = firstVisibleIndex; i <= lastVisibleIndex; i++) {
             list.add(i);
         }
-
         selectedPm = list.get(1);
         list.clear();
     }
@@ -401,15 +535,19 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
         hours.setVisibility(View.INVISIBLE);
         minutes.setVisibility(View.INVISIBLE);
         if (isHour) {
-            initail = true;
+
             timerChange.setText(hoursArray.get(position % hoursArray.size()));
-            setDone(timerChange);
-            setDone(minuteChange);
             timerChange.setCursorVisible(true);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    timerChange.setFocusable(true);
+                    timerChange.requestFocus();
+                    timerChange.setSelectAllOnFocus(true);
                     shoeKeyboard(timerChange);
+                    shoeKeyboard(timerChange);
+                    setDone(timerChange);
+                    setDone(minuteChange);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -420,19 +558,18 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
                             timerChange.setSelection(0, timerChange.getText().toString().length());
                         }
                     }, 400);
-
                     doneCLicked(timerChange);
                     doneCLicked(minuteChange);
-
                 }
-            }, 300);
-
-
+            }, 400);
         } else {
-
             minuteChange.setText(minuteArray.get(position % minuteArray.size()));
             setDone(minuteChange);
+            setDone(timerChange);
             new Handler().postDelayed(() -> {
+                minuteChange.setFocusable(true);
+                minuteChange.requestFocus();
+                minuteChange.setSelectAllOnFocus(true);
                 shoeKeyboard(minuteChange);
                 new Handler().postDelayed(() -> {
                     minuteChange.setFocusable(true);
@@ -443,7 +580,7 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
                 }, 300);
                 doneCLicked(minuteChange);
                 doneCLicked(timerChange);
-            }, 300);
+            }, 400);
         }
     }
 
@@ -494,4 +631,29 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
             finish();
         }
     }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void success(int pos) {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,27 +127,29 @@ public abstract class HorizontalCalendarBaseAdapter<VH extends DateViewHolder, T
         if (position == selectedItemPosition) {
            applyStyle(viewHolder, horizontalCalendar.getSelectedItemStyle());
            viewHolder.selectionView.setVisibility(View.INVISIBLE);
-           viewHolder.textMiddle.setTextSize(17f);
-           viewHolder.textTop.setTextSize(17f);
+           viewHolder.textMiddle.setTextSize(14f);
+           viewHolder.textTop.setTextSize(14f);
            viewHolder.textMiddle.setBackground(drawable);
            viewHolder.textMiddle.setTextColor(Color.parseColor("#000000"));
            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-           params.setMargins(10,10,10,30);
-           viewHolder.textMiddle.setLayoutParams(params);
+
         }
         // Unselected Days
         else {
             applyStyle(viewHolder, horizontalCalendar.getDefaultStyle());
             viewHolder.selectionView.setVisibility(View.INVISIBLE);
-            viewHolder.textMiddle.setTextSize(15f);
-            viewHolder.textTop.setTextSize(15f);
+            viewHolder.textMiddle.setTextSize(14f);
+            viewHolder.textTop.setTextSize(14f);
             viewHolder.textMiddle.setBackground(null);
             viewHolder.textMiddle.setTextColor(Color.WHITE);
+
         }
     }
     private void applyStyle(VH viewHolder, CalendarItemStyle itemStyle) {
         viewHolder.textTop.setTextColor(itemStyle.getColorTopText());
         viewHolder.textMiddle.setTextColor(itemStyle.getColorMiddleText());
+        viewHolder.textMiddle.setTextSize(12f);
+        viewHolder.textTop.setTextSize(12f);
         viewHolder.textBottom.setTextColor(itemStyle.getColorBottomText());
         if (Build.VERSION.SDK_INT >= 16) {
             viewHolder.itemView.setBackground(itemStyle.getBackground());
@@ -174,12 +177,16 @@ public abstract class HorizontalCalendarBaseAdapter<VH extends DateViewHolder, T
 
         @Override
         public void onClick(View v) {
+
+           // Log.i("TAG","Item Clicked"+ viewHolder.getAdapterPosition());
             int position = viewHolder.getAdapterPosition();
+            if (position == 3 )
+            horizontalCalendar.getCalendarListener().onDateSelected(horizontalCalendar.getDateAt(position),position);
             if (position == -1)
                 return;
-
             horizontalCalendar.getCalendarView().setSmoothScrollSpeed(HorizontalLayoutManager.SPEED_SLOW);
             horizontalCalendar.centerCalendarToPosition(position);
+
         }
     }
 
@@ -199,6 +206,7 @@ public abstract class HorizontalCalendarBaseAdapter<VH extends DateViewHolder, T
 
             int position = viewHolder.getAdapterPosition();
             Calendar date = getItem(position);
+
 
             return calendarListener.onDateLongClicked(date, position);
         }

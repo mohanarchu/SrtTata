@@ -2,7 +2,7 @@ package com.example.srttata.details;
 
 public class UploadDatas {
 
-    String date,proof;
+    String date,proof,chekedDate;
     boolean checked,collected;
     public UploadDatas(){
 
@@ -38,5 +38,13 @@ public class UploadDatas {
 
     public void setProof(String proof) {
         this.proof = proof;
+    }
+
+    public String getChekedDate() {
+        return chekedDate;
+    }
+
+    public void setChekedDate(String chekedDate) {
+        this.chekedDate = chekedDate;
     }
 }

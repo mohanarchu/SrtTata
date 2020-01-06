@@ -49,9 +49,14 @@ public class LoginPojo {
 
         private String token;
 
+        private String mobile;
+
         public String getName ()
-        {
-            return name;
+        {  return name;
+        }
+
+        public String getMobile() {
+            return mobile;
         }
 
         public void setName (String name)

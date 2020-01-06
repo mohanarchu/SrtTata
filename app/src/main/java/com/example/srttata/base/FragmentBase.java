@@ -52,27 +52,6 @@ public abstract class FragmentBase extends Fragment {
     }
     protected void onViewBound(View view) {
 
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-       getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-         getView().setOnKeyListener( new View.OnKeyListener()
-        {
-            @Override
-            public boolean onKey( View v, int keyCode, KeyEvent event )
-            {
-                if( keyCode == KeyEvent.KEYCODE_BACK )
-                {
-                    backClicked();
-                    return true;
-                }
-                return false;
-            }
-        } );
     }
 
     protected void backClicked() {

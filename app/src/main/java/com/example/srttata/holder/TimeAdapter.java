@@ -59,7 +59,7 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.timeHolder> {
         @Override
         public void onBindViewHolder(@NonNull timeHolder holder, int position) {
             NumberFormat f = new DecimalFormat("00");
-            holder.itemView.getLayoutParams().height = (int) (getScreenWidth() / 11);
+            holder.itemView.getLayoutParams().height = (int) (getScreenWidth() / 10);
             int positionInList = position;
             if (!values){
                     positionInList = position % arrayList.size();

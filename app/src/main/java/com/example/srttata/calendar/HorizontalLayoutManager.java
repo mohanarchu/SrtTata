@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * See {@link HorizontalCalendarView HorizontalCalendarView}
  */
 public class HorizontalLayoutManager extends LinearLayoutManager {
-    private final float mShrinkAmount = 0.2f;
-    private final float mShrinkDistance = 0.13f;
+    private final float mShrinkAmount = 0.1f;
+    private final float mShrinkDistance = 0.1f;
     public static final float SPEED_NORMAL = 90f;
     public static final float SPEED_SLOW = 125f;
     float smoothScrollSpeed = SPEED_NORMAL;

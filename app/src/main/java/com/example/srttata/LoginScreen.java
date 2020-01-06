@@ -30,10 +30,11 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
     LoginPresenter loginPresenter;
     @BindView(R.id.userName)
     TextInputEditText userName;
-     @BindView(R.id.password)
+    @BindView(R.id.password)
     TextInputEditText password;
-      @BindView(R.id.logIn)
+    @BindView(R.id.logIn)
     CardView logIn;
+
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle  savedInstanceState) {
@@ -42,38 +43,34 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
         ButterKnife.bind(this);
         if (Checkers.getUserLoggedInStatus(getApplicationContext())) {
             startActivity(new Intent(LoginScreen.this, MainActivity.class));
+            finish();
         }
         loginPresenter = new LoginPresenter(getApplicationContext(), this);
-        logIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               doLogin();
-            }
-        });
+        logIn.setOnClickListener(view ->  doLogin() );
         password.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
-                if(actionId == EditorInfo.IME_ACTION_DONE){
-                    Alerm.hideKeyboardFrom(getApplicationContext(),password);
+        password.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                Alerm.hideKeyboardFrom(getApplicationContext(),password);
                     doLogin();
-                    return true;
-                }
-                return false;
+                return true;
             }
+            return false;
         });
     }
     void doLogin(){
-        if (Checkers.isEmtpy(userName) || Checkers.isEmtpy(password)) {
-            Toast.makeText(getApplicationContext(), "Fill all details", Toast.LENGTH_SHORT).show();
+        if (Checkers.isNetworkConnectionAvailable(getApplicationContext())){
+            if (Checkers.isEmtpy(userName) || Checkers.isEmtpy(password)) {
+                Toast.makeText(getApplicationContext(), "Fill all details", Toast.LENGTH_SHORT).show();
+            } else {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("userName", Checkers.getText(userName));
+                jsonObject.addProperty("password", Checkers.getText(password));
+                loginPresenter.Login(jsonObject);
+            }
         } else {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("userName", Checkers.getText(userName));
-            jsonObject.addProperty("password", Checkers.getText(password));
-            loginPresenter.Login(jsonObject);
+            showMessage("Check your internet connection");
         }
     }
-
 
     @Override
     public void showProgress() {
@@ -84,7 +81,6 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
     public void hideProgress() {
 
     }
-
     @Override
     public void showMessage(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
@@ -94,13 +90,15 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
     public void showStatus(LoginPojo.Results loginPojo) {
         Checkers.setUserToken(getApplicationContext(), loginPojo.getToken());
         Checkers.setName(getApplicationContext(),loginPojo.getName());
-        Log.i("TAG","Exe Name"+loginPojo.getName());
+        Checkers.setMobile(getApplicationContext(),loginPojo.getMobile());
+        Log.i("TAG","Exe Name"+loginPojo.getMobile());
 
     }
 
     @Override
     public void success() {
         startActivity(new Intent(LoginScreen.this, MainActivity.class));
+        finish();
     }
 
     @Override

@@ -1,164 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:weightSum="1"
-    android:transitionName="transtion_name_example"
 
+    android:transitionName="transtion_name_example"
+    android:background="@drawable/curve"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="75dp"
     tools:ignore="UnusedAttribute">
 
-    <com.chauthai.swipereveallayout.SwipeRevealLayout
-        app:layout_constraintTop_toTopOf="parent"
-        app:mode="same_level"
-        app:dragEdge="right"
-        android:background="@drawable/curve"
-        android:clickable="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:backgroundTint="@color/white"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/swipe_layouts"
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
-
-        <!-- Your secondary layout here -->
-        <LinearLayout
-
-            android:background="@color/smoke"
-            android:layout_width="180dp"
-            android:gravity="center"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content">
-
-                <ImageView
-
-                    android:scaleType="fitXY"
-                    android:layout_marginStart="5dp"
-                    android:src="@drawable/call"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"/>
-
-                <ImageView
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_sms"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"/>
-                <ImageView
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_whatsapp"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"/>
-                <ImageView
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/mail"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"/>
-
-            </LinearLayout>
-        </LinearLayout>
-        <!-- Your main layout here -->
-        <LinearLayout
-
-            android:transitionName="transtion_name_example"
-            android:id="@+id/sharedLayouts"
+        android:layout_height="wrap_content">
+        <com.chauthai.swipereveallayout.SwipeRevealLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:mode="same_level"
+            app:dragEdge="right"
+            android:background="@drawable/curve"
+            android:clickable="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:backgroundTint="@color/white"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/swipe_layouts"
             android:layout_width="match_parent"
             android:layout_height="70dp">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/notoficationChooosers"
-                android:layout_width="60dp"
+            <!-- Your secondary layout here -->
+            <LinearLayout
+                android:background="@color/smoke"
+                android:layout_width="180dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_height="match_parent">
+                <include
+                    android:layout_gravity="center"
+                    layout="@layout/sms_layout"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent" />
 
-
-                <ImageView
-
-
-                    android:padding="5dp"
-
-                    android:src="@drawable/calander"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:ignore="MissingConstraints" />
-                <TextView
-
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="17dp"
-                    android:text="10    "
-                    android:id="@+id/dates"
-                    app:layout_constraintLeft_toRightOf="@+id/relatives"
-                    android:layout_marginTop="10dp"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-                <TextView
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="10dp"
-                    android:textSize="13dp"
-                    android:layout_marginLeft="2dp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:id="@+id/dayOfweeks"
-                    android:textColor="@color/white"
-                    android:text="SEP"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <RelativeLayout
-                    android:id="@+id/relatives"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-
-                    <RelativeLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:src="@drawable/bell"
-                            android:layout_width="24dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_height="24dp"/>
-
-                        <ImageView
-                            android:id="@+id/fixedAppointment"
-                            android:layout_marginBottom="4sp"
-                            android:layout_marginRight="2dp"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/red_circle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </RelativeLayout>
-
-                </RelativeLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </LinearLayout>
+            <!-- Your main layout here -->
             <LinearLayout
 
-                android:orientation="vertical"
-                android:weightSum="1"
-                android:padding="5dp"
-
+                android:transitionName="transtion_name_example"
+                android:id="@+id/sharedLayouts"
                 android:layout_width="match_parent"
                 android:layout_height="70dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/notoficationChooosers"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+
+
+                        android:padding="5dp"
+
+                        android:src="@drawable/calander"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:ignore="MissingConstraints" />
+                    <TextView
+
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:text="10    "
+                        android:id="@+id/dates"
+                        app:layout_constraintLeft_toRightOf="@+id/relatives"
+                        android:layout_marginTop="10dp"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp"
+                        android:textSize="13dp"
+                        android:layout_marginLeft="2dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:id="@+id/dayOfweeks"
+                        android:textColor="@color/white"
+                        android:text="SEP"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <RelativeLayout
+                        android:id="@+id/relatives"
+                        android:layout_marginBottom="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <RelativeLayout
+                            android:layout_width="24dp"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:src="@drawable/bell"
+                                android:layout_width="24dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_height="24dp"/>
+
+                            <ImageView
+                                android:id="@+id/fixedAppointment"
+                                android:layout_marginBottom="4sp"
+                                android:layout_marginRight="2dp"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/red_circle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:ignore="VectorDrawableCompat" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
+
+                    android:orientation="vertical"
                     android:weightSum="1"
-                    android:layout_gravity="center"
+                    android:padding="5dp"
+
                     android:layout_width="match_parent"
-                    android:layout_height="35dp">
+                    android:layout_height="70dp">
+
+                    <LinearLayout
+                        android:weightSum="1"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp">
 
 
                         <LinearLayout
@@ -224,85 +204,81 @@
                         </LinearLayout>
 
 
-                    <LinearLayout
-                        android:layout_weight="0.1"
-                        android:gravity="center"
-                        android:layout_width="0dp"
-                        android:layout_gravity="end"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
+                        <LinearLayout
+                            android:layout_weight="0.1"
                             android:gravity="center"
-                            android:id="@+id/pendingCOunt"
-                            android:text="5"
-                            android:background="@drawable/red_circle"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"/>
+                            android:layout_width="0dp"
+                            android:layout_gravity="end"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:textSize="16dp"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:id="@+id/pendingCOunt"
+                                android:text="5"
+                                android:background="@drawable/red_circle"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="2dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                    <TextView
-
-                        android:layout_weight="0.5"
-                        android:textColor="@color/dark_blue"
-                        android:textStyle="bold"
-                        android:singleLine="true"
-                        android:text="UKKADAM"
-                        android:textSize="12dp"
-                        android:id="@+id/displayAddresss"
-                        android:gravity="center|start"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"/>
-
-
 
                     <LinearLayout
 
-                        android:layout_weight="0.43"
-                        android:id="@+id/visibleAlarm"
-                        android:gravity="center|end"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="2dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+
                         <TextView
-                            android:elevation="20dp"
-                            android:text="7:00 PM"
+
+                            android:layout_weight="0.5"
+                            android:textColor="@color/dark_blue"
                             android:textStyle="bold"
-                            android:textSize="20dp"
-                            android:id="@+id/alermTime"
-                            android:layout_marginRight="10dp"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:singleLine="true"
+                            android:text="UKKADAM"
+                            android:textSize="12dp"
+                            android:id="@+id/displayAddresss"
+                            android:gravity="center|start"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
 
 
-                        <ImageView
-                            android:id="@+id/removeAlarm"
 
-                            android:src="@drawable/remove_icon"
-                            android:layout_width="30dp"
-                            android:layout_height="wrap_content"/>
+                        <LinearLayout
+
+                            android:layout_weight="0.43"
+                            android:id="@+id/visibleAlarm"
+                            android:gravity="center|end"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:elevation="20dp"
+                                android:text="7:00 PM"
+                                android:textStyle="bold"
+                                android:textSize="20dp"
+                                android:id="@+id/alermTime"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <ImageView
+                                android:id="@+id/removeAlarm"
+                                android:src="@drawable/remove_icon"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-        </LinearLayout>
-    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+        </com.chauthai.swipereveallayout.SwipeRevealLayout>
+    </LinearLayout>
 
 
-
-</LinearLayout>
+</FrameLayout>

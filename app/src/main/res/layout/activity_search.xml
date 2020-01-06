@@ -9,16 +9,19 @@
     tools:context=".search.SearchActivity">
 
     <androidx.appcompat.widget.SearchView
-        android:background="@color/white"
+        android:layout_margin="2.5dp"
+        android:background="@drawable/curve"
         android:id="@+id/CommonSearchIcon"
+        android:backgroundTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="1.4dp"
         android:layout_width="match_parent"
         android:id="@+id/searchRecycler"
-        android:background="@color/smoke"
+        android:background="@color/background_black"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

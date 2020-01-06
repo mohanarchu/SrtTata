@@ -2,11 +2,14 @@ package com.example.srttata.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.widget.EditText;
 
 public class Checkers {
     static final String PREF_LOGGEDIN_USER_EMAIL = "logged_in_email";
+    static final String MOBILE = "Mobile";
     static final String NAME = "NAME";
     private static final String PREF_USER_LOGGEDIN_STATUS = "logged_in_status";
     private static final String VALUE = "value";
@@ -28,7 +31,12 @@ public class Checkers {
         editor.putString(NAME, token);
         editor.apply();
     }
-
+    public static void setMobile(Context ctx, String token)
+    {
+        SharedPreferences.Editor editor = ctx.getSharedPreferences(VALUE,Context.MODE_PRIVATE).edit();
+        editor.putString(MOBILE, token);
+        editor.apply();
+    }
     public static void setUserLoggedInStatus(Context ctx, boolean status)
     {
         SharedPreferences.Editor editor = ctx.getSharedPreferences(VALUE,Context.MODE_PRIVATE).edit();
@@ -38,6 +46,10 @@ public class Checkers {
     public static String getUserToken(Context ctx)
     {
         return ctx. getSharedPreferences(VALUE,Context.MODE_PRIVATE).getString(PREF_LOGGEDIN_USER_EMAIL, "");
+    }
+    public static String getMobile(Context ctx)
+    {
+        return ctx. getSharedPreferences(VALUE,Context.MODE_PRIVATE).getString(MOBILE, "");
     }
     public static boolean getUserLoggedInStatus(Context ctx)
     {
@@ -52,5 +64,12 @@ public class Checkers {
         SharedPreferences.Editor editor = ctx.getSharedPreferences(VALUE,Context.MODE_PRIVATE).edit();
         editor.remove(PREF_USER_LOGGEDIN_STATUS);
         editor.apply();
+    }
+    public static boolean isNetworkConnectionAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context. getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info == null) return false;
+        NetworkInfo.State network = info.getState();
+        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 }

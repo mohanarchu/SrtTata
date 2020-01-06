@@ -36,4 +36,18 @@ public class DateConversion {
         System.out.println(formattedDate); // prints 10-04-2018
         return formattedDate;
     }
+    public static String getDats(String date){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate="";
+        try {
+            Date day = inputFormat.parse(date);
+            formattedDate = outputFormat.format(day);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(formattedDate); // prints 10-04-2018
+        return formattedDate;
+    }
 }

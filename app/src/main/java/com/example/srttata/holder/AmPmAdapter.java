@@ -32,7 +32,7 @@ public class AmPmAdapter extends RecyclerView.Adapter<AmPmAdapter.timeHolder> {
     ArrayList<String> arrayList;
     boolean values,twoDigits;
     Context context;
-    public AmPmAdapter(ArrayList<String> arrayList, boolean values ,boolean towDigits, Context context){
+    public AmPmAdapter(ArrayList<String> arrayList, boolean values ,boolean towDigits, Context context) {
         this.arrayList = arrayList;
         this.values =values;
         this.context =context;
@@ -49,6 +49,7 @@ public class AmPmAdapter extends RecyclerView.Adapter<AmPmAdapter.timeHolder> {
             return new timeHolder(LayoutInflater.from(context).inflate(R.layout.am_pm, parent, false));
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull timeHolder holder, int position) {
         NumberFormat f = new DecimalFormat("00");
@@ -56,9 +57,7 @@ public class AmPmAdapter extends RecyclerView.Adapter<AmPmAdapter.timeHolder> {
         int positionInList = position;
         if (!values){
 
-
         } else {
-
             holder.vocab.setText( arrayList.get(position));
             holder.vocab.setKeyListener(null);
         }
@@ -74,7 +73,6 @@ public class AmPmAdapter extends RecyclerView.Adapter<AmPmAdapter.timeHolder> {
             return  arrayList.size();
         }
     }
-
 
     public int getScreenWidth() {
         WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);

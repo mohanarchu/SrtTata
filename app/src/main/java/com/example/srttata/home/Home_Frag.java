@@ -2,6 +2,7 @@ package com.example.srttata.home;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +35,7 @@ import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.srttata.LoginScreen;
 import com.example.srttata.MainActivity;
 import com.example.srttata.R;
+import com.example.srttata.appointmant.alerm.Alerm;
 import com.example.srttata.base.BarChartCustomRenderer;
 import com.example.srttata.base.FragmentBase;
 import com.example.srttata.base.TooltipWindow;
@@ -42,6 +45,7 @@ import com.example.srttata.details.DetailsView;
 import com.example.srttata.details.SharedArray;
 import com.example.srttata.expand.VisibleData;
 import com.example.srttata.holder.A;
+import com.example.srttata.holder.HolderClicked;
 import com.example.srttata.search.SearchActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -74,7 +78,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSelectedListener {
+public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSelectedListener, HolderClicked {
 
 
     private DataPresenter dataPresenter;
@@ -85,27 +89,23 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
     @BindView(R.id.barChart)
     BarChart mChart;
     @BindView(R.id.searchActivities)
-    ImageView searchActivities;
+    ImageView referesh;
     boolean[] visibled;
-    A adapter;
-    List<DataPojo.Results> list;
+    private A adapter;
+    private List<DataPojo.Results> list;
     ArrayList<VisibleData> visibleData;
-    ChartScreen chartScreen;
+    private ChartScreen chartScreen;
     private ArrayList<BarEntry> valueSet1 = new ArrayList<>();
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
+    boolean value = true,value1 = false;
     @Override
     protected void onViewBound(View view) {
 
-        dataPresenter = new DataPresenter(getActivity(),this);
-
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         activityRecycler.setLayoutManager(centerZoomLayoutManager);
-        activityRecycler.setAdapter(adapter);
+
         chartScreen   = new ChartScreen(getActivity());
         mChart.setOnChartValueSelectedListener(this);
-
-        dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
-
         mChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,25 +113,35 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
 
             }
         });
-
-        MainActivity.commonSearch .setOnClickListener(new View.OnClickListener() {
+        referesh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (list != null){
-                    SharedArray.setArray(list);
-                    Intent intent = new Intent(getActivity(),SearchActivity.class);
-                    intent.putExtra("bool",true);
-                    startActivity(intent);
-                }else {
-                    showMessage("Details are empty");
-                }
+
+                if (Checkers.isNetworkConnectionAvailable(getActivity()))
+                    getResult();
+                else
+                    showMessage("Check your internet connection");
             }
         });
 
-        Log.i("TAG","My counts"+ "Yes");
+        if (Checkers.isNetworkConnectionAvailable(getActivity()))
+            getResult();
+        else
+            showMessage("Check your internet connection");
     }
 
+    @SuppressLint("NewApi")
+    private void showResult(){
 
+        adapter   = new A(getActivity(), true, getList(),false,false,this,null);
+        activityRecycler.setAdapter(adapter);
+    }
+    @SuppressLint("NewApi")
+    List<DataPojo.Results> getList(){
+        List<DataPojo.Results> list = SharedArray.getResult();
+        list = list.stream().filter(pulse ->  pulse.getPendingDocsCount() == null  || !pulse.getPendingDocsCount().equals("0")).collect(Collectors.toList());
+        return list;
+    }
 
 
     protected int layoutRes() {
@@ -141,38 +151,47 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        if (!isHidden()){
 
-    }
-    public static void countFrequencies(ArrayList<String> list)
-    {
-        // hashmap to store the frequency of element
-        Map<String, Integer> hm = new HashMap<String, Integer>();
-
-        for (String i : list) {
-            Integer j = hm.get(i);
-            hm.put(i, (j == null) ? 1 : j + 1);
+            showResult();
         }
 
-        // displaying the occurrence of elements in the arraylist
-        for (Map.Entry<String, Integer> val : hm.entrySet()) {
-            System.out.println("Element " + val.getKey() + " "
-                    + "occurs"
-                    + ": " + val.getValue() + " times");
-        }
     }
 
     @Override
-    protected void backClicked() {
-        super.backClicked();
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+                dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Handler handler = new Handler();
+        Runnable timedTask = new Runnable(){
+
+            @Override
+            public void run() {
+                getResult();
+
+            }};
+        handler.postDelayed(timedTask,1800000000);
+    }
+    private void getResult(){
+        dataPresenter = new DataPresenter(getActivity(),this);
+        dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
     }
 
+
+
+    @SuppressLint("NewApi")
     @Override
     public void showDatas(DataPojo.Results[] results,DataPojo.Count[] counts,int total,int alarmCount) {
+       // list.clear();
+        valueSet1.clear();
         list = new ArrayList<DataPojo.Results>(Arrays.asList(results));
-        SharedArray.setArray(list);
-        adapter   = new A(getActivity(), true, list,false,false);
-        activityRecycler.setAdapter(adapter);
-        ArrayList<DataPojo.Count>  list = new ArrayList<>(Arrays.asList(counts));
+        List<DataPojo.Count>  list = new ArrayList<>(Arrays.asList(counts));
         valueSet1.add(new BarEntry(0,0));
         valueSet1.add(new BarEntry(1,0));
         valueSet1.add(new BarEntry(2,0));
@@ -193,9 +212,8 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
         }
         chartScreen.setCharts(mChart,valueSet1);
         mChart.invalidate();
-        MainActivity.addFirstView(results.length,getActivity());
-        MainActivity.addSecondView(total,getActivity());
-        MainActivity.addThirdView(alarmCount,getActivity());
+        showResult();
+
     }
 
     @Override
@@ -221,15 +239,16 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
     }
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        if ( e.getX() == 0){
+        if ( e.getX() == 0 && e.getY() != 0 ){
             adapter.getFilter().filter("new");
-        } else if (e.getX() == 1){
+        } else if ( e.getX() == 1 && e.getY() != 0 ){
             adapter.getFilter().filter(">3days");
-        }else if (e.getX() == 2){
+        }else if (e.getX() == 2 && e.getY() != 0 ){
             adapter.getFilter().filter(">1week");
-        }else if (e.getX() == 3){
+        }else if (e.getX() == 3 && e.getY() != 0 ){
             adapter.getFilter().filter(">2weeks");
         }
+
     }
 
     @Override
@@ -237,47 +256,21 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
         adapter.getFilter().filter("");
     }
 
-
-    public class SimpleRVAdapter extends RecyclerView.Adapter<My> {
-        private String[] dataSource;
-        public SimpleRVAdapter(String[] dataArgs){
-            dataSource = dataArgs;
-        }
-
-        @Override
-        public My onCreateViewHolder(ViewGroup parent, int viewType) {
-            // create a new view
-
-            return new My(LayoutInflater.from(getContext()).inflate(R.layout.text_view, parent, false));
-        }
-
-        public  class SimpleViewHolder extends RecyclerView.ViewHolder{
-            public TextView textView;
-            public SimpleViewHolder(View itemView) {
-                super(itemView);
-                textView = (TextView) itemView;
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(My holder, int position) {
-            holder.date.setText(dataSource[position]);
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return dataSource.length;
-        }
-    }
-    class My extends RecyclerView.ViewHolder {
-        @BindView(R.id.vocab)
-        TextView date;
-
-        My(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-
+    @Override
+    public void clicked(int position, boolean type, List<DataPojo.Results> list,boolean alarm) {
+        if (alarm){
+            Intent intent = new Intent(getActivity(), Alerm.class);
+            intent.putExtra("position",position);
+            SharedArray.setFilterResult(list);
+            startActivityForResult(intent,100);
+        } else {
+            Intent intent = new Intent(getActivity(), DetailsView.class);
+            intent.putExtra("transitionName", "");
+            intent.putExtra("position", position);
+            intent.putExtra("type", type);
+            intent.putExtra("filter", false);
+            SharedArray.setFilterResult(list);
+            startActivityForResult(intent, 100);
         }
     }
 }

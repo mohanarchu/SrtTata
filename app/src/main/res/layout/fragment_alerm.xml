@@ -26,23 +26,23 @@
            android:layout_height="match_parent">
 
            <RelativeLayout
-               android:layout_weight="0.07"
+               android:layout_weight="0.03"
 
                android:layout_width="match_parent"
                android:layout_height="0dp">
-               <include layout="@layout/tool_bar"/>
+
            </RelativeLayout>
 
            <LinearLayout
                android:weightSum="1"
-               android:layout_weight="0.93"
+               android:layout_weight="0.97"
                android:orientation="vertical"
                android:layout_width="match_parent"
                android:layout_height="0dp">
 
                <RelativeLayout
                    android:weightSum="3"
-                   android:layout_weight="0.33"
+                   android:layout_weight="0.34"
                    android:layout_width="match_parent"
                    android:layout_height="0dp">
 
@@ -210,7 +210,7 @@
                <LinearLayout
                    android:weightSum="1"
                    android:orientation="vertical"
-                   android:layout_weight="0.7"
+                   android:layout_weight="0.68"
                    android:layout_width="match_parent"
                    android:layout_height="0dp">
                    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -223,6 +223,7 @@
                        app:mcv_rightArrowMask="@drawable/right"
                        app:mcv_firstDayOfWeek="sunday"
                        app:mcv_selectionColor="@color/white"
+
                        app:mcv_weekDayLabels="@array/week_array"
                        android:importantForAutofill="auto"
                        app:mcv_headerTextAppearance="@style/CustomTextAppearances"

@@ -94,6 +94,8 @@ public class DataPojo {
 
     public class Results
     {
+        private String alarmInt;
+
         private String ageing;
 
         private String contactPhones;
@@ -305,6 +307,10 @@ public class DataPojo {
 
         public String getAlarm() {
             return alarm;
+        }
+
+        public String getAlarmInt() {
+            return alarmInt;
         }
 
         public String getContactPhones ()
@@ -1292,7 +1298,9 @@ public class DataPojo {
 
         public class Docs
         {
-            private String date;
+            private String collectedDate;
+
+            private String checkedDate;
 
             private String checked;
 
@@ -1326,11 +1334,16 @@ public class DataPojo {
             }
 
             public String getDate() {
-                return date;
+                return collectedDate;
             }
             public void setProof (String proof)
             {
                 this.proof = proof;
+            }
+
+
+            public String getCheckedDate() {
+                return checkedDate;
             }
 
             @Override
@@ -1339,7 +1352,5 @@ public class DataPojo {
                 return "ClassPojo [checked = "+checked+", collected = "+collected+", proof = "+proof+"]";
             }
         }
-
-
     }
 }

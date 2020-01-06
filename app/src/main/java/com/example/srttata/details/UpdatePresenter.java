@@ -20,7 +20,7 @@ public class UpdatePresenter {
         this.context = context;
         this.updateModel = updateModel;
     }
-    public void update(String orderId, JsonObject jsonObject){
+    public void update(String orderId, JsonObject jsonObject,int position){
 
         NetworkingUtils.getUserApiInstance().updateData (Checkers.getUserToken(context),orderId,jsonObject).subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<UpdatePojo>() {
@@ -32,6 +32,10 @@ public class UpdatePresenter {
             @Override
             public void onNext(UpdatePojo updatePojo) {
 
+                if (Integer.valueOf(updatePojo.getStatus()) ==  200){
+                    updateModel.showMessage("success");
+                    updateModel.success(position);
+                }
                 Log.i("TAG","Update success"+ updatePojo.getStatus());
             }
 

@@ -18,9 +18,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_margin="5dp"
         android:layout_width="match_parent"
-        android:background="@color/smoke"
+        android:background="@color/background_black"
         android:id="@+id/appointmentRecycler"
         android:layout_height="match_parent"/>
+
 
 
 </LinearLayout>

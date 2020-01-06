@@ -30,11 +30,9 @@ public final class HorizontalCalendar {
     //region private Fields
     HorizontalCalendarView calendarView;
     private HorizontalCalendarBaseAdapter mCalendarAdapter;
-
     // Start & End Dates
     Calendar startDate;
     Calendar endDate;
-
     // Calendar Mode
     private Mode mode;
     // Number of Dates to Show on Screen
@@ -126,12 +124,13 @@ public final class HorizontalCalendar {
      *                  ,or false to play default scroll animation speed.
      */
     public void selectDate(Calendar date, boolean immediate) {
-        Log.i("TAG","selectedss"+"true");
+
         int datePosition = positionOfDate(date);
         if (immediate) {
             centerToPositionWithNoAnimation(datePosition);
             if (calendarListener != null) {
                 calendarListener.onDateSelected(date, datePosition);
+
             }
         } else {
             calendarView.setSmoothScrollSpeed(HorizontalLayoutManager.SPEED_NORMAL);
@@ -168,6 +167,7 @@ public final class HorizontalCalendar {
     }
 
 
+
     /**
      * Scroll Horizontal Calendar to center this position and select the new centered day.
      *
@@ -196,7 +196,7 @@ public final class HorizontalCalendar {
 
     private void refreshItemsSelector(int position1, int... positions) {
         mCalendarAdapter.notifyItemChanged(position1, "UPDATE_SELECTOR");
-        if ((positions != null) && (positions.length > 0)) {
+        if (positions != null) {
             for (int pos : positions) {
                 mCalendarAdapter.notifyItemChanged(pos, "UPDATE_SELECTOR");
             }

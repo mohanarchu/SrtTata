@@ -11,11 +11,16 @@
 
 
     <LinearLayout
+
         android:layout_weight="0.2"
+        android:backgroundTint="@color/white"
         android:gravity="center"
-        android:background="@color/white"
+        android:background="@drawable/curve"
         android:layout_width="match_parent"
-        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="3dp"
         android:layout_height="0dp">
 
         <RelativeLayout
@@ -23,28 +28,29 @@
 
             android:orientation="vertical"
             android:gravity="center|bottom"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.github.mikephil.charting.charts.BarChart
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
 
                 android:layout_width="match_parent"
                 android:id="@+id/barChart"
                 android:layout_height="match_parent"/>
             <ImageView
-                android:visibility="gone"
+
                 android:layout_marginTop="10dp"
                 android:layout_alignParentRight="true"
                 android:id="@+id/searchActivities"
-                 android:layout_marginRight="5dp"
+                 android:layout_marginRight="7dp"
                 android:tint="@color/black"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
+                android:src="@drawable/ic_refresh"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
 
 
 
@@ -60,14 +66,15 @@
 
 
         <LinearLayout
-            android:layout_margin="5dp"
 
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:background="@color/smoke"
+                android:background="@color/background_black"
                 android:id="@+id/activity_recycler"
                 android:layout_height="match_parent"/>
 

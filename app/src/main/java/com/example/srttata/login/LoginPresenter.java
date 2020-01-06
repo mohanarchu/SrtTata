@@ -50,17 +50,15 @@ public class LoginPresenter {
             @Override
             public void onError(Throwable e) {
 
-//
-//                HttpException error = (HttpException)e;
-//
-//                try {
-//                    String errorBody = error.response().errorBody().string();
-//                    JSONObject jsonObject = new JSONObject(errorBody);
-//                    loginModel.showError(jsonObject.getString(context.getString(R.string.message)));
-//
-//                } catch (IOException | JSONException e1) {
-//                    e1.printStackTrace();
-//                }
+                HttpException error = (HttpException)e;
+                try {
+                    String errorBody = error.response().errorBody().string();
+                    JSONObject jsonObject = new JSONObject(errorBody);
+                    loginModel.showError(jsonObject.getString(context.getString(R.string.message)));
+
+                } catch (IOException | JSONException e1) {
+                    e1.printStackTrace();
+                }
 
             }
 

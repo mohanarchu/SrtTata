@@ -102,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_margin="5dp"
         android:id="@+id/notoficationRecycler"
-        android:background="@color/smoke"
+        android:background="@color/background_black"
         android:layout_height="match_parent">
 
 

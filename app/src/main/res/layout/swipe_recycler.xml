@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/clickLayout"
     android:clickable="true"
-    android:background="@color/white"
+    android:background="@color/background_black"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -15,7 +15,7 @@
 
     <RelativeLayout
 
-        android:background="@color/grey"
+
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
@@ -25,7 +25,7 @@
 
         <FrameLayout
 
-            android:background="@color/white"
+            android:background="@color/background_black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,7 +38,7 @@
                 android:clickable="true"
                 android:layout_marginTop="5dp"
 
-                android:backgroundTint="@color/background_black"
+                android:backgroundTint="@color/white"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/swipe_layout"
                 android:layout_width="match_parent"
@@ -51,38 +51,14 @@
                     android:layout_width="180dp"
                     android:gravity="center"
                     android:layout_height="match_parent">
-                    <LinearLayout
-                        android:gravity="center"
-                        android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="wrap_content">
 
-                        <ImageView
+                        <include
+                            android:layout_gravity="center"
+                            layout="@layout/sms_layout"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent" />
 
-                            android:scaleType="fitXY"
-                            android:layout_marginStart="5dp"
-                            android:src="@drawable/call"
-                            android:layout_width="33dp"
-                            android:layout_height="33dp"/>
 
-                        <ImageView
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/ic_sms"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"/>
-                        <ImageView
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/ic_whatsapp"
-                            android:layout_width="33dp"
-                            android:layout_height="33dp"/>
-                        <ImageView
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/mail"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"/>
-
-                    </LinearLayout>
                 </LinearLayout>
                 <!-- Your main layout here -->
                 <LinearLayout
@@ -251,7 +227,8 @@
                                     android:textColor="@color/white"
                                     android:textStyle="bold"
                                     android:gravity="center"
-                                    android:text="5"
+                                    android:id="@+id/pendingDocsCount"
+
                                     android:background="@drawable/red_circle"
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"/>
@@ -267,7 +244,7 @@
 
 
                             <TextView
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textStyle="bold"
                                 android:text="UKKADAM"
                                 android:textSize="12dp"
@@ -298,30 +275,20 @@
 
 
 
-        <RelativeLayout
-
-             android:layout_marginTop="80dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/visiblelayout"
-
-            android:orientation="vertical">
-
 
             <androidx.cardview.widget.CardView
 
                 android:id="@+id/dullLayout"
+                android:layout_marginTop="80dp"
+                app:cardBackgroundColor="@color/grey"
+                app:cardCornerRadius="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <RelativeLayout
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:weightSum="1"
-                        android:backgroundTint="@color/grey"
-                        android:background="@drawable/curve"
+
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -332,8 +299,8 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="0dp">
-
                             <LinearLayout
+
                                 android:weightSum="1"
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp">
@@ -360,26 +327,46 @@
                                     <ScrollView
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent">
-                                        <TextView
-                                            android:text="----"
-                                            android:id="@+id/fullAddress"
-                                            android:textStyle="bold"
-                                            android:maxLines="5"
-                                            android:textFontWeight="500"
-                                            android:gravity="center|start"
-                                            android:textSize="14dp"
-                                            android:fontFamily="@font/"
-                                            android:textColor="@color/dark_blue"
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"/>
+                                            android:layout_height="match_parent">
+                                            <TextView
+                                                android:text="----"
+                                                android:id="@+id/fullName"
+                                                android:textStyle="bold"
+                                                android:maxLines="5"
+                                                android:textFontWeight="500"
+                                                android:gravity="center|start"
+                                                android:textSize="13dp"
+                                                android:fontFamily="@font/"
+                                                android:textColor="@color/blue"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"/>
+
+                                            <TextView
+                                                android:text="----"
+                                                android:id="@+id/fullAddress"
+                                                android:textStyle="bold"
+                                                android:maxLines="5"
+                                                android:textFontWeight="500"
+                                                android:gravity="center|start"
+                                                android:textSize="13dp"
+                                                android:fontFamily="@font/"
+                                                android:textColor="@color/dark_blue"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"/>
+
+
+                                        </LinearLayout>
+
+
                                     </ScrollView>
                                 </LinearLayout>
 
-
-
                             </LinearLayout>
                             <LinearLayout
-
                                 android:weightSum="2"
                                 android:orientation="horizontal"
                                 android:layout_width="match_parent"
@@ -421,6 +408,7 @@
                                         android:gravity="center"
                                         android:text="BANk"
                                         android:textStyle="bold"
+                                        android:id="@+id/financier"
                                         android:textFontWeight="500"
                                         android:fontFamily="@font/"
                                         android:layout_width="match_parent"
@@ -456,7 +444,6 @@
                                         app:textOff=""
                                         app:colorAccent="@color/blue"
                                         android:textSize="14sp"
-                                        app:on="false"
                                         app:colorOff="@color/white"
                                         app:colorOn="@color/blue"
                                         app:colorBorder="@color/blue"
@@ -472,6 +459,8 @@
                                         android:paddingRight="5dp"
                                         android:text="@string/alternate_number"
                                         android:textSize="13dp"
+                                        android:inputType="phone"
+                                        android:maxLength="10"
                                         android:textStyle="bold"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"/>
@@ -525,7 +514,7 @@
                             <LinearLayout
                                 android:layout_weight="0.65"
                                 android:layout_marginLeft="10dp"
-
+                                android:paddingTop="8dp"
                                 android:layout_marginRight="10dp"
                                 android:orientation="vertical"
                                 android:layout_width="match_parent"
@@ -633,14 +622,14 @@
 
                     </LinearLayout>
 
-                </RelativeLayout>
+
 
 
             </androidx.cardview.widget.CardView>
 
 
 
-        </RelativeLayout>
+
 
     </RelativeLayout>
 
