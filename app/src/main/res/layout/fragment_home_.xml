@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:weightSum="1"
-    android:background="@color/black"
+    android:background="@color/background_black"
     android:orientation="vertical"
     tools:context=".home.Home_Frag">
 
