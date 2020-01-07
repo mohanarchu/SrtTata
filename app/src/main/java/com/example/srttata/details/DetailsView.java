@@ -123,7 +123,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
     @BindView(R.id.makeMail)
     LinearLayout makeMail;
     StringBuilder stringBuilder = new StringBuilder();
-    Context context;  private final static int REQUEST_READ_SMS_PERMISSION = 3004;
+    private final static int REQUEST_READ_SMS_PERMISSION = 3004;
     private final static int REQUEST_CALL_PERMISSION = 3003;
     public final static String READ_SMS_PERMISSION_NOT_GRANTED = "Please allow " + "SRT" + " to access your SMS from setting";
     MainActivity.RequestPermissionAction onPermissionCallBack;
@@ -159,32 +159,36 @@ public class DetailsView extends BaseActivity implements UpdateModel {
         String sms   = "Dear " + results.getContactName() +"\n\n"+"Welcome to SRT TATA\n"+
                 "Pls provide below documents to process your vechile loan:\n\n"+stringBuilder.toString()  +"\n"+ "To :"+
                 Checkers.getName(getApplicationContext())+"\n"+  "Phone:"+ Checkers.getMobile(getApplicationContext());
-        makeSms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               getReadSMSPermission(new MainActivity.RequestPermissionAction() {
-                    @Override
-                    public void permissionDenied() {
+        makeSms.setOnClickListener(view -> {
 
-                    }
+            Intent intent1 = new Intent(Intent.ACTION_SENDTO);
+            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent1.setData(Uri.parse("smsto:" + results.getContactPhones())); // This ensures only SMS apps respond
+            intent1.putExtra("sms_body", sms);
+             startActivity(intent1);
 
+//               getReadSMSPermission(new MainActivity.RequestPermissionAction() {
+//                    @Override
+//                    public void permissionDenied() {
+//
 
-                    @Override
-                    public void permissionGranted() {
-                        String[] number = {results.getContactPhones()};
-                        List<String> strings = new ArrayList<String>();
-                        int index = 0;
-                        while (index < sms.length()) {
-                            SendSMs.MultipleSMS(number,results.getContactPhones(),sms.substring(index, Math.min(index + 160, sms.length())),getApplicationContext());
-                            // SendSMs. MultipleSMS(number, number[0], sms.substring(index, Math.min(index + 160, sms.length()))));
-                            index += 160;
-                        }
+//                    }
+//                    @Override
+//                    public void permissionGranted() {
+//                        String[] number = {results.getContactPhones()};
+//                        List<String> strings = new ArrayList<String>();
+//                        int index = 0;
 
-                       showMessage("Sms sent");
-                        //Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+//                        while (index < sms.length()) {
+//                            SendSMs.MultipleSMS(number,results.getContactPhones(),sms.substring(index, Math.min(index + 160, sms.length())),getApplicationContext());
+//                            // SendSMs. MultipleSMS(number, number[0], sms.substring(index, Math.min(index + 160, sms.length()))));
+//                            index += 160;
+//                        }
+//
+//                       showMessage("Sms sent");
+//                        //Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
         });
 
        makeCall.setOnClickListener(view -> {
@@ -205,9 +209,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
                   startActivity(callIntent);
                }
            });
-
         });
-
       makeWhatsapp.setOnClickListener(view -> {
             PackageManager packageManager = getPackageManager();
             Intent i = new Intent(Intent.ACTION_VIEW);

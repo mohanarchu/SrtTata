@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:weightSum="1"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/background_black"
     tools:context=".MainActivity">
     <RelativeLayout
         android:layout_alignParentTop="true"
@@ -15,29 +15,29 @@
         <include layout="@layout/tool_bar"/>
     </RelativeLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <FrameLayout
-
+            android:layout_weight="0.935"
             android:id="@+id/main_container"
-            app:layout_constraintTop_toTopOf="@id/main_container"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-
-            android:layout_height="50dp"
+            android:layout_weight="0.065"
+            android:layout_height="0dp"
+            android:background="@color/background_black"
             android:layout_gravity="bottom|center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:itemIconSize="24dp"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/bottom_menu" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -16,9 +16,10 @@
     <color name="dark_grey">#595959</color>
     <color name="light_blue">#5F91FF</color>
     <color name="ice_blue">#a2a9c8</color>
-    <color name="lavender">#533693</color>
+    <color name="lavender">#AF8DF8</color>
     <color name="light_blues">#57b9ec</color>
     <color name="grey">#7F7F7F</color>
+    <color name="back_blue">#CE71FC</color>
 </resources>
 
 

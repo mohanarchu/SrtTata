@@ -103,7 +103,14 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
         holder.makeSms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) context).getReadSMSPermission(new MainActivity.RequestPermissionAction() {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse("smsto:" + filterResults.get(position).getContactPhones())); // This ensures only SMS apps respond
+                intent.putExtra("sms_body", sms);
+                context. startActivity(intent);
+             //  context. startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", filterResults.get(position).getContactPhones(), null)));
+
+               /* ((MainActivity) context).getReadSMSPermission(new MainActivity.RequestPermissionAction() {
                     @Override
                     public void permissionDenied() {
 
@@ -123,7 +130,7 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
                         Toast.makeText(context, SendSMs.MultipleSMS(number, filterResults.get(position).getContactPhones(), sms, context), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
             }
         });
 
