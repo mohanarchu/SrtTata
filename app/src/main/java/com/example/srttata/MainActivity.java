@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (!fragmentTemp.getTag().equals(TAB_HINTS)) {
+        if (fragmentTemp == null || !fragmentTemp.getTag().equals(TAB_HINTS)) {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
                 return;
