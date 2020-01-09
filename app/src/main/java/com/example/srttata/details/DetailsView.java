@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -156,15 +158,13 @@ public class DetailsView extends BaseActivity implements UpdateModel {
         closeEdit.setOnClickListener(view -> finish());
 
         // switchAlternateNumber.setOnToggledListener((toggleableView, isOn) -> alternareState = isOn);
-        String sms   = "Dear " + results.getContactName() +"\n\n"+"Welcome to SRT TATA\n"+
-                "Pls provide below documents to process your vechile loan:\n\n"+stringBuilder.toString()  +"\n"+ "To :"+
-                Checkers.getName(getApplicationContext())+"\n"+  "Phone:"+ Checkers.getMobile(getApplicationContext());
+
         makeSms.setOnClickListener(view -> {
 
             Intent intent1 = new Intent(Intent.ACTION_SENDTO);
             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent1.setData(Uri.parse("smsto:" + results.getContactPhones())); // This ensures only SMS apps respond
-            intent1.putExtra("sms_body", sms);
+            intent1.putExtra("sms_body", sendSms(results,false));
              startActivity(intent1);
 
 //               getReadSMSPermission(new MainActivity.RequestPermissionAction() {
@@ -216,7 +216,8 @@ public class DetailsView extends BaseActivity implements UpdateModel {
             String phone = "+91" + results.getContactPhones();
             String message ="Hello";
             try {
-                String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + URLEncoder.encode(sms, "UTF-8");
+                String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" +
+                        URLEncoder.encode( sendSms(results,true), "UTF-8");
                 i.setPackage("com.whatsapp");
                 i.setData(Uri.parse(url));
                 if (i.resolveActivity(packageManager) != null) {
@@ -233,7 +234,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{results.getCustomerEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT, "LOAN PROCESS DOCUMENTS");
-            i.putExtra(Intent.EXTRA_TEXT, sms);
+            i.putExtra(Intent.EXTRA_TEXT,  sendSms(results,false));
             try {
              startActivity(Intent.createChooser(i, "Send mail..."));
             } catch (ActivityNotFoundException ex) {
@@ -295,9 +296,11 @@ public class DetailsView extends BaseActivity implements UpdateModel {
         fullAddress.setText(result.getContactFullAddress());
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         documentRecycler.setLayoutManager(centerZoomLayoutManager);
-        documentRecycler.setAdapter(new DocumentAdapter(result.getDocs(), result.getAddDocs(), getApplicationContext(), filter));
+        documentRecycler.setAdapter(new
+                DocumentAdapter(result.getDocs(),
+                result.getAddDocs(), getApplicationContext(), filter));
         switchAlternateNumber.setOn(Boolean.valueOf(result.getAlternateMobileToggle()));
-        pendingCount.setText(result.getPendingDocsCount());
+
         //  switchAlternateNumber.setOn(true);
         remarksEze.setText(result.getExeRemarks());
         List<String> dates = Arrays.asList(result.getContactFullAddress().split(","));
@@ -312,25 +315,7 @@ public class DetailsView extends BaseActivity implements UpdateModel {
 
         if (!filter) {
             displayAddress.setText(dates.get(0) + "," + dates.get(1));
-            if (result.getDocs() != null) {
-                for (int j = 0; j < result.getDocs().length; j++) {
-                    if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
-                            Boolean.valueOf(result.getDocs()[j].getCollected())) {
-                    }else {
-                        stringBuilder.append(result.getDocs()[j].getProof()).append("\n");
-                    }
-                }
-            }
-            if (result.getAddDocs() != null) {
-                for (int j = 0; j < result.getAddDocs().length; j++) {
-                    if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
-                            Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
-                    }else {
-                        Log.i("TAG","No collected");
-                        stringBuilder.append(result.getAddDocs()[j].getProof()).append("\n");
-                    }
-                }
-            }
+            pendingCount.setText(result.getPendingDocsCount());
         } else {
             int counts = 0;
             StringBuilder values = new StringBuilder();
@@ -400,8 +385,50 @@ public class DetailsView extends BaseActivity implements UpdateModel {
             fixedAppoinments.setVisibility(View.VISIBLE);
         else
             fixedAppoinments.setVisibility(View.GONE);
-
     }
+
+    private String sendSms(DataPojo.Results result,boolean type){
+        stringBuilder.setLength(0);
+
+        String sms ="";
+        if (result.getDocs() != null) {
+            for (int j = 0; j < result.getDocs().length; j++) {
+                if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
+                        !Boolean.valueOf(result.getDocs()[j].getCollected())) {
+                    stringBuilder.append(result.getDocs()[j].getProof()).append("\n");
+                }
+            }
+        }
+        if (result.getAddDocs() != null) {
+            for (int j = 0; j < result.getAddDocs().length; j++) {
+                if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
+                        !Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
+                    stringBuilder.append(result.getAddDocs()[j].getProof()).append("\n");
+
+                }
+            }
+        }
+        SpannableStringBuilder str = new
+                SpannableStringBuilder("SRT TATA");
+        str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                0, str.toString().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String srt = "";
+        if (type){
+            srt = "*SRT TATA*";
+        }else {
+            srt = "SRT TATA";
+        }
+
+
+        sms = "Dear " + result.getContactName() +
+                "\n\n" + "Welcome to"+ srt +"\n" +
+                "Pls provide below documents to process your vechile loan:\n\n" +
+                stringBuilder.toString() + "\n" + "To :" + Checkers.getName(getApplicationContext()) + "\n" + "Phone : " +
+                Checkers.getMobile(getApplicationContext());
+
+        return sms;
+    }
+
 
     @Override
     protected int layoutRes() {

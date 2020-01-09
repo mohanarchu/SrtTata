@@ -212,7 +212,7 @@ public class Alerm extends BaseActivity implements OnDateSelectedListener, Timer
                }else {
                    if (commonArray != null){
                        assert results.getAlarmInt() != null;
-                       if (!results.getAlarmInt().equals("")  ){
+                       if (Boolean.valueOf(results.getAlarm())){
                            Intent intent = new Intent(getApplicationContext(), Notification2.class);
                            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Integer.valueOf(results.getAlarmInt()), intent, 0);
                            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +77,8 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new VH(LayoutInflater.from(context).inflate(R.layout.activity_screen, parent, false));
+        return new VH(LayoutInflater.from(context).inflate(R.layout.activity_screen,
+                parent, false));
     }
 
     @SuppressLint({"SetTextI18n", "NewApi"})
@@ -98,15 +101,17 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
         });
 
 
-        String sms = "Dear " + filterResults.get(position).getContactName() + "\n\n" + "Welcome to SRT TATA\n" +
-                "Pls provide below documents to process your vechile loan:\n\n" + stringBuilder.toString() + "\n" + "To :" + Checkers.getName(context) + "\n" + "Phone:" + Checkers.getMobile(context);
+//        String sms = "Dear " + filterResults.get(position).getContactName() + "\n\n" + "Welcome to SRT TATA\n" +
+//                "Pls provide below documents to process your vechile loan:\n\n" +
+//                stringBuilder.toString() + "\n" + "To :" + Checkers.getName(context) + "\n" + "Phone : " +
+//                Checkers.getMobile(context);
         holder.makeSms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(Uri.parse("smsto:" + filterResults.get(position).getContactPhones())); // This ensures only SMS apps respond
-                intent.putExtra("sms_body", sms);
+                intent.putExtra("sms_body", sendSms(filterResults,position,false));
                 context. startActivity(intent);
              //  context. startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", filterResults.get(position).getContactPhones(), null)));
 
@@ -160,7 +165,8 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
             String phone = "+91" + filterResults.get(position).getContactPhones();
             String message ="Hello";
             try {
-                String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + URLEncoder.encode(sms, "UTF-8");
+                String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" +
+                        URLEncoder.encode( sendSms(filterResults,position,true), "UTF-8");
                 i.setPackage("com.whatsapp");
                 i.setData(Uri.parse(url));
                 if (i.resolveActivity(packageManager) != null) {
@@ -180,7 +186,7 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{filterResults.get(position).getCustomerEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT, "LOAN PROCESS DOCUMENTS");
-            i.putExtra(Intent.EXTRA_TEXT, sms);
+            i.putExtra(Intent.EXTRA_TEXT, sendSms(results,position,false));
             try {
                 context.startActivity(Intent.createChooser(i, "Send mail..."));
             } catch (ActivityNotFoundException ex) {
@@ -205,6 +211,50 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
     public int getItemCount() {
         return filterResults.size();
     }
+
+
+    private String sendSms(List<DataPojo.Results> results,int posi,boolean type){
+        stringBuilder.setLength(0);
+        DataPojo.Results result = results.get(posi);
+        String sms ="";
+            if (result.getDocs() != null) {
+                for (int j = 0; j < result.getDocs().length; j++) {
+                    if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
+                            !Boolean.valueOf(result.getDocs()[j].getCollected())) {
+                        stringBuilder.append(result.getDocs()[j].getProof()).append("\n");
+                    }
+                }
+            }
+            if (result.getAddDocs() != null) {
+                for (int j = 0; j < result.getAddDocs().length; j++) {
+                    if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
+                            !Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
+                        stringBuilder.append(result.getAddDocs()[j].getProof()).append("\n");
+
+                    }
+                }
+            }
+        SpannableStringBuilder str = new
+                SpannableStringBuilder("SRT TATA");
+            str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                    0, str.toString().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String srt = "";
+            if (type){
+                srt = " *SRT TATA* ";
+            }else {
+                srt = "SRT TATA";
+            }
+
+
+        sms = "Dear " + filterResults.get(posi).getContactName() +
+                     "\n\n" + "Welcome to"+ srt +"\n" +
+                    "Pls provide below documents to process your vechile loan:\n\n" +
+                    stringBuilder.toString() + "\n" + "To :" + Checkers.getName(context) + "\n" + "Phone : " +
+                    Checkers.getMobile(context);
+
+        return sms;
+    }
+
 
     private void updateVisibilitys(int position) {
 
@@ -231,25 +281,6 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
         if (!type) {
             holdder.displayAddress.setText(dates.get(0) + "," + dates.get(1));
             holdder.pendingCount.setText(result.getPendingDocsCount());
-            if (result.getDocs() != null) {
-                for (int j = 0; j < result.getDocs().length; j++) {
-                    if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
-                            Boolean.valueOf(result.getDocs()[j].getCollected())) {
-                    }else {
-                        stringBuilder.append(result.getDocs()[j].getProof()).append("\n");
-                    }
-                }
-            }
-            if (result.getAddDocs() != null) {
-                for (int j = 0; j < result.getAddDocs().length; j++) {
-                    if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
-                            Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
-                    }else {
-                        Log.i("TAG","No collected");
-                        stringBuilder.append(result.getAddDocs()[j].getProof()).append("\n");
-                    }
-                }
-            }
         } else {
             int counts = 0;
             StringBuilder values = new StringBuilder();
@@ -258,10 +289,7 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
                     if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
                             Boolean.valueOf(result.getDocs()[j].getCollected())) {
                         values.append(result.getDocs()[j].getProof()).append(",");
-
                         counts++;
-                    }else {
-                        stringBuilder.append(result.getDocs()[j].getProof()).append("\n");
                     }
                 }
             }
@@ -270,16 +298,12 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
                     if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
                             Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
                         values.append(result.getAddDocs()[j].getProof());
-
                         counts++;
-                    }else {
-                        Log.i("TAG","No collected");
-                        stringBuilder.append(result.getAddDocs()[j].getProof()).append("\n");
-
                     }
                 }
             }
-            holdder.displayAddress.setText(values.toString().substring(0, values.toString().length() - 1));
+            holdder.displayAddress.setText
+                    (values.toString().substring(0, values.toString().length() - 1));
             if (!values.toString().isEmpty()) {
 
                 holdder.pendingCount.setText(counts + "");
