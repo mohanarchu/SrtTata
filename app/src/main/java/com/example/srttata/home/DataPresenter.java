@@ -59,13 +59,13 @@ public class DataPresenter  {
                 if (dataPojo.getStatus().equals("200")) {
                     Checkers.setUserLoggedInStatus(context,true);
                     int value = 0,addDocus=0,alermCount = 0;
-                    for (int i=0;i<dataPojo.getResults().length;i++){
-                        if (dataPojo.getResults()[i].getDocs() != null){
-                            for (int j=0;j<dataPojo.getResults()[i].getDocs().length;j++){
+                    for (int i=0;i<dataPojo.getResults().length;i++) {
+                        if (dataPojo.getResults()[i].getDocs() != null) {
+                            for (int j=0;j<dataPojo.getResults()[i].getDocs().length;j++) {
                             if (!Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getChecked()) &&
-                                    Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getCollected()) ){
+                                    Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getCollected())) {
                                 value++;
-                            }
+                               }
                             }
                         }
                         if (dataPojo.getResults()[i].getAddDocs() != null){
@@ -87,15 +87,13 @@ public class DataPresenter  {
                                     alermCount++;
                         }
                     }
-
-
                     MainActivity.addSecondView(value+addDocus,context);
                     MainActivity.addThirdView( alermCount,context);
-                    ArrayList<DataPojo.Results>  list = new ArrayList<DataPojo.Results>(Arrays.asList(dataPojo.getResults()));
+                    ArrayList<DataPojo.Results>  list = new ArrayList<>(Arrays.asList(dataPojo.getResults()));
                     SharedArray.setArray(list);
-                    List<DataPojo.Results>  lists = new ArrayList<DataPojo.Results>(Arrays.asList(dataPojo.getResults()));
-                    lists = lists.stream().filter(pulse -> pulse.getPendingDocsCount() == null ||  !pulse.getPendingDocsCount().equals("0")
-                          ).collect(Collectors.toList());
+                    SharedArray.setFilterResult(list);
+                    List<DataPojo.Results>  lists = new ArrayList<>(Arrays.asList(dataPojo.getResults()));
+                    lists = lists.stream().filter(pulse -> pulse.getPendingDocsCount() == null ||  !pulse.getPendingDocsCount().equals("0")).collect(Collectors.toList());
                     MainActivity.addFirstView(lists.size(),context);
                     dataModel.showDatas(dataPojo.getResults(),dataPojo.getCount(),value+addDocus,alermCount);
                 } else {

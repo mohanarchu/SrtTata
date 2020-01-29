@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import com.example.srttata.R;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -17,6 +20,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class FragmentBase extends Fragment {
     private Unbinder unbinder;
+    AlertDialog dialog;
     @Override
     public void onAttach(Context context) {
 
@@ -52,6 +56,20 @@ public abstract class FragmentBase extends Fragment {
     }
     protected void onViewBound(View view) {
 
+    }
+
+    protected void showDialogue(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.alery_dialogue_layout);
+        dialog  = builder.create();
+        dialog.show();
+    }
+
+    protected void dismissDialogue(){
+        if (dialog != null){
+            dialog.dismiss();
+        }
     }
 
     protected void backClicked() {

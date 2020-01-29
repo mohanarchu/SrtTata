@@ -24,8 +24,11 @@ public interface MainInterface {
     @GET("mobile/masterData/{Name}")
     @Headers({ "Content-Type: application/json;charset=UTF-8"} )
     Observable<DataPojo> getDatas(@Header("access-token") String header, @Path("Name") String name);
-    @PATCH("mobile/masterData/{OrNo}")
+    @PATCH("socket/masterData/{OrNo}")
     @Headers({ "Content-Type: application/json;charset=UTF-8"} )
     Observable<UpdatePojo> updateData(@Header("access-token") String header, @Path("OrNo") String id,@Body JsonObject jsonObject);
+    @PATCH("mobile/updatePassword")
+    @Headers({ "Content-Type: application/json;charset=UTF-8"} )
+    Observable<UpdatePojo> updatePassword(@Header("access-token") String header, @Body JsonObject jsonObject);
 
 }

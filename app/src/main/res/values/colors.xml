@@ -5,7 +5,7 @@
     <color name="colorAccent">#7F7F7F</color>
     <color name="smoke">#F1F1F1</color>
     <color name="black">#000000</color>
-    <color name="background_black">#121212</color>
+    <color name="background_black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#4285F4</color>
     <color name="green">#34a853</color>

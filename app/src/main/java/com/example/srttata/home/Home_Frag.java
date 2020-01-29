@@ -32,6 +32,7 @@ import androidx.transition.Visibility;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.example.srttata.Clients.ApiUrl;
 import com.example.srttata.LoginScreen;
 import com.example.srttata.MainActivity;
 import com.example.srttata.R;
@@ -42,6 +43,8 @@ import com.example.srttata.base.TooltipWindow;
 import com.example.srttata.base.ValueFormatter;
 import com.example.srttata.config.Checkers;
 import com.example.srttata.details.DetailsView;
+import com.example.srttata.details.FragmentInterface;
+import com.example.srttata.details.Message;
 import com.example.srttata.details.SharedArray;
 import com.example.srttata.expand.VisibleData;
 import com.example.srttata.holder.A;
@@ -60,9 +63,17 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.skydoves.progressview.ProgressView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Array;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,12 +91,10 @@ import butterknife.ButterKnife;
  */
 public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSelectedListener, HolderClicked {
 
-
+    private FragmentInterface fragmentInterfaceListener;
     private DataPresenter dataPresenter;
     @BindView(R.id.activity_recycler)
     RecyclerView activityRecycler;
-
-
     @BindView(R.id.barChart)
     BarChart mChart;
     @BindView(R.id.searchActivities)
@@ -98,12 +107,13 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
     private ArrayList<BarEntry> valueSet1 = new ArrayList<>();
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
     boolean value = true,value1 = false;
+    String receivedSocket;
     @Override
     protected void onViewBound(View view) {
-
+        mSocket.connect();
+        setListening();
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         activityRecycler.setLayoutManager(centerZoomLayoutManager);
-
         chartScreen   = new ChartScreen(getActivity());
         mChart.setOnChartValueSelectedListener(this);
         mChart.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +127,8 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
             @Override
             public void onClick(View view) {
 
+
+//                mSocket.emit("message","Hello");
                 if (Checkers.isNetworkConnectionAvailable(getActivity()))
                     getResult();
                 else
@@ -128,36 +140,48 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
             getResult();
         else
             showMessage("Check your internet connection");
+
+
     }
 
+    public static Socket mSocket;
+    static {
+        try {
+            mSocket = IO.socket("https://test.srt-tata.in");
+        } catch (URISyntaxException e) {
+            Log.i("TAG","URl error"+e.toString());
+        }
+    }
+    private void setListening() {
+         mSocket.on("mobileReload", args -> {
+
+            receivedSocket   = Arrays.toString(args).replace("[","").replace("]","").trim();
+            dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
+        });
+    }
     @SuppressLint("NewApi")
     private void showResult(){
-
         adapter   = new A(getActivity(), true, getList(),false,false,this,null);
         activityRecycler.setAdapter(adapter);
+        EventBus.getDefault().post(new Message(receivedSocket));
     }
     @SuppressLint("NewApi")
     List<DataPojo.Results> getList(){
         List<DataPojo.Results> list = SharedArray.getResult();
+
         list = list.stream().filter(pulse ->  pulse.getPendingDocsCount() == null  || !pulse.getPendingDocsCount().equals("0")).collect(Collectors.toList());
         return list;
     }
-
-
     protected int layoutRes() {
         return R.layout.fragment_home_;
     }
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!isHidden()){
-
             showResult();
         }
-
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,25 +189,29 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
                 dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
         }
     }
+
     @Override
     public void onStart() {
         super.onStart();
         Handler handler = new Handler();
         Runnable timedTask = new Runnable(){
-
             @Override
             public void run() {
                 getResult();
-
             }};
         handler.postDelayed(timedTask,1800000000);
+    }
+
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
     private void getResult(){
         dataPresenter = new DataPresenter(getActivity(),this);
         dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
     }
-
-
 
     @SuppressLint("NewApi")
     @Override
@@ -196,7 +224,7 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
         valueSet1.add(new BarEntry(1,0));
         valueSet1.add(new BarEntry(2,0));
         valueSet1.add(new BarEntry(3,0));
-        for (DataPojo.Count lists : list){
+        for (DataPojo.Count lists : list) {
            if (lists.get_id().getAgeing().equals(">1week") && lists.get_id().getAgeing() != null )
                valueSet1.set(2, new BarEntry(2,Integer.valueOf(lists.getCount())));
 //               valueSet1.add(2, new BarEntry(2,Integer.valueOf(lists.getCount())));
@@ -213,7 +241,6 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
         chartScreen.setCharts(mChart,valueSet1);
         mChart.invalidate();
         showResult();
-
     }
 
     @Override
@@ -228,6 +255,7 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
 
     @Override
     public void hideProgress() {
+
 
     }
 
@@ -258,6 +286,8 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
 
     @Override
     public void clicked(int position, boolean type, List<DataPojo.Results> list,boolean alarm) {
+
+
         if (alarm){
             Intent intent = new Intent(getActivity(), Alerm.class);
             intent.putExtra("position",position);

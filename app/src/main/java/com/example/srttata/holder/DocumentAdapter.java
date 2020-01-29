@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -33,14 +34,11 @@ import butterknife.ButterKnife;
 public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         enum VIEWTYPE  {   NORMAl, HEADER, TEXT    }
-
-
-
-        DataPojo.Results.Docs[] addDocus;
+        List<DataPojo.Results.AddDocs> addDocus;
         boolean filter;
         Context context;
-        DataPojo.Results.Docs[] docs;
-        public DocumentAdapter(DataPojo.Results.Docs[] docs, DataPojo.Results.Docs[] addDocus, Context context,boolean filter) {
+        List<DataPojo.Results.Docs>  docs;
+        public DocumentAdapter( List<DataPojo.Results.Docs>  docs,List<DataPojo.Results.AddDocs>  addDocus, Context context,boolean filter) {
             this.addDocus = addDocus;
             this.docs = docs;
             this.filter = filter;
@@ -65,6 +63,7 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
         }
+        @SuppressLint("NewApi")
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder.getItemViewType() == VIEWTYPE.HEADER.ordinal()) {
@@ -72,12 +71,11 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 if (position == 0) {
                     viewHolder.headerText.setText("Standard Documents");
                 } else {
-                    viewHolder.headerText.setText(addDocus.length != 0 ?  "Additional Documents": "Additional Documents : N/A"  );
+                    viewHolder.headerText.setText(addDocus.size() != 0 ?  "Additional Documents": "Additional Documents : N/A"  );
                 }
             } else if (holder.getItemViewType() == VIEWTYPE.NORMAl.ordinal()) {
 
-                DataPojo.Results.Docs  docs1 = docs[position - 1];
-
+                DataPojo.Results.Docs  docs1 = docs.get(position - 1);
                 DocHolder viewHolder = (DocHolder) holder;
                 viewHolder.documentType.setText(docs1.getProof());
                 if (Boolean.valueOf(docs1.getChecked()) || Boolean.valueOf(docs1.getCollected()))
@@ -85,8 +83,18 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 else
                 viewHolder.docCheck.setChecked(false);
                 viewHolder.collectedTime.setText(docs1.getCheckedDate());
-                if (Boolean.valueOf(docs1.getChecked()))
-                viewHolder.docCheck.setEnabled(false);
+                if (docs1.getDate() != null){
+                    viewHolder.collectedTime.setText(docs1.getDate());
+                } else {
+                    viewHolder.collectedTime.setText("");
+                }
+                if (Boolean.valueOf(docs1.getChecked())) {
+                    if (docs1.getCheckedDate() != null){
+                        viewHolder.collectedTime.setText(docs1.getCheckedDate());
+                    }
+                    viewHolder.docCheck.setEnabled(false);
+                    viewHolder.docCheck.setButtonTintList(context.getResources().getColorStateList(R.color.dark_grey));
+                }
                 viewHolder.docCheck.setOnCheckedChangeListener((compoundButton, b) -> {
                     if (b){
                         viewHolder.docCheck.setChecked(true);
@@ -96,57 +104,49 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }else {
                         DetailsView.booleans[position -1 ] = false;
                         viewHolder.collectedTime.setText("");
-//                        if (docs1.getDate() != null){
-//                            viewHolder.collectedTime.setText(docs1.getDate());
-//                        } else {
-//                            viewHolder.collectedTime.setText("");
-//                        }
                         viewHolder.docCheck.setChecked(false);
                         DetailsView.dates1[position - 1] = "";
                     }
                 });
-                if (docs1.getDate() != null){
-                    viewHolder.collectedTime.setText(docs1.getDate());
-                } else {
-                    viewHolder.collectedTime.setText("");
-                }
+
                 if (filter)
                 {
                     if ( !Boolean.valueOf(docs1.getCollected()))
                         viewHolder.itemView.setVisibility(View.GONE);
                 }
-
             } else {
-                DataPojo.Results.Docs  docs1 = addDocus[position - docs.length - 2];
+                DataPojo.Results.AddDocs  docs1 = addDocus.get(position - docs.size() - 2);
                 DocHolder viewHolder = (DocHolder) holder;
                 viewHolder.documentType.setText(docs1.getProof());
                 viewHolder.docCheck.setChecked(Boolean.valueOf(docs1.getCollected()));
                 viewHolder.collectedTime.setText(docs1.getCheckedDate());
-                viewHolder.docCheck.setOnCheckedChangeListener((compoundButton, b) -> {
-                    if (b){
-                        DetailsView.addBooleans[position - docs.length - 2] = true;
-                        viewHolder.docCheck.setChecked(true);
-                        setCurrentDate(viewHolder.collectedTime);
-                        DetailsView.addDates[position - docs.length - 2] = setCurrentDate(viewHolder.collectedTime);
-                    } else {
-                        DetailsView.addBooleans[position - docs.length - 2] = false;
-                        viewHolder.collectedTime.setText("");
-
-//                        if (docs1.getDate() != null) {
-//                            viewHolder.collectedTime.setText(docs1.getDate());
-//                        } else {
-//                            viewHolder.collectedTime.setText("");
-//                        }
-                        viewHolder.docCheck.setChecked(false);
-                        DetailsView.addDates[position - docs.length - 2] ="";
-
-                    }
-                });
                 if (docs1.getDate() != null){
                     viewHolder.collectedTime.setText(docs1.getDate());
                 } else {
                     viewHolder.collectedTime.setText("");
                 }
+                if (Boolean.valueOf(docs1.getChecked())) {
+                    viewHolder.docCheck.setEnabled(false);
+                    viewHolder.docCheck.setButtonTintList(context.getResources().getColorStateList(R.color.dark_grey));
+                    if (docs1.getCheckedDate() != null){
+                        viewHolder.collectedTime.setText(docs1.getCheckedDate());
+                    }
+                }
+                viewHolder.docCheck.setOnCheckedChangeListener((compoundButton, b) -> {
+                    if (b){
+                        DetailsView.addBooleans[position - docs.size() - 2] = true;
+                        viewHolder.docCheck.setChecked(true);
+                        setCurrentDate(viewHolder.collectedTime);
+                        DetailsView.addDates[position - docs.size() - 2] = setCurrentDate(viewHolder.collectedTime);
+                    } else {
+                        DetailsView.addBooleans[position - docs.size() - 2] = false;
+                        viewHolder.collectedTime.setText("");
+                        viewHolder.docCheck.setChecked(false);
+                        DetailsView.addDates[position - docs.size() - 2] ="";
+
+                    }
+                });
+
                 if (filter)
                 {
                     if ( !Boolean.valueOf(docs1.getCollected()))
@@ -157,18 +157,19 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         @Override
         public int getItemCount() {
-            return docs.length+addDocus.length+2;
+            return docs.size()+addDocus.size()+2;
         }
 
         @Override
         public int getItemViewType(int position) {
             if (position == 0) {
                 return VIEWTYPE.HEADER.ordinal();
-            } else if (position <= docs.length) {
+            } else if (position <= docs.size()) {
                 return VIEWTYPE.NORMAl.ordinal();
-            } else if (position == docs.length + 1) {
+            } else if (position == docs.size() + 1) {
                 return VIEWTYPE.HEADER.ordinal();
             } else {
+
                 return VIEWTYPE.TEXT.ordinal();
             }
         }
@@ -207,7 +208,7 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             dateObj = sdf.parse(time);
             formattedDate = outputFormat.format(dateObj);
             System.out.println(dateObj);
-        } catch (final ParseException e) {
+        } catch (final ParseException e ) {
             e.printStackTrace();
         }
         assert dateObj != null;
@@ -220,8 +221,6 @@ public  class DocumentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView documentType;
         @BindView(R.id.docCheck)
         CheckBox docCheck;
-
-
         public DocHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

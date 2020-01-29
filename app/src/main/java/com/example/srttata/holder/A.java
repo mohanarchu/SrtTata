@@ -179,10 +179,7 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
 
         holder.makeMail.setOnClickListener(view -> {
 
-
-
-            Log.i("TAG","Emails"+filterResults.get(position).getCustomerEmail());
-            Intent i = new Intent(Intent.ACTION_SENDTO);
+            Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{filterResults.get(position).getCustomerEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT, "LOAN PROCESS DOCUMENTS");
@@ -245,7 +242,6 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
                 srt = "SRT TATA";
             }
 
-
         sms = "Dear " + filterResults.get(posi).getContactName() +
                      "\n\n" + "Welcome to"+ srt +"\n" +
                     "Pls provide below documents to process your vechile loan:\n\n" +
@@ -258,10 +254,10 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
 
     private void updateVisibilitys(int position) {
 
-
     }
 
     private void updateVisibility(int position) {
+
 
     }
 

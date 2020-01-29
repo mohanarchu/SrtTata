@@ -288,7 +288,7 @@ public class DataPojo {
 
         private String orderCategory;
 
-        private Docs[] addDocs;
+        private AddDocs[] addDocs;
 
         private String account;
 
@@ -457,6 +457,17 @@ public class DataPojo {
         public void setDocs (Docs[] docs)
         {
             this.docs = docs;
+        }
+
+        public void setAddDocs (AddDocs[] addDocs)
+        {
+            this.addDocs = addDocs;
+        }
+
+
+        public AddDocs[] getAddDocs ()
+        {
+            return addDocs;
         }
 
         public String getFinanceExecutive ()
@@ -1269,15 +1280,6 @@ public class DataPojo {
             this.orderCategory = orderCategory;
         }
 
-        public Docs[] getAddDocs ()
-        {
-            return addDocs;
-        }
-
-        public void setAddDocs (Docs[] addDocs)
-        {
-            this.addDocs = addDocs;
-        }
 
         public String getAccount ()
         {
@@ -1295,7 +1297,62 @@ public class DataPojo {
         {
             return "ClassPojo [contactPhones = "+contactPhones+", orderType = "+orderType+", contactFullAddress = "+contactFullAddress+", otherCharges = "+otherCharges+", totalOrderValue = "+totalOrderValue+", additionalSrtOffer1 = "+additionalSrtOffer1+", quotationChange = "+quotationChange+", dmsPaymentsReceived = "+dmsPaymentsReceived+", additionalSrtOffer2 = "+additionalSrtOffer2+", totalSrtOffer1 = "+totalSrtOffer1+", corporateSrtOffer2 = "+corporateSrtOffer2+", totalSrtOffer2 = "+totalSrtOffer2+", corporateSrtOffer1 = "+corporateSrtOffer1+", docs = "+docs+", financeExecutive = "+financeExecutive+", bookingStatus = "+bookingStatus+", finalPaymentReceived = "+finalPaymentReceived+", paymentReceivedDate = "+paymentReceivedDate+", nomineePanGst = "+nomineePanGst+", opportunity = "+opportunity+", pendingDocsCount = "+pendingDocsCount+", quantityInvoiced = "+quantityInvoiced+", lob = "+lob+", financier = "+financier+", financeOption = "+financeOption+", cashSrtOffer1 = "+cashSrtOffer1+", allocatedQuantity = "+allocatedQuantity+", insuranceType1 = "+insuranceType1+", financeAmount = "+financeAmount+", cashSrtOffer2 = "+cashSrtOffer2+", insuranceType2 = "+insuranceType2+", approximatepaymentDate = "+approximatepaymentDate+", othersTataOffer = "+othersTataOffer+", quantityRequested = "+quantityRequested+", rm2 = "+rm2+", rm1 = "+rm1+", rm3 = "+rm3+", cashTataOffer = "+cashTataOffer+", ca = "+ca+", crnNumber = "+crnNumber+", log_id = "+log_id+", nomineeRelationship = "+nomineeRelationship+", totalTataOffer = "+totalTataOffer+", corporateTataOffer = "+corporateTataOffer+", financedBy = "+financedBy+", team = "+team+", parentProductLine = "+parentProductLine+", totalPaymentsReceived = "+totalPaymentsReceived+", othersHeading = "+othersHeading+", exchangeSrtOffer1 = "+exchangeSrtOffer1+", accountPhone = "+accountPhone+", additionalTataOffer = "+additionalTataOffer+", exchangeSrtOffer2 = "+exchangeSrtOffer2+", messageCount = "+messageCount+", dmsOrderValue = "+dmsOrderValue+", exchangeTataOffer = "+exchangeTataOffer+", accountFullAddress = "+accountFullAddress+", salesTeam = "+salesTeam+", productLine = "+productLine+", customerType = "+customerType+", varient = "+varient+", customerEmail = "+customerEmail+", __v = "+__v+", stockStatus = "+stockStatus+", orderNo = "+orderNo+", othersSrtOffer2 = "+othersSrtOffer2+", contactName = "+contactName+", accountType = "+accountType+", othersSrtOffer1 = "+othersSrtOffer1+", hypothecation = "+hypothecation+", _id = "+_id+", orderDate = "+orderDate+", hsn = "+hsn+", color = "+color+", orderStatus = "+orderStatus+", gstin = "+gstin+", alternateMobileToggle = "+alternateMobileToggle+", alternateMobileNumber = "+alternateMobileNumber+", invoiceNumber = "+invoiceNumber+", accountLocation = "+accountLocation+", arnNumber = "+arnNumber+", insuranceTataOffer = "+insuranceTataOffer+", nomineeDob = "+nomineeDob+", receiptId = "+receiptId+", balancePayment = "+balancePayment+", insuranceSrtOffer2 = "+insuranceSrtOffer2+", insuranceSrtOffer1 = "+insuranceSrtOffer1+", accessoriesSrtOffer2 = "+accessoriesSrtOffer2+", accessoriesSrtOffer1 = "+accessoriesSrtOffer1+", expectedDeliveryDate = "+expectedDeliveryDate+", nomineeName = "+nomineeName+", invoiceDate = "+invoiceDate+", accessoriesTataOffer = "+accessoriesTataOffer+", purchaseOrder = "+purchaseOrder+", orderCategory = "+orderCategory+", addDocs = "+addDocs+", account = "+account+"]";
         }
+        public class AddDocs
+        {
+            private String collectedDate;
 
+            private String checkedDate;
+
+            private String checked;
+
+            private String collected;
+
+            private String proof;
+
+            public String getChecked ()
+            {
+                return checked;
+            }
+
+            public void setChecked (String checked)
+            {
+                this.checked = checked;
+            }
+
+            public String getCollected ()
+            {
+                return collected;
+            }
+
+            public void setCollected (String collected)
+            {
+                this.collected = collected;
+            }
+
+            public String getProof ()
+            {
+                return proof;
+            }
+
+            public String getDate() {
+                return collectedDate;
+            }
+            public void setProof (String proof)
+            {
+                this.proof = proof;
+            }
+
+
+            public String getCheckedDate() {
+                return checkedDate;
+            }
+
+            @Override
+            public String toString()
+            {
+                return "ClassPojo [checked = "+checked+", collected = "+collected+", proof = "+proof+"]";
+            }
+        }
         public class Docs
         {
             private String collectedDate;

@@ -102,7 +102,7 @@ public class SearchActivity extends BaseActivity implements HolderClicked {
                     }
                 });
             }
-        }, 500);
+        }, 100);
 
         EditText et = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         ImageView searchItem = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);

@@ -38,6 +38,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.srttata.appointmant.Appointment;
 import com.example.srttata.appointmant.network.NetworkStateChecker;
 import com.example.srttata.base.FragmentBase;
+import com.example.srttata.config.ChangePassword;
 import com.example.srttata.config.Checkers;
 import com.example.srttata.decorations.fancy.Animation;
 import com.example.srttata.decorations.fancy.FancyAlertDialog;
@@ -71,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     public static View notificationBadge;
     FrameLayout mainContainer;
     boolean doubleBackToExitPressedOnce = false;
-    public  static  ImageView commonSearch;
-    Fragment fragmentTemp,  currentFragment  ;
+     ImageView commonSearch;
+    Fragment fragmentTemp,  currentFragment;
     String current=TAB_HOME;
     RequestPermissionAction onPermissionCallBack;
     ImageView hints;
@@ -81,10 +82,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         hints = findViewById(R.id.tips);
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
         exit = findViewById(R.id.exit);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         commonSearch = findViewById(R.id.commonSearch);
@@ -101,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setItemIconTintList(null);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new Home_Frag()).commit();
         exit.setOnClickListener(view -> new FancyAlertDialog.Builder(MainActivity.this)
-
                 .setTitle("Do you really want to Exit ?")
                 .setNegativeBtnText("No")
                 .setPositiveBtnBackground(Color.RED)
@@ -121,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(myAct);
                         finish();
                     }
-                })
-                .OnNegativeClicked(new FancyAlertDialogListener() {
+                }).OnNegativeClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
 
@@ -139,10 +136,13 @@ public class MainActivity extends AppCompatActivity {
         hints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomNavigation.setVisibility(View.GONE);
-                commonSearch.setVisibility(View.GONE);
-                hints.setVisibility(View.GONE);
-                selectedTab(TAB_HINTS);
+
+                startActivity(new Intent(MainActivity.this, ChangePassword.class));
+
+//                bottomNavigation.setVisibility(View.GONE);
+//                commonSearch.setVisibility(View.GONE);
+//                hints.setVisibility(View.GONE);
+//                selectedTab(TAB_HINTS);
             }
         });
 
@@ -154,13 +154,10 @@ public class MainActivity extends AppCompatActivity {
          commonSearch.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                  if (fragmentTemp  == null || fragmentTemp.getTag().equals("home") ) {
-
                      intent.putExtra("type",true);
                      intent.putExtra("bools",false);
-
                  }else  if (fragmentTemp.getTag().equals("appointment")){
                      intent.putExtra("type",true);
                      intent.putExtra("bools",true);
@@ -171,8 +168,6 @@ public class MainActivity extends AppCompatActivity {
                  startActivity(intent);
              }
          });
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -185,9 +180,8 @@ public class MainActivity extends AppCompatActivity {
         itemView.addView(notificationBadge);
     }
 
-
     @SuppressLint("SetTextI18n")
-   public   static void addSecondView(int count, Context context) {
+    public   static void addSecondView(int count, Context context) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
         BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
         notificationBadge = LayoutInflater.from(context).inflate(R.layout.dot_view, menuView, false);
@@ -195,8 +189,6 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(count+"");
         itemView.addView(notificationBadge);
     }
-
-
 
     @SuppressLint("SetTextI18n")
     public static void addThirdView(int count, Context context) {

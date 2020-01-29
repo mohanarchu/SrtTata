@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_black"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
     <RelativeLayout
         android:layout_weight="0.07"
 
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <ImageView
+            android:paddingTop="4sp"
             android:id="@+id/exitFromApp"
             android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/srt_logo"
-            android:layout_width="100dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/srttata"
+            android:layout_width="110dp"
             android:scaleType="fitXY"
             android:layout_height="30dp"/>
 
@@ -31,14 +37,8 @@
                 android:src="@drawable/ic_idea"
                 android:layout_width="24dp"
                 android:layout_height="24dp"/>
-
             <ImageView
                 android:id="@+id/exit"
-
-
-
-
-
                 android:src="@drawable/ic_shut_down_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
