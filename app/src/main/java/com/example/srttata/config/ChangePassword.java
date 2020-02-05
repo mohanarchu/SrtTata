@@ -87,6 +87,8 @@ public class ChangePassword extends BaseActivity implements PasswordView {
 
     @Override
     public void success() {
+        showMessage("Password updated");
+        finish();
 
     }
 }

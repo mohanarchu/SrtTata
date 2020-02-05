@@ -57,7 +57,7 @@ public class NetworkStateChecker extends BroadcastReceiver implements UpdateMode
                         jsonObject.addProperty("alarm",false);
                         jsonObject.addProperty("alarmDate", "");
                         jsonObject.addProperty("alarmInt","");
-                        presenter.update(localArrays.get(i).getOrdernumber(),jsonObject,i);
+                     //      presenter.cancelAlarm( ,"","" jsonObject);
                         Log.i("TAG","Datas appeared"+localArrays.get(i).getOrdernumber());
                     }
                 }

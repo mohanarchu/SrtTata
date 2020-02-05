@@ -91,9 +91,54 @@ public class DataPojo {
 
 
     }
+    public class Alarms
+    {
+        private String alarm;
 
+        private String alarmInt;
+
+        private String alarmDate;
+
+        public String getAlarm ()
+        {
+            return alarm;
+        }
+
+        public void setAlarm (String alarm)
+        {
+            this.alarm = alarm;
+        }
+
+        public String getAlarmInt ()
+        {
+            return alarmInt;
+        }
+
+        public void setAlarmInt (String alarmInt)
+        {
+            this.alarmInt = alarmInt;
+        }
+
+        public String getAlarmDate ()
+        {
+            return alarmDate;
+        }
+
+        public void setAlarmDate (String alarmDate)
+        {
+            this.alarmDate = alarmDate;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "ClassPojo [alarm = "+alarm+", alarmInt = "+alarmInt+", alarmDate = "+alarmDate+"]";
+        }
+    }
     public class Results
     {
+        private Alarms[] alarms;
+
         private String alarmInt;
 
         private String ageing;
@@ -403,8 +448,9 @@ public class DataPojo {
             this.additionalSrtOffer2 = additionalSrtOffer2;
         }
 
-
-
+        public Alarms[] getAlarms() {
+            return alarms;
+        }
         public String getTotalSrtOffer1 ()
     {
         return totalSrtOffer1;

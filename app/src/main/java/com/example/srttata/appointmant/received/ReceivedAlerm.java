@@ -98,8 +98,6 @@ public class ReceivedAlerm extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     @Override

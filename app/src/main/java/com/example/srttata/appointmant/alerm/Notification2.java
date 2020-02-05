@@ -112,20 +112,7 @@ public class Notification2 extends BroadcastReceiver implements UpdateModel, Dat
         updatePresenter.update(localDa.getOrdernumber(),jsonObject,0);
     }
 
-    private static PendingIntent createPendingIntent(Context context) {
-        Intent intent = new Intent(context, Alerm.class);
-        return PendingIntent.getService(context, 777, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-    @SuppressLint("NewApi")
-    private static String createNotificationChannel(String channelId, String channalName, Context context){
-        @SuppressLint("InlinedApi") NotificationChannel chan = new  NotificationChannel(channelId, channalName, NotificationManager.IMPORTANCE_NONE);
-        chan.setLightColor( Color.BLUE);
-        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        NotificationManager notificationManager =
-                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(chan);
-        return channelId;
-    }
+
 
     @Override
     public void showDatas(DataPojo.Results[] results, DataPojo.Count[] counts, int total, int alarmCount) {
@@ -156,13 +143,11 @@ public class Notification2 extends BroadcastReceiver implements UpdateModel, Dat
         dataPresenter.getDetails(Checkers.getUserToken(context));
     }
     class ForegroundCheckTask extends AsyncTask<Context, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Context... params) {
             final Context context = params[0].getApplicationContext();
             return isAppOnForeground(context);
         }
-
         private boolean isAppOnForeground(Context context) {
             ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();

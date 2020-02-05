@@ -76,6 +76,7 @@ import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -116,19 +117,10 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
         activityRecycler.setLayoutManager(centerZoomLayoutManager);
         chartScreen   = new ChartScreen(getActivity());
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
         referesh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-//                mSocket.emit("message","Hello");
                 if (Checkers.isNetworkConnectionAvailable(getActivity()))
                     getResult();
                 else
@@ -168,7 +160,6 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
     @SuppressLint("NewApi")
     List<DataPojo.Results> getList(){
         List<DataPojo.Results> list = SharedArray.getResult();
-
         list = list.stream().filter(pulse ->  pulse.getPendingDocsCount() == null  || !pulse.getPendingDocsCount().equals("0")).collect(Collectors.toList());
         return list;
     }
@@ -216,15 +207,14 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
     @SuppressLint("NewApi")
     @Override
     public void showDatas(DataPojo.Results[] results,DataPojo.Count[] counts,int total,int alarmCount) {
-       // list.clear();
         valueSet1.clear();
         list = new ArrayList<DataPojo.Results>(Arrays.asList(results));
-        List<DataPojo.Count>  list = new ArrayList<>(Arrays.asList(counts));
+        List<DataPojo.Count>  list1 = new ArrayList<>(Arrays.asList(counts));
         valueSet1.add(new BarEntry(0,0));
         valueSet1.add(new BarEntry(1,0));
         valueSet1.add(new BarEntry(2,0));
         valueSet1.add(new BarEntry(3,0));
-        for (DataPojo.Count lists : list) {
+        for (DataPojo.Count lists : list1) {
            if (lists.get_id().getAgeing().equals(">1week") && lists.get_id().getAgeing() != null )
                valueSet1.set(2, new BarEntry(2,Integer.valueOf(lists.getCount())));
 //               valueSet1.add(2, new BarEntry(2,Integer.valueOf(lists.getCount())));
@@ -238,6 +228,8 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
                valueSet1.set(3, new BarEntry(3,Integer.valueOf(lists.getCount())));
               // valueSet1.add(new BarEntry(3,Integer.valueOf(lists.getCount())));
         }
+
+
         chartScreen.setCharts(mChart,valueSet1);
         mChart.invalidate();
         showResult();

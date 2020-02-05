@@ -163,12 +163,12 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(Message message){
-        Log.i("TAG","Log message"+ +position +"  "+SharedArray.getFilterResult().get(position).getOrderNo()+  message.getMessage());
+
         if (SharedArray.getFilterResult().get(position).get_id().equals(message.getMessage())){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i("TAG","Log message"+" refereshed");
+
                     referesh();
                 }
             },200);
@@ -202,28 +202,6 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
              intent1.putExtra("sms_body", sendSms(results,false));
              startActivity(intent1);
 
-//               getReadSMSPermission(new MainActivity.RequestPermissionAction() {
-//                    @Override
-//                    public void permissionDenied() {
-//
-
-//                    }
-//                    @Override
-//                    public void permissionGranted() {
-//                        String[] number = {results.getContactPhones()};
-//                        List<String> strings = new ArrayList<String>();
-//                        int index = 0;
-
-//                        while (index < sms.length()) {
-//                            SendSMs.MultipleSMS(number,results.getContactPhones(),sms.substring(index, Math.min(index + 160, sms.length())),getApplicationContext());
-//                            // SendSMs. MultipleSMS(number, number[0], sms.substring(index, Math.min(index + 160, sms.length()))));
-//                            index += 160;
-//                        }
-//
-//                       showMessage("Sms sent");
-//                        //Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
        });
        makeCall.setOnClickListener(view -> {
            getCallPermission(new MainActivity.RequestPermissionAction() {
@@ -341,6 +319,7 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         alternamtePhone.setText(result.getAlternateMobileNumber() == null ?
                 "" : result.getAlternateMobileNumber());
         fullAddress.setText(result.getContactFullAddress());
+        customerType.setText(result.getCustomerType() != null ? result.getCustomerType() : "NOT FOUND");
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
 
@@ -384,7 +363,7 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         addDates = new String[result.getAddDocs().length];
         fullName.setText(upperStringName);
         financier.setText(result.getFinancier() != null ? result.getFinancier() : "---");
-        if (result.getAlarm().equals("false"))
+        if (result.getAlarms() == null)
             fixedAppoinments.setVisibility(View.GONE);
         else
             fixedAppoinments.setVisibility(View.VISIBLE);

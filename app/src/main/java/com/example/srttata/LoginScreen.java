@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginScreen extends AppCompatActivity implements LoginModel {
+public class LoginScreen extends BaseActivity implements LoginModel {
 
     LoginPresenter loginPresenter;
     @BindView(R.id.userName)
@@ -35,28 +35,27 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
     @BindView(R.id.logIn)
     CardView logIn;
 
-    @SuppressLint("InlinedApi")
     @Override
-    protected void onCreate(Bundle  savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_screen);
-        ButterKnife.bind(this);
-        if (Checkers.getUserLoggedInStatus(getApplicationContext())) {
-            startActivity(new Intent(LoginScreen.this, MainActivity.class));
-            finish();
-        }
+    protected void onViewBound() {
+
         loginPresenter = new LoginPresenter(getApplicationContext(), this);
         logIn.setOnClickListener(view ->  doLogin() );
         password.setImeOptions(EditorInfo.IME_ACTION_DONE);
         password.setOnEditorActionListener((v, actionId, event) -> {
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 Alerm.hideKeyboardFrom(getApplicationContext(),password);
-                    doLogin();
+                doLogin();
                 return true;
             }
             return false;
         });
     }
+
+    @Override
+    protected int layoutRes() {
+        return R.layout.activity_login_screen;
+    }
+
     void doLogin(){
         if (Checkers.isNetworkConnectionAvailable(getApplicationContext())){
             if (Checkers.isEmtpy(userName) || Checkers.isEmtpy(password)) {
@@ -74,12 +73,12 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
 
     @Override
     public void showProgress() {
-
+        showDialogue();
     }
 
     @Override
     public void hideProgress() {
-
+        dismissDialogue();
     }
     @Override
     public void showMessage(String message) {
@@ -91,10 +90,8 @@ public class LoginScreen extends AppCompatActivity implements LoginModel {
         Checkers.setUserToken(getApplicationContext(), loginPojo.getToken());
         Checkers.setName(getApplicationContext(),loginPojo.getName());
         Checkers.setMobile(getApplicationContext(),loginPojo.getMobile());
-        Log.i("TAG","Exe Name"+loginPojo.getMobile());
 
     }
-
     @Override
     public void success() {
         startActivity(new Intent(LoginScreen.this, MainActivity.class));

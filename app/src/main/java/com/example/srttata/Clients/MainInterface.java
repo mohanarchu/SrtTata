@@ -31,4 +31,12 @@ public interface MainInterface {
     @Headers({ "Content-Type: application/json;charset=UTF-8"} )
     Observable<UpdatePojo> updatePassword(@Header("access-token") String header, @Body JsonObject jsonObject);
 
+    @PATCH("socket/alarmSet/{OrNo}")
+    @Headers({ "Content-Type: application/json;charset=UTF-8"} )
+    Observable<UpdatePojo> setAlarm(@Header("access-token") String header, @Path("OrNo") String id,@Body JsonObject jsonObject);
+
+    @POST("socket/alarmDelete")
+    @Headers({ "Content-Type: application/json;charset=UTF-8"} )
+    Observable<UpdatePojo> cancelAlarm(@Header("access-token") String header, @Body JsonObject jsonObject);
+
 }

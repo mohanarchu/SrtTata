@@ -54,7 +54,7 @@ public class LocalData  extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addItems(String name, String time,String orderNo,String uniqueId,String value,String address,String mobileNumber) {
+    public void addItems(String name, String time, String orderNo, String uniqueId, String value, String address, String mobileNumber) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME, name);

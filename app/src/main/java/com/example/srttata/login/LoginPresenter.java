@@ -33,11 +33,10 @@ public class LoginPresenter {
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<LoginPojo>() {
             @Override
             public void onSubscribe(Disposable d) {
-
             }
             @Override
             public void onNext(LoginPojo comPojo) {
-                Log.i("TAG","Messages"+ comPojo.getStatus());
+                loginModel.hideProgress();
                 if (comPojo.getStatus().equals("200")) {
                     Checkers.setUserLoggedInStatus(context,true);
                     loginModel.showMessage(comPojo.getMessage());
@@ -50,23 +49,22 @@ public class LoginPresenter {
             @Override
             public void onError(Throwable e) {
 
-                Log.i("TAG","Login error"+ e.toString());
+                loginModel.hideProgress();
+                HttpException error = (HttpException)e;
+                try {
+                    String errorBody = error.response().errorBody().string();
+                    JSONObject jsonObject = new JSONObject(errorBody);
+                    loginModel.showError(jsonObject.getString(context.getString(R.string.message)));
 
-//                HttpException error = (HttpException)e;
-//                try {
-//                    String errorBody = error.response().errorBody().string();
-//                    JSONObject jsonObject = new JSONObject(errorBody);
-//                    loginModel.showError(jsonObject.getString(context.getString(R.string.message)));
-//
-//                } catch (IOException | JSONException e1) {
-//                    e1.printStackTrace();
-//                }
+                } catch (IOException | JSONException e1) {
+                    e1.printStackTrace();
+                }
 
             }
 
             @Override
             public void onComplete() {
-
+                loginModel.hideProgress();
             }
         });
     }

@@ -93,13 +93,13 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
             holder.visibleAlarm.setVisibility(View.VISIBLE);
             holder.alarmTime.setText(filterResults.get(position).getAlarmDate() != null ?
                     Arrays.asList(filterResults.get(position).getAlarmDate().split(",")).get(1) : "");
-            holder.removeAlarm.setOnClickListener(view -> cancelClicked.cancel(position, filterResults));
+            holder.removeAlarm.setOnClickListener(view ->
+                    cancelClicked.cancel(position, filterResults));
         }
         holder.notiChoose.setOnClickListener(view -> holderClicked.clicked(position, type, filterResults, true));
         holder.sharedLayout.setOnClickListener(view -> {
             holderClicked.clicked(position, type, filterResults, false);
         });
-
 
 //        String sms = "Dear " + filterResults.get(position).getContactName() + "\n\n" + "Welcome to SRT TATA\n" +
 //                "Pls provide below documents to process your vechile loan:\n\n" +
@@ -191,18 +191,7 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
             }
         });
     }
-    private void sendEmail(Context context) {
-        //Getting content for email
-        String email = "mohanraj969@gmail.com";
-        String subject = "Hi";
-        String message = "Hello";
 
-        //Creating SendMail object
-        SendMail sm = new SendMail(context, email, subject, message);
-
-        //Executing sendmail to send email
-        sm.execute();
-    }
 
     @Override
     public int getItemCount() {
@@ -252,16 +241,6 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
     }
 
 
-    private void updateVisibilitys(int position) {
-
-    }
-
-    private void updateVisibility(int position) {
-
-
-    }
-
-
     @SuppressLint("SetTextI18n")
     private void setDatas(List<DataPojo.Results> results, int posi, VH holdder, boolean type) {
         DataPojo.Results result = results.get(posi);
@@ -308,13 +287,11 @@ public class A extends RecyclerView.Adapter<A.VH> implements Filterable {
 //                holdder.displayAddress.setText("No documents collected yet");
             }
         }
-        if (result.getAlarm() == null || !Boolean.valueOf(result.getAlarm()))
+        if (result.getAlarms() == null || result.getAlarms().length == 0)
             holdder.fixedAppoinments.setVisibility(View.GONE);
         else
             holdder.fixedAppoinments.setVisibility(View.VISIBLE);
-        if (result.getAlarmDate() != null) {
-            //   holdder.alarmTime.setText(result.getAlarmDate().split(",")[1]);
-        }
+
         viewBinderHelper.bind(holdder.swipeRevealLayout, result.get_id());
     }
 

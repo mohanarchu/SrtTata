@@ -50,4 +50,18 @@ public class DateConversion {
         System.out.println(formattedDate); // prints 10-04-2018
         return formattedDate;
     }
+    public static String getAlarmDate(String date){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat("dd EEE yyyy,HH:mm a");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm a");
+        String formattedDate="";
+        try {
+            Date day = inputFormat.parse(date);
+            formattedDate = outputFormat.format(day);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(formattedDate); // prints 10-04-2018
+        return formattedDate;
+    }
 }

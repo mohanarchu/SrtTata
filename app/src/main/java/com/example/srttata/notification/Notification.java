@@ -98,29 +98,13 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
 
         updatePresenter = new UpdatePresenter(getActivity(),this);
         initiateCalendar(view);
-    /*    MainActivity.commonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (list != null){
-                    SharedArray.setArray(list);
-                    Intent intent = new Intent(getActivity(),SearchActivity.class);
-                    intent.putExtra("type",value);
-                    intent.putExtra("bools",value1);
-                    startActivity(intent);
-                }
-            }
-        });*/
 
         dataPresenter = new DataPresenter(getActivity(),this);
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         notoficationRecycler.setLayoutManager(centerZoomLayoutManager);
         notoficationRecycler.setAdapter(adapter);
-        // dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
         if (SharedArray.getResult() != null){
             list = SharedArray.getResult();
-//            list.stream().filter(p -> {  Da)
-//        .filter(p => { return p.gender == Gender.MALE });
-            //list.stream().filter(item ->  DateConversion.getDats(item.getOrderDate())).collect(Collectors.toList());
             Calendar calendars = Calendar.getInstance();
             dateFilter(calendars);
             filterCalander = calendars;
@@ -143,19 +127,20 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
         return list;
     }
     private void dateFilter(Calendar calendar){
-
        List<DataPojo.Results> result = new ArrayList<DataPojo.Results>();
        NumberFormat f = new DecimalFormat("00");
        for (DataPojo.Results person : getList()) {
-           if (person.getAlarmDate() != null ){
-               List<String> elephantList = Arrays.asList(person.getAlarmDate().split(","));
-               if (elephantList.get(0).equals(
-                       f.format(calendar.get(Calendar.DATE)) + "/" +f.format(calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.YEAR))) {
-                   result.add(person);
+
+           if ( person.getAlarms() != null ){
+           for (DataPojo.Alarms alarms : person.getAlarms()){
+
+                   List<String> elephantList = Arrays.asList(alarms.getAlarmDate().split(","));
+                   if (elephantList.get(0).equals(f.format(calendar.get(Calendar.DATE)) + "/" +f.format(calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.YEAR))) {
+                       result.add(person);
+                   }
                }
            }
        }
-
        //MainActivity.addThirdView(result.size(),getActivity());
        adapter   = new A(getActivity(), false, result,false,false, this, this);
        notoficationRecycler.setAdapter(adapter);
@@ -167,7 +152,6 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
         super.onHiddenChanged(hidden);
         if (!hidden){
             value = false;
-
             value1 = false;
             dateFilter(filterCalander);
         }
@@ -232,8 +216,7 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
                 setDates(date);
                 dateFilter(date);
                 filterCalander = date;
-                Log.i("TAG","My Calendar"+ date.get(Calendar.DATE)+" "+date.get(Calendar.YEAR));
-                //Toast.makeText(getContext(), DateFormat.format("EEE, MMM d, yyyy", date) + " is selected!", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -250,7 +233,6 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
     @Override
     public void showDatas(DataPojo.Results[] results,DataPojo.Count[] counts,int total,int alarmCount) {
         list = new ArrayList<DataPojo.Results>(Arrays.asList(results));
-       // adapter   = new A(getActivity(), false, list,false,false, this,this);
         dateFilter(filterCalander);
 
     }
@@ -263,7 +245,7 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
     @Override
     public void success(int position) {
         showMessage("Alarm canceled");
-       dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
+          dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())));
 
 //        dateFilter(filterCalander);
 //        adapter.notifyItemRemoved(position);
@@ -305,8 +287,16 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
 
     @Override
     public void cancel(int position, List<DataPojo.Results> list ) {
-        new FancyAlertDialog.Builder(getActivity())
 
+
+
+
+
+
+
+
+
+        new FancyAlertDialog.Builder(getActivity())
                 .setTitle("Do you really want to cancel the alarm ?")
                 .setNegativeBtnText("No")
                 .setPositiveBtnBackground(Color.RED)
@@ -318,15 +308,29 @@ public class Notification extends FragmentBase implements DataModel, HolderClick
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-                        Intent intent = new Intent(getActivity(), Notification2.class);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Integer.valueOf(list.get(position).getAlarmInt()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        AlarmManager alarmManager = (AlarmManager)getActivity(). getSystemService(ALARM_SERVICE);
-                        alarmManager.cancel(pendingIntent);
-                        JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty("alarm",false);
-                        jsonObject.addProperty("alarmDate", "");
-                        jsonObject.addProperty("alarmInt",0);
-                        updatePresenter.update(list.get(position).getOrderNo(),jsonObject,position);
+                        NumberFormat f = new DecimalFormat("00");
+                            if (list.get(position).getAlarms() != null) {
+                                for (DataPojo.Alarms alarms : list.get(position).getAlarms()) {
+
+                                    List<String> timeSplit = Arrays.asList(alarms.getAlarmDate().split(","));
+                                    String  time = timeSplit.get(0).trim();
+                                    Calendar calendar =  filterCalander;
+                                    //calendar.add(Calendar.MONTH,1);
+
+
+                                    if (time.equals(f.format(calendar.get(Calendar.DATE))+"/"+ f.format(calendar.get(Calendar.MONTH)+1)+"/"+
+                                            calendar.get(Calendar.YEAR))){
+                                        Intent intent = new Intent(getActivity(), Notification2.class);
+                                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                                                Integer.valueOf(alarms.getAlarmInt()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        AlarmManager alarmManager = (AlarmManager)getActivity(). getSystemService(ALARM_SERVICE);
+                                        alarmManager.cancel(pendingIntent);
+                                        updatePresenter.cancelAlarm(list.get(position).getOrderNo(),Integer.valueOf(alarms.getAlarmInt()),0);
+                                    }
+
+                                }
+                            }
+
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {

@@ -98,17 +98,6 @@ public class Appointment extends FragmentBase implements DataModel, HolderClicke
                 return false;
             }
         });
-     /*   MainActivity.commonSearch.setOnClickListener(view1 -> {
-            if (list != null){
-                    SharedArray.setArray(list);
-                    Intent intent = new Intent(getActivity(), SearchActivity.class);
-                    intent.putExtra("type",value);
-                    intent.putExtra("bools",value1);
-                    startActivity(intent);
-                } else {
-                    showMessage("Details are empty");
-                }
-        });*/
     }
     private void loadItems(){
         List<DataPojo.Results> results = new ArrayList<>();

@@ -1,10 +1,13 @@
 package com.example.srttata;
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -36,6 +39,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.srttata.appointmant.Appointment;
+import com.example.srttata.appointmant.alerm.LocalData;
+import com.example.srttata.appointmant.alerm.Notification2;
 import com.example.srttata.appointmant.network.NetworkStateChecker;
 import com.example.srttata.base.FragmentBase;
 import com.example.srttata.config.ChangePassword;
@@ -45,7 +50,12 @@ import com.example.srttata.decorations.fancy.FancyAlertDialog;
 import com.example.srttata.decorations.fancy.FancyAlertDialogListener;
 import com.example.srttata.decorations.fancy.Icon;
 import com.example.srttata.details.SharedArray;
+import com.example.srttata.details.UpdateModel;
+import com.example.srttata.details.UpdatePresenter;
 import com.example.srttata.hints.BlankFragment;
+import com.example.srttata.home.DataModel;
+import com.example.srttata.home.DataPojo;
+import com.example.srttata.home.DataPresenter;
 import com.example.srttata.home.Home_Frag;
 import com.example.srttata.notification.Notification;
 import com.example.srttata.search.SearchActivity;
@@ -53,12 +63,16 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DataModel , UpdateModel {
     private final static int REQUEST_READ_SMS_PERMISSION = 3004;
     private final static int REQUEST_CALL_PERMISSION = 3003;
     public final static String READ_SMS_PERMISSION_NOT_GRANTED = "Please allow " + "SRT" + " to access your SMS from setting";
@@ -77,18 +91,24 @@ public class MainActivity extends AppCompatActivity {
     String current=TAB_HOME;
     RequestPermissionAction onPermissionCallBack;
     ImageView hints;
+    DataPresenter dataPresenter;
+    UpdatePresenter updatePresenter;
+    LocalData localData;
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         hints = findViewById(R.id.tips);
+        localData = new LocalData(getApplicationContext());
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         exit = findViewById(R.id.exit);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         commonSearch = findViewById(R.id.commonSearch);
         exit.setVisibility(View.VISIBLE);
         bottomNavigation.setVisibility(View.VISIBLE);
+        dataPresenter = new DataPresenter(getApplicationContext(),this);
+        updatePresenter = new UpdatePresenter(getApplicationContext(),this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -113,10 +133,11 @@ public class MainActivity extends AppCompatActivity {
                     public void OnClick() {
                         Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
                         Checkers.clearLoggedInEmailAddress(getApplicationContext());
+                        Checkers.clearTempLogin(getApplicationContext());
                         Intent myAct = new Intent(MainActivity.this, LoginScreen.class);
                         myAct.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                         startActivity(myAct);
+
                         finish();
                     }
                 }).OnNegativeClicked(new FancyAlertDialogListener() {
@@ -129,29 +150,24 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null){
             String id = intent.getStringExtra("id");
-            Log.i("TAG","String get"+id);
         }
 
 
         hints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                startActivity(new Intent(MainActivity.this, ChangePassword.class));
-
-//                bottomNavigation.setVisibility(View.GONE);
-//                commonSearch.setVisibility(View.GONE);
-//                hints.setVisibility(View.GONE);
-//                selectedTab(TAB_HINTS);
+                // startActivity(new Intent(MainActivity.this, ChangePassword.class));
+                bottomNavigation.setVisibility(View.GONE);
+                commonSearch.setVisibility(View.GONE);
+                hints.setVisibility(View.GONE);
+                selectedTab(TAB_HINTS);
             }
         });
-
 
         MainActivity.addFirstView(0,this);
         MainActivity.addSecondView(0,this);
         MainActivity.addThirdView(0,this);
-
-         commonSearch.setOnClickListener(new View.OnClickListener() {
+        commonSearch.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
@@ -161,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                  }else  if (fragmentTemp.getTag().equals("appointment")){
                      intent.putExtra("type",true);
                      intent.putExtra("bools",true);
-                 }else if (fragmentTemp.getTag().equals("notification")){
+                 } else if (fragmentTemp.getTag().equals("notification")){
                      intent.putExtra("type",false);
                      intent.putExtra("bools",false);
                  }
@@ -169,6 +185,14 @@ public class MainActivity extends AppCompatActivity {
              }
          });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        dataPresenter.getDetails(Checkers.getUserToken(getApplicationContext()));
+
+    }
+    //  home documents total count
 
     @SuppressLint("SetTextI18n")
     public   static void addFirstView(int count, Context context) {
@@ -180,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
         itemView.addView(notificationBadge);
     }
 
+    //  collected documents total count
+
     @SuppressLint("SetTextI18n")
     public   static void addSecondView(int count, Context context) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
@@ -189,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(count+"");
         itemView.addView(notificationBadge);
     }
+
+    // current date appointment count
 
     @SuppressLint("SetTextI18n")
     public static void addThirdView(int count, Context context) {
@@ -213,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
-
                 @Override
                 public void run() {
                     doubleBackToExitPressedOnce=false;
@@ -239,8 +266,6 @@ public class MainActivity extends AppCompatActivity {
             // fragment is pop from backStack
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-             //   current.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(R.transition.default_transition));
-               // current.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
                 newFragment.setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.default_transition));
                 newFragment.setEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
             }
@@ -396,9 +421,100 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void showDatas(DataPojo.Results[] results, DataPojo.Count[] counts, int total, int alarmCount) {
+        List<DataPojo.Results> list =  new ArrayList<DataPojo.Results>(Arrays.asList(results));
+        for (int i=0;i<list.size();i++){
+            if (list.get(i).getAlarms() != null){
+                for (DataPojo.Alarms alarms : list.get(i).getAlarms() ){
+                    Calendar calendar = Calendar.getInstance();
+                    List<String> timeSplit = Arrays.asList(alarms.getAlarmDate().split(","));
+                    List<String> dateSplit = Arrays.asList(timeSplit.get(0).split("/"));
+                    List<String> time = Arrays.asList(timeSplit.get(1).trim().split(" "));
+                    List<String> minute = Arrays.asList(time.get(0).split(":"));
+                    calendar.set(Calendar.DATE,Integer.valueOf(dateSplit.get(0).trim()));
+                    calendar.set(Calendar.MONTH,Integer.valueOf(dateSplit.get(1).trim()) - 1);
+                    calendar.set(Calendar.YEAR,Integer.valueOf(dateSplit.get(2).trim()));
+                    calendar.set(Calendar.HOUR,Integer.valueOf(minute.get(0).trim()));
+                    calendar.set(Calendar.MINUTE,Integer.valueOf(minute.get(1).trim()));
+                    int amOm = 0;
+                    if (time.get(1).trim().equals("PM")){
+                        amOm = 1;
+                    }
+                    calendar.set(Calendar.AM_PM,amOm);
+                    if (checkTime(calendar)) {
+                        update(alarms.getAlarmInt(), list.get(i).getOrderNo());
+                        localData.deleteId(String.valueOf(alarms.getAlarmInt()));
+                    } else  {
+
+                        if (Checkers.firtTime(getApplicationContext())) {
+
+                            int randomCode = Integer.valueOf(alarms.getAlarmInt());
+
+                            localData.deleteId(String.valueOf(randomCode));
+                            List<String> address = Arrays.asList(list.get(i).getContactFullAddress().split(","));
+                            localData.addItems( list.get(i).getContactName(),alarms.getAlarmDate(), list.get(i).getOrderNo() ,
+                                    String.valueOf(randomCode),"true", address.get(0)+","+address.get(1),list.get(i).getContactPhones());
+                                if (Integer.valueOf(minute.get(0).trim()) ==  12 && amOm == 1  ) {
+                                    calendar.add(Calendar.DATE,-1);
+                                }
+                                Intent intent = new Intent(getApplicationContext(), Notification2.class);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), randomCode, intent, 0);
+                                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                                alarmManager.cancel(pendingIntent);
+                                Intent intents = new Intent(MainActivity.this, Notification2.class);
+                                intents.putExtra("requestCode",randomCode);
+                                PendingIntent p1 = PendingIntent.getBroadcast(getApplicationContext(), randomCode, intents, PendingIntent.FLAG_UPDATE_CURRENT);
+                                AlarmManager alarmManagers = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                if (Build.VERSION.SDK_INT >= 23) {
+                                    alarmManagers.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                                            calendar.getTimeInMillis(), p1);
+                                } else if (Build.VERSION.SDK_INT >= 19) {
+                                    alarmManagers.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                                } else {
+                                    alarmManagers.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), p1);
+                                }
+                         }
+                    }
+                }
+            }
+        }
+    }
+    private void update(String alarmValue,String orderNo){
+        updatePresenter.cancelAlarm(orderNo,Integer.valueOf(alarmValue),0);
+    }
+
+    private   boolean checkTime(Calendar calendar){
+        Calendar calendar1 = Calendar.getInstance();
+        return calendar1.getTimeInMillis() > calendar.getTimeInMillis();
+    }
+    @Override
+    public void success() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void success(int pos) {
+
+    }
+
     public interface RequestPermissionAction {
         void permissionDenied();
-
         void permissionGranted();
     }
 

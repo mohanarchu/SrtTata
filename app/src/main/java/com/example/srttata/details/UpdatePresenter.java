@@ -36,12 +36,79 @@ public class UpdatePresenter {
                     updateModel.showMessage("success");
                     updateModel.success(position);
                 }
-                Log.i("TAG","Update success"+ updatePojo.getStatus());
+
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.i("TAG","Update success"+ e.toString());
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+    public void setAlarm(String orderId, JsonObject jsonObject,int position){
+
+        NetworkingUtils.getUserApiInstance().setAlarm(Checkers.getUserToken(context),orderId,jsonObject).subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<UpdatePojo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(UpdatePojo updatePojo) {
+
+                Log.i("TAG","Alarm set"+ updatePojo.getMessage());
+
+                if (Integer.valueOf(updatePojo.getStatus()) ==  200){
+                    updateModel.showMessage("success");
+                    updateModel.success(position);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+    }
+    public void cancelAlarm(String orderId,  int alarmValue,int position) {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("alarmInt", alarmValue);
+        jsonObject.addProperty("id",orderId);
+        NetworkingUtils.getUserApiInstance().cancelAlarm(Checkers.getUserToken(context), jsonObject).subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<UpdatePojo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(UpdatePojo updatePojo) {
+
+                Log.i("TAG","Canceled"+ updatePojo.getStatus() +"  "+ jsonObject);
+                if (Integer.valueOf(updatePojo.getStatus()) == 200) {
+                    updateModel.showMessage("success");
+                    updateModel.success(position);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i("TAG","Canceled"+ e.toString());
             }
 
             @Override
