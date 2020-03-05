@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.srttata">
+    package="cbots.b_to_c">
 
     <application
-        android:name=".service.App"
         android:allowBackup="true"
         android:icon="@drawable/launcher_logo"
         android:label="@string/app_name"
@@ -15,7 +14,8 @@
         android:windowSoftInputMode="adjustNothing"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="M">
-        <activity android:name=".LoginScreen"></activity>
+        <activity android:name=".team_leader.detailView.TeamDetailView"></activity>
+        <activity android:name=".LoginScreen" />
         <activity android:name=".config.ChangePassword" />
         <activity android:name=".appointmant.received.ReceivedAlerm" />
         <activity
@@ -57,14 +57,13 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-        <receiver android:name=".appointmant.network.NetworkStateChecker">
-            <intent-filter>
-                <action
-                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife" />
-            </intent-filter>
-        </receiver>
+        </receiver> <!-- <receiver android:name="cbots.b_to_c.appointmant.network.NetworkStateChecker"> -->
+        <!-- <intent-filter> -->
+        <!-- <action -->
+        <!-- android:name="android.net.conn.CONNECTIVITY_CHANGE" -->
+        <!-- tools:ignore="BatteryLife" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver android:name=".appointmant.alerm.ActionReceiver" />
 
         <service
@@ -72,14 +71,11 @@
             android:exported="false"
             android:stopWithTask="true" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

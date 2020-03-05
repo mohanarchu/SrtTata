@@ -86,7 +86,7 @@
 
 
 
-        <com.example.srttata.calendar.HorizontalCalendarView
+        <cbots.b_to_c.calendar.HorizontalCalendarView
             android:id="@+id/myCalender"
 
             android:layout_width="match_parent"

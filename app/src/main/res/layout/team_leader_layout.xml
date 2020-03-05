@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="75dp">
+    <LinearLayout
+        android:id="@+id/mainLayout_team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.chauthai.swipereveallayout.SwipeRevealLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:mode="same_level"
+            app:dragEdge="right"
+            android:background="@drawable/curve"
+            android:clickable="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:backgroundTint="@color/white"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/swipe_layoutTeam"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+            <!-- Your secondary layout here -->
+            <LinearLayout
+                android:background="@color/smoke"
+                android:layout_width="180dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_height="match_parent">
+                <include
+                    android:layout_gravity="center"
+                    layout="@layout/sms_layout"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent" />
+
+            </LinearLayout>
+            <!-- Your main layout here -->
+            <LinearLayout
+
+                android:transitionName="transtion_name_example"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/notoficationChooosers"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+
+
+                        android:padding="5dp"
+
+                        android:src="@drawable/calander"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:ignore="MissingConstraints" />
+                    <TextView
+
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="17dp"
+                        android:text="10"
+                        android:id="@+id/Tldates"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="10dp"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp"
+                        android:textSize="13dp"
+                        android:layout_marginLeft="2dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:id="@+id/TldayOfweeks"
+                        android:textColor="@color/white"
+                        android:text="SEP"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <RelativeLayout
+
+                        android:layout_marginBottom="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+
+                    </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <LinearLayout
+
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:padding="5dp"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:weightSum="3"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+
+
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:gravity="center|start"
+                                android:id="@+id/tlCusName"
+                                android:textStyle="bold"
+                                android:textSize="12dp"
+                                android:singleLine="true"
+                                android:textColor="@color/blue"
+                                android:text="Mr. Mohanraj"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"/>
+
+                            <TextView
+                                android:textColor="@color/blue"
+                                android:textStyle="bold"
+                                android:gravity="center"
+
+                                android:text="|"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"/>
+                            <TextView
+                                android:layout_weight="1"
+                                android:gravity="center"
+
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:id="@+id/tLCaMobile"
+                                android:textColor="@color/green"
+                                android:text="9698908690"
+
+                                android:textSize="12dp"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"/>
+                            <TextView
+                                android:textColor="@color/green"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:text="|"
+                                android:paddingLeft="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                android:id="@+id/tLCaName"
+
+                                android:textSize="12dp"
+                                android:textColor="@color/dark_blue"
+                                android:text="Raj"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:weightSum="3"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+
+
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="center|start"
+                            android:id="@+id/tlInhouse"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:text="In-House"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+
+                        <TextView
+                            android:textColor="@color/blue"
+                            android:textStyle="bold"
+                            android:gravity="center"
+
+                            android:text="|"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="center"
+
+                            android:textStyle="bold"
+                            android:singleLine="true"
+                            android:id="@+id/tLVechileModel"
+                            android:textColor="@color/black"
+                            android:text="Zest"
+
+                            android:textSize="12dp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:textColor="@color/green"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:text="|"
+                            android:paddingLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:id="@+id/tLVechileStatus"
+                            android:textSize="12dp"
+                            android:textColor="@color/red"
+                            android:text="VNA"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.chauthai.swipereveallayout.SwipeRevealLayout>
+    </LinearLayout>
+</LinearLayout>

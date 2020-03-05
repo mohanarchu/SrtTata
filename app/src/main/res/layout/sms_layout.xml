@@ -6,10 +6,8 @@
     android:gravity="center"
     android:layout_height="match_parent">
     <LinearLayout
-
         android:background="@color/smoke"
         android:layout_width="180dp"
-        android:weightSum="4"
         android:gravity="center"
         android:layout_height="50dp">
         <LinearLayout
@@ -19,13 +17,13 @@
             android:gravity="center"
             android:layout_height="match_parent">
             <ImageView
-
                 android:scaleType="fitXY"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/call"
                 android:layout_width="33dp"
                 android:layout_height="33dp"/>
         </LinearLayout>
+
 
 
         <LinearLayout
