@@ -223,7 +223,6 @@
                        app:mcv_rightArrowMask="@drawable/right"
                        app:mcv_firstDayOfWeek="sunday"
                        app:mcv_selectionColor="@color/white"
-
                        app:mcv_weekDayLabels="@array/week_array"
                        android:importantForAutofill="auto"
                        app:mcv_headerTextAppearance="@style/CustomTextAppearances"

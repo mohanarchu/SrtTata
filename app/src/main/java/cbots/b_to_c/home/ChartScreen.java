@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +73,7 @@ public class ChartScreen  {
             myColors.add(Color.parseColor("#fbbc04"));
             myColors.add(Color.parseColor("#ea4335"));
             mChart.getLegend().setEnabled(true);
+
         } else {
             xaxis.setAxisMaximum(4);
             xVals.add("New");
@@ -79,10 +81,15 @@ public class ChartScreen  {
             xVals.add("> 1 week");
             xVals.add("> 2 weeks");
             mChart.setDrawValueAboveBar(true);
-            myColors.add(Color.parseColor("#34a853"));
-            myColors.add(Color.parseColor("#f1761f"));
-            myColors.add(Color.parseColor("#fbbc04"));
-            myColors.add(Color.parseColor("#ea4335"));
+            myColors.add(Color.parseColor("#FF0000"));
+            myColors.add(Color.parseColor("#9B870C"));
+            myColors.add(Color.parseColor("#008000"));
+
+//            myColors.add(Color.parseColor("#34a853"));
+//            myColors.add(Color.parseColor("#f1761f"));
+//            myColors.add(Color.parseColor("#fbbc04"));
+//            myColors.add(Color.parseColor("#ea4335"));
+
         }
         //mChart.setRenderer(new BarChartCustomRenderer(mChart, mChart.getAnimator(), mChart.getViewPortHandler(), myColors));
         xaxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
@@ -95,8 +102,8 @@ public class ChartScreen  {
         mChart.getLegend().setWordWrapEnabled(true);
         mChart.setScaleEnabled(false);
         List<IBarDataSet> dataSets = new ArrayList<>();
-        int colorBlack = Color.parseColor("#000000");
         barDataSet.setColors(myColors);
+        int colorBlack = Color.parseColor("#000000");
         barDataSet.setValueTextColor(colorBlack);
         barDataSet.setValueTextSize(12f);
         barDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -107,4 +114,5 @@ public class ChartScreen  {
 
 
     }
+
 }

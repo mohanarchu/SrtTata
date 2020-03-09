@@ -79,7 +79,7 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
     Calendar calendar = Calendar.getInstance();
     ChartScreen chartScreen;
     private float[] newFloat,thereeDays,oneWeek,twoWeeks = new float[2];
-    String[] caNames;
+    String[] caNames,filterTeams;
     @Override
     protected int layoutRes() {
         return R.layout.fragment_team_leader;
@@ -166,7 +166,7 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Intent intent = new Intent(getActivity(),TeamDetailView.class);
-        intent.putExtra("CaName",caNames[(int) e.getX()]);
+        intent.putExtra("CaName",filterTeams[(int) e.getX()]);
         startActivity(intent);
 
     }
@@ -212,11 +212,13 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
       //  Map.Entry<String, Long> entry = monthResult.entrySet();
         Iterator<Map.Entry<String, Long>> iterator = caArray.entrySet().iterator();
         int i = 0;
+        filterTeams = new String[caArray.size()] ;
         caNames = new String[caArray.size()];
         while (iterator.hasNext()) {
             Map.Entry<String, Long> entry = iterator.next();
             chartValues.add(new BarEntry(i,entry.getValue()));
-            caNames[i] = entry.getKey();
+            caNames[i] = entry.getKey().subSequence(0, 7) + "...";
+            filterTeams[i] =  entry.getKey();
             i++;
         }
 
