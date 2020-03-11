@@ -19,7 +19,7 @@
         android:layout_height="0dp">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:gravity="center|start"
             android:orientation="vertical"
             android:layout_weight="0.25"
@@ -27,6 +27,7 @@
             android:layout_height="0dp">
 
             <TextView
+                android:layout_margin="5dp"
                 android:singleLine="true"
                 android:background="@drawable/circle"
                 android:id="@+id/teamViewText"
@@ -44,8 +45,18 @@
                 android:layout_height="match_parent"/>
 
 
-
-        </LinearLayout>
+            <Spinner
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:singleLine="true"
+                android:background="@drawable/circle"
+                android:id="@+id/mtdCfdTeamLeader"
+                android:textSize="15dp"
+                android:layout_width="100dp"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:layout_height="35dp"/>
+        </RelativeLayout>
         <LinearLayout
             android:layout_weight="0.75"
             android:layout_width="match_parent"

@@ -43,7 +43,8 @@ public class DataPresenter  {
         dataModel.showProgress();
         //Checkers.getName(context)
         NetworkingUtils.getUserApiInstance().getDatas (token,name,role,jsonObject).subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<DataPojo>() {
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new
+                                                                                                                                                                                           Observer<DataPojo>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -73,7 +74,6 @@ public class DataPresenter  {
                             }
                         }
                     }
-
                     NumberFormat f = new DecimalFormat("00");
                     for (int i=0;i<dataPojo.getResults().length;i++){
                         if (dataPojo.getResults()[i] .getAlarms() != null){

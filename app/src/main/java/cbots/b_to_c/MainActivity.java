@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -87,22 +88,21 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initSearch();
-        if (Checkers.getRoleId(getApplicationContext()) == Integer.valueOf(MainInterface.TEAMLEADER)) {
-            intTLScreen();
-        } else {
+        if (Checkers.getRoleId(getApplicationContext()) == Integer.valueOf(MainInterface.TEAMLEADER)
+           && Checkers.getRoleId(getApplicationContext()) == Integer.valueOf(MainInterface.MASTER) ) {
             initSalesScreen();
+        } else {
+            intTLScreen();
         }
+        Log.i("TAG","Role Id"+Checkers.getRoleId(getApplicationContext()) );
     }
 
     void intTLScreen() {
         current = TAB_TL;
         selectedTab(current);
-        commonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
-            }
+        commonSearch.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
                     }
                 })
                 .build());
-
     }
 
     @SuppressLint("NewApi")

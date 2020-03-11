@@ -61,7 +61,8 @@ public class TeamDetailView extends BaseActivity  {
     @Override
     protected void onViewBound() {
         chartScreen = new ChartScreen(getApplicationContext());
-        ArrayAdapter<String> aa = new ArrayAdapter<>(TeamDetailView.this,android.R.layout.simple_spinner_item,new String[]{"All","MTD","CFD"});
+        ArrayAdapter<String> aa = new ArrayAdapter<>(
+                TeamDetailView.this,android.R.layout.simple_spinner_item,new String[]{"All","MTD","CFD"});
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mtdCfd.setAdapter(aa);
         ArrayAdapter<String> aa1 = new ArrayAdapter<>(TeamDetailView.this,android.R.layout.simple_spinner_item,new String[]{"Ageing","Vechile"});
@@ -77,28 +78,29 @@ public class TeamDetailView extends BaseActivity  {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-
                 String item = adapterView.getSelectedItem().toString();
 
+                    if (item.equals("CFD")) {
+                        Map<String, Long> caArray =
+                                getPreviousMonth(getCurrentDate()).stream().collect(
+                                        Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
+                        setCharts(caArray,false);
+                        datasNotify(getPreviousMonth(getCurrentDate()));
+                    } else if (item.equals("MTD")) {
+                        Map<String, Long> caArray = getMonthResult(getCurrentDate()).
+                                stream().collect(Collectors.groupingBy(DataPojo.Results::
+                                getAgeing,Collectors.counting()));
+                        setCharts(caArray,false);
+                        datasNotify(getMonthResult(getCurrentDate()));
+                    } else {
+                        Map<String, Long> caArray = getCaResult(name).stream().collect(
+                                Collectors.groupingBy(
+                                        DataPojo.Results::getAgeing,Collectors.counting()));
+                        setCharts(caArray,true);
+                        datasNotify(getCaResult(name));
+                    }
 
-                if (item.equals("CFD")) {
 
-                    Map<String, Long> caArray =
-                            getPreviousMonth(getCurrentDate()).stream().collect(
-                                    Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
-                    setCharts(caArray,false);
-                } else if (item.equals("MTD")) {
-                    Map<String, Long> caArray = getMonthResult(getCurrentDate()).
-                            stream().collect(Collectors.groupingBy(DataPojo.Results::
-                            getAgeing,Collectors.counting()));
-                    setCharts(caArray,false);
-                } else {
-                    Map<String, Long> caArray = getCaResult(name).stream().collect(
-                            Collectors.groupingBy(
-                            DataPojo.Results::getAgeing,Collectors.counting()));
-                    setCharts(caArray,true);
-                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -116,10 +118,16 @@ public class TeamDetailView extends BaseActivity  {
                             collect(Collectors.groupingBy(DataPojo.Results::getParentProductLine,
                                     Collectors.counting()));
                     setStackChart(caArray);
+
+                    mtdCfd.setSelection(0);
+                    mtdCfd.setVisibility(View.GONE);
                 } else if (item.equals("Ageing")){
                     Map<String, Long> caArray = getCaResult(name).stream().
                             collect(Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
                     setCharts(caArray,true);
+
+                    mtdCfd.setSelection(0);
+                    mtdCfd.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -153,19 +161,23 @@ public class TeamDetailView extends BaseActivity  {
     }
     @SuppressLint("NewApi")
     private void setRecycler() {
-        LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager centerZoomLayoutManager = new
+                LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         teamCaRecycler.setLayoutManager(centerZoomLayoutManager);
         teamCaRecycler.setAdapter(teamLeaderAdapter );
         setDatas(name);
     }
+    private void datasNotify(List<DataPojo.Results> datas){
+        teamLeaderAdapter.setDatas(datas);
+        teamLeaderAdapter.notifyDataSetChanged();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setDatas(String name){
-
         teamLeaderAdapter.setDatas(getCaResult(name));
         teamLeaderAdapter.notifyDataSetChanged();
         Map<String, Long> caArray = getCaResult(name).stream().
                 collect(Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
-
         setCharts(caArray,true);
     }
 
@@ -234,9 +246,7 @@ public class TeamDetailView extends BaseActivity  {
             float[] floats3 = new float[3];
             for (Map.Entry<String, Long> entry : caArray.entrySet()) {
 
-
                 if (entry.getKey().equals(">1week") && entry.getKey()  != null ) {
-
                     Map<String, Long> modelArray =
                             getAgeing(">1week").stream().collect(Collectors.groupingBy
                                     (DataPojo.Results::getStockStatus,Collectors.counting()));

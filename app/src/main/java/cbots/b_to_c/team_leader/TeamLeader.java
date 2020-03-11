@@ -7,8 +7,11 @@ import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,7 @@ import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cbots.b_to_c.Clients.MainInterface;
 import cbots.b_to_c.R;
 import cbots.b_to_c.base.FragmentBase;
 import cbots.b_to_c.calendar.Views;
@@ -73,6 +77,8 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
     PopupWindow changeSortPopUp;
     @BindView(R.id.teamViewText)
     TextView teamViewText;
+    @BindView(R.id.mtdCfdTeamLeader)
+    Spinner mtdSpinner;
     ArrayList<BarEntry> valueSet1 = new ArrayList<>();
     ArrayList<BarEntry> chartValues = new ArrayList<>();
     TeamLeaderAdapter teamLeaderAdapter = new TeamLeaderAdapter();
@@ -92,13 +98,48 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
         setRecycler();
         setCharts();
         getDatas();
-        teamLbarChart.setOnClickListener(new View.OnClickListener() {
+        setSpinner();
+
+    }
+
+    private void setSpinner(){
+        ArrayAdapter<String> aa = new ArrayAdapter<>(
+                getActivity(),android.R.layout.simple_spinner_item,new String[]{"All","MTD","CFD"});
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mtdSpinner.setAdapter(aa);
+        mtdSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onClick(View view) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getSelectedItem().toString();
+
+                if (SharedArray.getResult() != null) {
+                    if (item.equals("CFD")) {
+                        Map<String, Long> caArray =
+                                getPreviousMonth(getCurrentDate()).stream().collect(
+                                        Collectors.groupingBy(DataPojo.Results::getCa,Collectors.counting()));
+                        validateCharts(caArray);
+                    } else if (item.equals("MTD")) {
+                        Map<String, Long> caArray = getMonthResult(getCurrentDate()).
+                                stream().collect(Collectors.groupingBy(DataPojo.Results::
+                                getCa,Collectors.counting()));
+                        validateCharts(caArray);
+
+                    } else {
+                        Map<String, Long> caArray = SharedArray.getResult().stream().
+                                collect(Collectors.groupingBy(DataPojo.Results::getCa,Collectors.counting()));
+                        validateCharts(caArray);
+                    }
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
     }
+
 
     private void setRecycler() {
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -111,7 +152,20 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
         LinearLayoutManager centerZoomLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         teamRecycler.setLayoutManager(centerZoomLayoutManager);
         teamRecycler.setAdapter(teamsAdapter);
-        List<String> elephantList = Arrays.asList(Checkers.getTeamsDetails(Objects.requireNonNull(getActivity())).split("//"));
+        if (Checkers.getRoleId(getActivity()) == Integer.valueOf(MainInterface.MASTER)) {
+
+        } else {
+
+        }
+
+        String[] array = Checkers.getTeamsDetails(Objects.requireNonNull(getActivity())).
+                split("//");
+
+        String[] lists = new String[array.length+1];
+        lists[0] = "All";
+        System.arraycopy(array, 0, lists, 1, array.length);
+        List<String> elephantList =
+                Arrays.asList(lists);
         teamsAdapter.setArray(elephantList);
         teamsAdapter.notifyDataSetChanged();
         teamsAdapter.setListener(item -> {
@@ -122,8 +176,8 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
             }
         });
     }
-    private void setCharts() {
 
+    private void setCharts() {
         oneWeek = new float[]{0f,0f};
         thereeDays = new float[]{0f,0f};
         newFloat = new float[]{0f,0f};
@@ -139,19 +193,20 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
     private void getDatas() {
         dataPresenter = new DataPresenter(getActivity(), this);
         JsonObject jsonObject = new JsonObject();
-        List<String> elephantList = Arrays.asList(Checkers.getTeamsDetails(Objects.requireNonNull(getActivity())).split("//"));
+        List<String> elephantList = Arrays.asList(
+                Checkers.getTeamsDetails(Objects.requireNonNull(getActivity())).split("//"));
         JsonArray jsonElements = new JsonArray();
-        for (int i=0;i<elephantList.size();i++){
+        for (int i=0;i<elephantList.size();i++) {
                 jsonElements.add(elephantList.get(i));
         }
         jsonObject.add("teams",jsonElements);
-        dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())) ,"SRTMD","504",jsonObject);
-
-
+        dataPresenter.getDetails(Checkers.getUserToken(Objects.requireNonNull(getActivity())) ,
+                Checkers.getName(getActivity()), String.valueOf(Checkers.getRoleId(getActivity())),jsonObject);
     }
 
     private void showAlart() {
-        View layout = LayoutInflater.from(getActivity()).inflate(R.layout.recycler_pop, mainGroup, false);
+        View layout = LayoutInflater.from(getActivity()).inflate(R.layout.recycler_pop,
+                mainGroup, false);
         changeSortPopUp = new PopupWindow(getActivity());
         changeSortPopUp.setContentView(layout);
         RecyclerView recyclerView = layout.findViewById(R.id.teamRecycler);
@@ -178,19 +233,40 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void showDatas(DataPojo.Results[] results, DataPojo.Count[] counts, int total, int alarmCount) {
+    public void showDatas(DataPojo.Results[] results, DataPojo.Count[] counts,
+                          int total, int alarmCount) {
 
         teamLeaderAdapter.setDatas(SharedArray.getResult());
         teamLeaderAdapter.notifyDataSetChanged();
-        validateCharts();
+
+        Map<String, Long> caArray = SharedArray.getResult().stream().
+                collect(Collectors.groupingBy(DataPojo.Results::getCa,Collectors.counting()));
+        validateCharts(caArray);
 
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-     private   void validateCharts() {
+     private   void validateCharts(Map<String, Long> caArray) {
+        chartValues.clear();
+        Iterator<Map.Entry<String, Long>> iterator = caArray.entrySet().iterator();
+        int i = 0;
+        filterTeams = new String[caArray.size()] ;
+        caNames = new String[caArray.size()];
+        while (iterator.hasNext()) {
+            Map.Entry<String, Long> entry = iterator.next();
+            caNames[i] = entry.getKey().subSequence(0, 5) + "...";
+            filterTeams[i] =  entry.getKey();
+            chartValues.add(new BarEntry(i,entry.getValue()));
+            i++;
+        }
+        chartScreen.setTeamLeaderChart(teamLbarChart, chartValues, false,caNames);
+        teamLbarChart.invalidate();
+        teamLbarChart.requestLayout();
+    }
+    private Date getCurrentDate(){
         NumberFormat f = new DecimalFormat("00");
-        calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH , 1);
         String  currentMonth = f.format(calendar.get(Calendar.MONTH));
         String currentDate = f.format(calendar.get(Calendar.DATE));
@@ -202,63 +278,19 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Map<String, Long> monthResult = getMonthResult(strDate).stream().collect(Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
-        Map<String, Long> couterMap = getPreviousMonth(strDate).stream().collect(Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
-
-
-        Map<String, Long> caArray = SharedArray.getResult().stream().collect(Collectors.groupingBy(DataPojo.Results::getCa,Collectors.counting()));
-
-
-      //  Map.Entry<String, Long> entry = monthResult.entrySet();
-        Iterator<Map.Entry<String, Long>> iterator = caArray.entrySet().iterator();
-        int i = 0;
-        filterTeams = new String[caArray.size()] ;
-        caNames = new String[caArray.size()];
-        while (iterator.hasNext()) {
-            Map.Entry<String, Long> entry = iterator.next();
-            chartValues.add(new BarEntry(i,entry.getValue()));
-            caNames[i] = entry.getKey().subSequence(0, 7) + "...";
-            filterTeams[i] =  entry.getKey();
-            i++;
-        }
-
-      /*  for (Map.Entry<String, Long> entry : monthResult.entrySet()) {
-            if (entry.getKey().equals(">1week") && entry.getKey()  != null ) {
-                oneWeek[0] = Float.valueOf(String.valueOf(entry.getValue()));
-            } else if (Objects.requireNonNull(entry.getKey()).equals("new") && entry.getKey() != null  ) {
-                newFloat[0] = Float.valueOf(String.valueOf(entry.getValue()));
-            }  else if ( Objects.requireNonNull(entry.getKey()).equals(">3days") && entry.getKey() != null ) {
-                thereeDays[0] = Float.valueOf(String.valueOf(entry.getValue()));
-                //   valueSet1.add(new BarEntry(1,Integer.valueOf(lists.getCount())));
-            }  else if (Objects.requireNonNull(entry.getKey()).equals(">2weeks") &&  entry.getKey() != null ) {
-                twoWeeks[0] = Float.valueOf(String.valueOf(entry.getValue()));
-            }
-        }
-        for (Map.Entry<String, Long> entry : couterMap.entrySet()) {
-
-            if (entry.getKey().equals(">1week") && entry.getKey()  != null ) {
-                oneWeek[1] = Float.valueOf(String.valueOf(entry.getValue()));
-            } else if (Objects.requireNonNull(entry.getKey()).equals("new") && entry.getKey() != null  ) {
-                newFloat[1] = Float.valueOf(String.valueOf(entry.getValue()));
-            }  else if ( Objects.requireNonNull(entry.getKey()).equals(">3days") && entry.getKey() != null ) {
-                thereeDays[1] = Float.valueOf(String.valueOf(entry.getValue()));
-            }  else if (Objects.requireNonNull(entry.getKey()).equals(">2weeks") &&  entry.getKey() != null ) {
-                twoWeeks[1] = Float.valueOf(String.valueOf(entry.getValue()));
-            }
-        }*/
-//        valueSet1.set(0, new BarEntry(0, newFloat));
-//        valueSet1.set(2, new BarEntry(2,  oneWeek));
-//        valueSet1.set(1, new BarEntry(1,thereeDays));
-//        valueSet1.set(3, new BarEntry(3, twoWeeks));
-        chartScreen.setCharts(teamLbarChart, chartValues, true,caNames);
-        teamLbarChart.invalidate();
-
+        return strDate;
     }
-
+    @SuppressLint("NewApi")
+    private List<DataPojo.Results> getCaResult(String name){
+        List<DataPojo.Results> list = SharedArray.getResult();
+        list = list.stream().filter(pulse -> pulse.getCa().equals(name) ) .collect(Collectors.toList());
+        return list;
+    }
     @SuppressLint("NewApi")
     private List<DataPojo.Results> getMonthResult(Date currentMonth){
-        List<DataPojo.Results> list = SharedArray.getResult();
-        list = list.stream().filter(pulse -> DateConversion.getDats(pulse.getOrderDate()).after(currentMonth)).collect(Collectors.toList());
+            List<DataPojo.Results> list = SharedArray.getResult();
+        list = list.stream().filter(pulse ->
+                DateConversion.getDats(pulse.getOrderDate()).after(currentMonth)).collect(Collectors.toList());
         return list;
     }
     @SuppressLint("NewApi")
@@ -289,6 +321,7 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
 
     @OnClick(R.id.teamViewText)
     public void onViewClicked() {
-        showAlart();
+
+           showAlart();
     }
 }
