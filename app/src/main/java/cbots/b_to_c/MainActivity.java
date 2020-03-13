@@ -88,12 +88,13 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initSearch();
-        if (Checkers.getRoleId(getApplicationContext()) == Integer.valueOf(MainInterface.TEAMLEADER)
-           && Checkers.getRoleId(getApplicationContext()) == Integer.valueOf(MainInterface.MASTER) ) {
+        if (Checkers.getRoleId(getApplicationContext()) == Integer.parseInt(MainInterface.SALES)){
             initSalesScreen();
-        } else {
+        }else {
             intTLScreen();
         }
+
+
         Log.i("TAG","Role Id"+Checkers.getRoleId(getApplicationContext()) );
     }
 

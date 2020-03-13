@@ -3,6 +3,7 @@ package cbots.b_to_c;
 import android.content.Intent;
 import android.os.Handler;
 
+import cbots.b_to_c.CA.CreateCustomerActivity;
 import cbots.b_to_c.config.Checkers;
 
 public class SplashScreen extends BaseActivity {
@@ -19,6 +20,7 @@ public class SplashScreen extends BaseActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
+               // startActivity(new Intent(SplashScreen.this, CreateCustomerActivity.class));
                 if (Checkers.getUserLoggedInStatus(getApplicationContext())) {
                     startActivity(new Intent(SplashScreen.this, MainActivity.class));
                     finish();

@@ -94,7 +94,7 @@ public class ChartScreen  {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setCharts(BarChart mChart, ArrayList<BarEntry> valueSet1 , boolean stacked, String[] chartLabel){
+    public void setCharts(BarChart mChart, ArrayList<BarEntry> valueSet1 , boolean stacked, String[] chartLabel,String sales){
 
 
         ArrayList<Integer> myColors = new ArrayList<>();
@@ -135,22 +135,25 @@ public class ChartScreen  {
         } else {
 
             xaxis.setAxisMaximum(4);
-            // mChart.setMaxVisibleValueCount(4);
-           // mChart.setVisibleXRangeMaximum(4);
-          //  mChart.setNestedScrollingEnabled(false);
             xVals.add("New");
             xVals.add("> 3 days");
             xVals.add("> 1 week");
             xVals.add("> 2 weeks");
             mChart.setDrawValueAboveBar(true);
-            myColors.add(Color.parseColor("#FF0000"));
-            myColors.add(Color.parseColor("#9B870C"));
-            myColors.add(Color.parseColor("#008000"));
 
-//            myColors.add(Color.parseColor("#34a853"));
-//            myColors.add(Color.parseColor("#f1761f"));
-//            myColors.add(Color.parseColor("#fbbc04"));
-//            myColors.add(Color.parseColor("#ea4335"));
+            if (sales.equals("sales")) {
+                myColors.add(Color.parseColor("#34a853"));
+                myColors.add(Color.parseColor("#f1761f"));
+                myColors.add(Color.parseColor("#fbbc04"));
+                myColors.add(Color.parseColor("#ea4335"));
+            } else {
+                myColors.add(Color.parseColor("#FF0000"));
+                myColors.add(Color.parseColor("#9B870C"));
+                myColors.add(Color.parseColor("#008000"));
+            }
+
+
+
 
         }
         //mChart.setRenderer(new BarChartCustomRenderer(mChart, mChart.getAnimator(), mChart.getViewPortHandler(), myColors));

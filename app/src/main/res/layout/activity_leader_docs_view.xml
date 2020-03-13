@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    android:layout_height="match_parent"
+    tools:context=".team_leader.LeaderDocsView">
+    <RelativeLayout
+
+
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:layout_marginTop="5dp"
+            android:background="@color/background_black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <include layout="@layout/team_detail_recycler"/>
+
+        </FrameLayout>
+
+
+
+
+
+        <androidx.cardview.widget.CardView
+
+            android:layout_marginTop="80dp"
+            app:cardBackgroundColor="@color/grey"
+            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:weightSum="1"
+
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+
+                        android:weightSum="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+
+
+                        <LinearLayout
+                            android:backgroundTint="@color/white"
+                            android:orientation="vertical"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/curve"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:padding="5dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:textColor="@color/grey"
+                                android:text="Address :"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <ScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+                                    <TextView
+                                        android:text="----"
+                                        android:id="@+id/fullNameTeam"
+                                        android:textStyle="bold"
+                                        android:maxLines="5"
+                                        android:textFontWeight="500"
+                                        android:gravity="center|start"
+                                        android:textSize="13dp"
+                                        android:fontFamily="@font/"
+                                        android:textColor="@color/blue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                        android:text="----"
+                                        android:id="@+id/fullAddressTeam"
+                                        android:textStyle="bold"
+                                        android:maxLines="5"
+                                        android:textFontWeight="500"
+                                        android:gravity="center|start"
+                                        android:textSize="13dp"
+                                        android:fontFamily="@font/"
+                                        android:textColor="@color/dark_blue"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+
+                                </LinearLayout>
+
+
+                            </ScrollView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp">
+
+                        <LinearLayout
+
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:backgroundTint="@color/white"
+
+                            android:background="@drawable/curve"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:gravity="center"
+                                android:textColor="@color/yellow"
+                                android:id="@+id/customerTypeTeam"
+                                android:text="@string/salaried"
+                                android:textStyle="bold"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:backgroundTint="@color/white"
+
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/curve"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:textColor="@color/dark_blue"
+                                android:gravity="center"
+                                android:text="BANk"
+                                android:textStyle="bold"
+                                android:id="@+id/financierTeam"
+                                android:textFontWeight="500"
+                                android:fontFamily="@font/"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:backgroundTint="@color/white"
+                            android:orientation="horizontal"
+
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center|start"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="0dp"
+
+                            android:layout_height="match_parent">
+                            <com.github.angads25.toggle.widget.LabeledSwitch
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:id="@+id/switchAlternateNumberTeam"
+                                android:layout_width="50dp"
+                                android:saveEnabled="false"
+                                android:layout_height="wrap_content"
+                                app:textOn=""
+                                app:textOff=""
+                                app:colorAccent="@color/blue"
+                                android:textSize="14sp"
+                                app:colorOff="@color/white"
+                                app:colorOn="@color/blue"
+                                app:colorBorder="@color/blue"
+                                tools:ignore="MissingConstraints" />
+                            <TextView
+                                android:gravity="center"
+                                app:layout_constraintLeft_toRightOf="@id/switchAlternateNumberTeam"
+                                app:layout_constraintRight_toRightOf="parent"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
+                                android:textColor="@color/white"
+                                android:singleLine="true"
+                                android:paddingRight="5dp"
+                                android:text="@string/alternate_number"
+                                android:textSize="13dp"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:textStyle="bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <LinearLayout
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="0dp"
+                            android:gravity="center|start"
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:paddingLeft="5dp"
+                                android:layout_marginLeft="4sp"
+                                android:editable="false"
+                                android:clickable="false"
+                                android:background="@drawable/circle"
+                                android:textColor="@color/dark_blue"
+                                android:id="@+id/alternamtePhoneTeam"
+                                android:textSize="14dp"
+                                android:textFontWeight="500"
+                                android:text="124"
+
+                                android:inputType="phone"
+                                android:fontFamily="@font/"
+                                android:textStyle="bold"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:weightSum="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

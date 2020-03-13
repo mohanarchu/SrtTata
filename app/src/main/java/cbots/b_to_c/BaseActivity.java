@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -60,6 +61,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    public void showToastMessage(String message){
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+    }
 
     protected Disposable[] subscriptions() {
         return new Disposable[0];

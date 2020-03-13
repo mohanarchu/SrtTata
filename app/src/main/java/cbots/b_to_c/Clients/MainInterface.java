@@ -23,8 +23,11 @@ import retrofit2.http.Query;
 public interface MainInterface {
 
     String TEAMLEADER = "507";
-    String FINANCE = "508";
+    String SALES = "508";
     String MASTER = "504";
+
+    String CA = "509";
+
 
     @POST("mobile/exeLogin")
     @Headers({ "Content-Type: application/json;charset=UTF-8"})

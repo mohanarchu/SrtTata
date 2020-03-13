@@ -14,7 +14,9 @@
         android:windowSoftInputMode="adjustNothing"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="M">
-        <activity android:name=".team_leader.detailView.TeamDetailView"></activity>
+        <activity android:name=".team_leader.LeaderDocsView"></activity>
+        <activity android:name=".CA.CreateCustomerActivity" />
+        <activity android:name=".team_leader.detailView.TeamDetailView" />
         <activity android:name=".LoginScreen" />
         <activity android:name=".config.ChangePassword" />
         <activity android:name=".appointmant.received.ReceivedAlerm" />
@@ -71,11 +73,11 @@
             android:exported="false"
             android:stopWithTask="true" />
     </application>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>

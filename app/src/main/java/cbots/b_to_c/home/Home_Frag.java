@@ -190,7 +190,7 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
                valueSet1.set(3, new BarEntry(3,Integer.valueOf(lists.getCount())));
               // valueSet1.add(new BarEntry(3,Integer.valueOf(lists.getCount())));
         }
-        chartScreen.setCharts(mChart,valueSet1,false,null);
+        chartScreen.setCharts(mChart,valueSet1,false,null,"sales");
         mChart.invalidate();
         showResult();
     }

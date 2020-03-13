@@ -41,7 +41,7 @@ import cbots.b_to_c.home.ChartScreen;
 import cbots.b_to_c.home.DataPojo;
 import cbots.b_to_c.team_leader.team.TeamLeaderAdapter;
 
-public class TeamDetailView extends BaseActivity  {
+public class TeamDetailView extends BaseActivity implements TeamLeaderAdapter.ValueClicked  {
 
     @BindView(R.id.mtdCfd)
     Spinner mtdCfd;
@@ -57,7 +57,6 @@ public class TeamDetailView extends BaseActivity  {
     String name = "";
     private ArrayList<BarEntry> valueSet1 = new ArrayList<>();
     ChartScreen chartScreen;
-    int type = 1;
     @Override
     protected void onViewBound() {
         chartScreen = new ChartScreen(getApplicationContext());
@@ -79,7 +78,6 @@ public class TeamDetailView extends BaseActivity  {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getSelectedItem().toString();
-
                     if (item.equals("CFD")) {
                         Map<String, Long> caArray =
                                 getPreviousMonth(getCurrentDate()).stream().collect(
@@ -99,8 +97,6 @@ public class TeamDetailView extends BaseActivity  {
                         setCharts(caArray,true);
                         datasNotify(getCaResult(name));
                     }
-
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -143,7 +139,6 @@ public class TeamDetailView extends BaseActivity  {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH , 1);
         String  currentMonth = f.format(calendar.get(Calendar.MONTH));
-        String currentDate = f.format(calendar.get(Calendar.DATE));
         int currentYear = calendar.get(Calendar.YEAR);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date strDate = null;
@@ -164,17 +159,17 @@ public class TeamDetailView extends BaseActivity  {
         LinearLayoutManager centerZoomLayoutManager = new
                 LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         teamCaRecycler.setLayoutManager(centerZoomLayoutManager);
-        teamCaRecycler.setAdapter(teamLeaderAdapter );
+        teamCaRecycler.setAdapter(teamLeaderAdapter);
         setDatas(name);
     }
     private void datasNotify(List<DataPojo.Results> datas){
-        teamLeaderAdapter.setDatas(datas);
+        teamLeaderAdapter.setDatas(datas,this);
         teamLeaderAdapter.notifyDataSetChanged();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setDatas(String name){
-        teamLeaderAdapter.setDatas(getCaResult(name));
+        teamLeaderAdapter.setDatas(getCaResult(name),this);
         teamLeaderAdapter.notifyDataSetChanged();
         Map<String, Long> caArray = getCaResult(name).stream().
                 collect(Collectors.groupingBy(DataPojo.Results::getAgeing,Collectors.counting()));
@@ -191,12 +186,10 @@ public class TeamDetailView extends BaseActivity  {
         while (iterator.hasNext()) {
             valueSet1.add(new BarEntry(i,new float[]{0,0,0}));
           Map.Entry<String, Long> entry = iterator.next();
-           // Log.i("TAG","Group entry"+ entry);
             Map<String, Long> modelArray =
                     getModel(entry.getKey()).stream().collect(Collectors.groupingBy
                             (DataPojo.Results::getStockStatus,Collectors.counting()));
             caNames[i] = entry.getKey();
-
             float[] floats = new float[3];
             for (Map.Entry<String, Long> entrys : modelArray.entrySet()) {
                 if (entrys.getKey().equals("G-stock") && entrys.getKey()  != null ) {
@@ -205,17 +198,17 @@ public class TeamDetailView extends BaseActivity  {
                     floats[0] = entrys.getValue();
                 }  else if ( Objects.requireNonNull(entrys.getKey()).equals("Stock") && entrys.getKey() != null ) {
                   floats[2] = entrys.getValue();
+
                 }
             }
             valueSet1.set(i,new BarEntry(i,floats));
             i++;
         }
-        chartScreen.setCharts(teamCaBarchart,valueSet1,true,caNames);
+        chartScreen.setCharts(teamCaBarchart,valueSet1,true,caNames,"teamLeader");
         teamCaBarchart.invalidate();
     }
-
     @SuppressLint("NewApi")
-    void setCharts(Map<String, Long> caArray,boolean stack){
+    void setCharts(Map<String, Long> caArray,boolean stack) {
 
         valueSet1.clear();
         if (!stack) {
@@ -224,16 +217,16 @@ public class TeamDetailView extends BaseActivity  {
             valueSet1.add(new BarEntry(2,0));
             valueSet1.add(new BarEntry(3,0));
             for (Map.Entry<String, Long> entry : caArray.entrySet()) {
-                if (entry.getKey().equals(">1week") && entry.getKey()  != null ) {
-                    valueSet1.set(2, new BarEntry(2,Integer.valueOf(String.valueOf(entry.getValue()))));
+                if (entry.getKey().equals(">1week") && entry.getKey()  != null )  {
+                    valueSet1.set(2, new BarEntry(2,Integer.parseInt(String.valueOf(entry.getValue()))));
                 } else if (Objects.requireNonNull(entry.getKey()).equals("new") && entry.getKey() != null  ) {
-                    valueSet1.set(0, new BarEntry(0,Integer.valueOf(String.valueOf(entry.getValue()))));
+                    valueSet1.set(0, new BarEntry(0,Integer.parseInt(String.valueOf(entry.getValue()))));
                 }  else if ( Objects.requireNonNull(entry.getKey()).equals(">3days") && entry.getKey() != null ) {
-                    valueSet1.set(1, new BarEntry(1,Integer.valueOf(String.valueOf(entry.getValue()))));
+                    valueSet1.set(1, new BarEntry(1,Integer.parseInt(String.valueOf(entry.getValue()))));
                 }  else if (Objects.requireNonNull(entry.getKey()).equals(">2weeks") &&  entry.getKey() != null ) {
-                    valueSet1.set(3, new BarEntry(3,Integer.valueOf(String.valueOf(entry.getValue()))));
+                    valueSet1.set(3, new BarEntry(3,Integer.parseInt(String.valueOf(entry.getValue()))));
                 }
-                chartScreen.setCharts(teamCaBarchart,valueSet1,false,null);
+                chartScreen.setCharts(teamCaBarchart,valueSet1,false,null,"teamLeader");
             }
         } else {
             valueSet1.add(new BarEntry(0,new float[]{0,0,0}));
@@ -245,7 +238,6 @@ public class TeamDetailView extends BaseActivity  {
             float[] floats2 = new float[3];
             float[] floats3 = new float[3];
             for (Map.Entry<String, Long> entry : caArray.entrySet()) {
-
                 if (entry.getKey().equals(">1week") && entry.getKey()  != null ) {
                     Map<String, Long> modelArray =
                             getAgeing(">1week").stream().collect(Collectors.groupingBy
@@ -261,7 +253,6 @@ public class TeamDetailView extends BaseActivity  {
                     }
                     valueSet1.set(2, new BarEntry(2,floats));
                 } else if (Objects.requireNonNull(entry.getKey()).equals("new") && entry.getKey() != null  ) {
-
                     Map<String, Long> modelArray =
                             getAgeing("new").stream().collect(Collectors.groupingBy
                                     (DataPojo.Results::getStockStatus,Collectors.counting()));
@@ -276,7 +267,6 @@ public class TeamDetailView extends BaseActivity  {
                     }
                     valueSet1.set(0, new BarEntry(0,floats1));
                 }  else if ( Objects.requireNonNull(entry.getKey()).equals(">3days") && entry.getKey() != null ) {
-
                     Map<String, Long> modelArray =
                             getAgeing(">3days").stream().collect(Collectors.groupingBy
                                     (DataPojo.Results::getStockStatus,Collectors.counting()));
@@ -306,19 +296,17 @@ public class TeamDetailView extends BaseActivity  {
                     valueSet1.set(3, new BarEntry(3,floats3));
                 }
 
-                chartScreen.setCharts(teamCaBarchart,valueSet1,false,null);
+                chartScreen.setCharts(teamCaBarchart,valueSet1,false,null,"teamleader");
             }
         }
         teamCaBarchart.invalidate();
     }
-
     @SuppressLint("NewApi")
     private List<DataPojo.Results> getModel(String nam){
         List<DataPojo.Results> list =  getCaResult(name);
         list = list.stream().filter(pulse -> pulse.getParentProductLine().equals(nam)).collect(Collectors.toList());
         return list;
     }
-
     @SuppressLint("NewApi")
     private List<DataPojo.Results> getCaResult(String name){
         List<DataPojo.Results> list = SharedArray.getResult();
@@ -332,7 +320,7 @@ public class TeamDetailView extends BaseActivity  {
         return list;
     }
     @SuppressLint("NewApi")
-    private List<DataPojo.Results> getPreviousMonth(Date month){
+    private List<DataPojo.Results> getPreviousMonth(Date month) {
         List<DataPojo.Results> list = getCaResult(name);
         list = list.stream().filter(pulse -> DateConversion.getDats(pulse.getOrderDate()).before(month)).collect(Collectors.toList());
         return list;
@@ -342,5 +330,10 @@ public class TeamDetailView extends BaseActivity  {
         List<DataPojo.Results> list = getCaResult(name);
         list = list.stream().filter(pulse ->  pulse.getAgeing().equals(ageing)).collect(Collectors.toList());
         return list;
+    }
+
+    @Override
+    public void clicked(int position, List<DataPojo.Results> results) {
+
     }
 }

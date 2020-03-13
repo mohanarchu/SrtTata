@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="75dp">
+    android:layout_height="75dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
-        android:id="@+id/mainLayout_team"
+        android:id="@+id/mainLayout_teamss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.chauthai.swipereveallayout.SwipeRevealLayout
@@ -20,7 +19,7 @@
             android:layout_marginRight="2dp"
             android:backgroundTint="@color/white"
             android:layout_marginBottom="5dp"
-            android:id="@+id/swipe_layoutTeam"
+            android:id="@+id/swipe_layoutTeamss"
             android:layout_width="match_parent"
             android:layout_height="70dp">
             <!-- Your secondary layout here -->
@@ -65,7 +64,7 @@
                         android:textStyle="bold"
                         android:textSize="17dp"
                         android:text="10"
-                        android:id="@+id/Tldates"
+                        android:id="@+id/Tldatesss"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         android:layout_marginTop="10dp"
@@ -79,7 +78,7 @@
                         android:layout_marginLeft="2dp"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:id="@+id/TldayOfweeks"
+                        android:id="@+id/TldayOfweeksss"
                         android:textColor="@color/white"
                         android:text="SEP"
 
@@ -117,58 +116,58 @@
 
 
 
-                            <TextView
-                                android:layout_weight="1"
-                                android:gravity="center|start"
-                                android:id="@+id/tlCusName"
-                                android:textStyle="bold"
-                                android:textSize="12dp"
-                                android:singleLine="true"
-                                android:textColor="@color/blue"
-                                android:text="Mr. Mohanraj"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="center|start"
+                            android:id="@+id/tlCusNamess"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/blue"
+                            android:text="Mr. Mohanraj"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
 
-                            <TextView
-                                android:textColor="@color/blue"
-                                android:textStyle="bold"
-                                android:gravity="center"
+                        <TextView
+                            android:textColor="@color/blue"
+                            android:textStyle="bold"
+                            android:gravity="center"
 
-                                android:text="|"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"/>
-                            <TextView
-                                android:layout_weight="1"
-                                android:gravity="center"
+                            android:text="|"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="center"
 
-                                android:textStyle="bold"
-                                android:singleLine="true"
-                                android:id="@+id/tLCaMobile"
-                                android:textColor="@color/green"
-                                android:text="9698908690"
+                            android:textStyle="bold"
+                            android:singleLine="true"
+                            android:id="@+id/tLCaMobiless"
+                            android:textColor="@color/green"
+                            android:text="9698908690"
 
-                                android:textSize="12dp"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
-                            <TextView
-                                android:textColor="@color/green"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:text="|"
-                                android:paddingLeft="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                            <TextView
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textStyle="bold"
-                                android:id="@+id/tLCaName"
+                            android:textSize="12dp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            android:textColor="@color/green"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:text="|"
+                            android:paddingLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:id="@+id/tLCaNamess"
 
-                                android:textSize="12dp"
-                                android:textColor="@color/dark_blue"
-                                android:text="Raj"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"/>
+                            android:textSize="12dp"
+                            android:textColor="@color/dark_blue"
+                            android:text="Raj"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
 
 
                     </LinearLayout>
@@ -185,7 +184,7 @@
                         <TextView
                             android:layout_weight="1"
                             android:gravity="center|start"
-                            android:id="@+id/tlInhouse"
+                            android:id="@+id/tlInhousess"
                             android:textStyle="bold"
                             android:textSize="12dp"
                             android:singleLine="true"
@@ -208,7 +207,7 @@
 
                             android:textStyle="bold"
                             android:singleLine="true"
-                            android:id="@+id/tLVechileModel"
+                            android:id="@+id/tLVechileModelss"
                             android:textColor="@color/black"
                             android:text="Zest"
 
@@ -227,7 +226,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textStyle="bold"
-                            android:id="@+id/tLVechileStatus"
+                            android:id="@+id/tLVechileStatusss"
                             android:textSize="12dp"
                             android:textColor="@color/red"
                             android:text="VNA"
