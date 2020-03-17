@@ -27,23 +27,185 @@
             <include layout="@layout/team_detail_recycler"/>
 
         </FrameLayout>
+        <FrameLayout
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="80dp"
+            android:background="@color/background_black"
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
 
 
+            <com.chauthai.swipereveallayout.SwipeRevealLayout
+                app:layout_constraintTop_toTopOf="parent"
+                app:mode="same_level"
+                app:dragEdge="right"
+                android:background="@drawable/curve"
+                android:clickable="true"
+                android:layout_marginTop="3dp"
 
+                android:backgroundTint="@color/white"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/swipe_layout"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+                <!-- Your secondary layout here -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:background="@color/smoke"
+                    android:layout_width="180dp"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
+
+                    <include
+                        android:layout_gravity="center"
+                        layout="@layout/sms_layout"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent" />
+
+
+                </LinearLayout>
+                <!-- Your main layout here -->
+                <LinearLayout
+
+                    android:transitionName="transtion_name_example"
+                    android:id="@+id/sharedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp">
+
+
+                    <LinearLayout
+
+                        android:orientation="vertical"
+                        android:weightSum="1"
+                        android:padding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp">
+
+                        <LinearLayout
+                            android:weightSum="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp">
+
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:weightSum="2"
+                                android:gravity="center|start"
+                                android:layout_width="0dp"
+                                android:layout_height="35dp">
+
+                                <TextView
+                                    android:layout_weight="0.8"
+                                    android:gravity="center|start"
+                                    android:id="@+id/detailCusname"
+                                    android:textStyle="bold"
+                                    android:singleLine="true"
+                                    android:textSize="12dp"
+                                    android:textColor="@color/blue"
+                                    android:text="--"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textColor="@color/blue"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+
+                                    android:text="|"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_weight="0.7"
+                                    android:gravity="center"
+
+                                    android:textStyle="bold"
+                                    android:id="@+id/detailsCusmobileNumbr"
+                                    android:textColor="@color/green"
+                                    android:text="---"
+
+                                    android:textSize="12dp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:textColor="@color/green"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:text="|"
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:layout_weight="0.5"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:id="@+id/detailsCustokenNumber"
+
+                                    android:textSize="12dp"
+                                    android:textColor="@color/yellow"
+                                    android:text="--"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:visibility="gone"
+                                android:layout_weight="0.1"
+                                android:gravity="center"
+                                android:layout_width="0dp"
+                                android:layout_gravity="end"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:textSize="16dp"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:id="@+id/detailsCuspendingDocsCount"
+
+                                    android:background="@drawable/red_circle"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_marginBottom="2dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <TextView
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                android:text="---"
+                                android:textSize="12dp"
+                                android:layout_marginLeft="2dp"
+                                android:singleLine="true"
+                                android:id="@+id/detailsCusdisplayAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.chauthai.swipereveallayout.SwipeRevealLayout>
+        </FrameLayout>
 
 
         <androidx.cardview.widget.CardView
-
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="160dp"
             app:cardBackgroundColor="@color/grey"
             app:cardCornerRadius="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <LinearLayout
                 android:weightSum="1"
-
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -168,32 +330,25 @@
                                 android:fontFamily="@font/"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"/>
-
                         </LinearLayout>
-
-
                     </LinearLayout>
                     <LinearLayout
                         android:weightSum="2"
                         android:layout_width="match_parent"
                         android:layout_height="43dp">
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:backgroundTint="@color/white"
                             android:orientation="horizontal"
-
                             android:layout_marginLeft="10dp"
                             android:layout_weight="1"
                             android:gravity="center|start"
                             android:layout_marginBottom="10dp"
                             android:layout_width="0dp"
-
                             android:layout_height="match_parent">
                             <com.github.angads25.toggle.widget.LabeledSwitch
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 android:id="@+id/switchAlternateNumberTeam"
                                 android:layout_width="50dp"
-                                android:saveEnabled="false"
                                 android:layout_height="wrap_content"
                                 app:textOn=""
                                 app:textOff=""
@@ -202,7 +357,7 @@
                                 app:colorOff="@color/white"
                                 app:colorOn="@color/blue"
                                 app:colorBorder="@color/blue"
-                                tools:ignore="MissingConstraints" />
+                                tools:ignore="MissingConstraints"/>
                             <TextView
                                 android:gravity="center"
                                 app:layout_constraintLeft_toRightOf="@id/switchAlternateNumberTeam"
@@ -231,29 +386,51 @@
                             <EditText
                                 android:paddingLeft="5dp"
                                 android:layout_marginLeft="4sp"
-                                android:editable="false"
                                 android:clickable="false"
+                                android:editable="false"
                                 android:background="@drawable/circle"
                                 android:textColor="@color/dark_blue"
                                 android:id="@+id/alternamtePhoneTeam"
                                 android:textSize="14dp"
                                 android:textFontWeight="500"
                                 android:text="124"
-
                                 android:inputType="phone"
                                 android:fontFamily="@font/"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"/>
-
                         </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/exchanegVechileLayout"
+                        android:layout_marginLeft="12dp"
+                        android:weightSum="2"
+                        android:gravity="center|start"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp">
 
+                        <TextView
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
+                            android:text="Exchange vehicle : "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:text="Yes "
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
 
+
                 </LinearLayout>
-
             </LinearLayout>
-
                 <LinearLayout
                     android:weightSum="1"
                     android:orientation="vertical"

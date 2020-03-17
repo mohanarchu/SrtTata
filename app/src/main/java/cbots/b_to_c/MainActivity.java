@@ -49,6 +49,7 @@ import cbots.b_to_c.home.Home_Frag;
 import cbots.b_to_c.notification.Notification;
 import cbots.b_to_c.search.SearchActivity;
 import cbots.b_to_c.team_leader.TeamLeader;
+import cbots.b_to_c.team_leader.detailView.TeamDetailView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
     public static final String TAB_NOTIFI = "notification";
     public static final String TAB_HINTS = "hints";
     public static final String TAB_TL = "tl";
+    public static final String TAB_CA = "ca";
     Fragment fragments;
     public static   BottomNavigationView bottomNavigation;
     public static ImageView exit;
@@ -88,17 +90,24 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initSearch();
-        if (Checkers.getRoleId(getApplicationContext()) == Integer.parseInt(MainInterface.SALES)){
+
+
+
+
+        if (Checkers.getRoleId(getApplicationContext()) == Integer.parseInt(MainInterface.SALES) ) {
             initSalesScreen();
-        }else {
-            intTLScreen();
+        } else if (Checkers.getRoleId(getApplicationContext()) == Integer.parseInt(MainInterface.TEAMLEADER) ||
+                Checkers.getRoleId(getApplicationContext()) == Integer.parseInt(MainInterface.MASTER) ) {
+            initTLScreen();
+        } else if (Checkers.getRoleId(getApplicationContext()) == Integer.parseInt(MainInterface.CA)) {
+            initCaScreen();
         }
 
 
-        Log.i("TAG","Role Id"+Checkers.getRoleId(getApplicationContext()) );
+
     }
 
-    void intTLScreen() {
+    void initTLScreen() {
         current = TAB_TL;
         selectedTab(current);
         commonSearch.setOnClickListener(view -> {
@@ -106,7 +115,14 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
             startActivity(intent);
         });
     }
-
+    void initCaScreen() {
+        current = TAB_CA;
+        selectedTab(current);
+        commonSearch.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(intent);
+        });
+    }
     void initSearch() {
         exit = findViewById(R.id.exit);
         exit.setVisibility(View.VISIBLE);
@@ -212,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
     //  collected documents total count
     @SuppressLint("SetTextI18n")
     public   static void addSecondView(int count, Context context) {
+
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigation.getChildAt(0);
         BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
         notificationBadge = LayoutInflater.from(context).inflate(R.layout.dot_view, menuView, false);
@@ -320,6 +337,9 @@ public class MainActivity extends AppCompatActivity implements DataModel , Updat
                 break;
             case TAB_TL:
                 changeFragment(new TeamLeader(), TAB_TL);
+                break;
+            case TAB_CA:
+                changeFragment(new TeamDetailView(), TAB_CA);
                 break;
         }
     }

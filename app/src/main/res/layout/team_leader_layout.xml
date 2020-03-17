@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+
     android:layout_width="match_parent"
     android:layout_height="75dp">
     <LinearLayout
-        android:id="@+id/mainLayout_team"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.chauthai.swipereveallayout.SwipeRevealLayout
@@ -39,7 +40,7 @@
             </LinearLayout>
             <!-- Your main layout here -->
             <LinearLayout
-
+                android:id="@+id/mainLayout_team1"
                 android:transitionName="transtion_name_example"
                 android:layout_width="match_parent"
                 android:layout_height="70dp">

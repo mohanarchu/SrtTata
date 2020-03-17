@@ -58,8 +58,8 @@ public class DataPresenter  {
                     for (int i=0;i<dataPojo.getResults().length;i++) {
                         if (dataPojo.getResults()[i].getDocs() != null) {
                             for (int j=0;j<dataPojo.getResults()[i].getDocs().length;j++) {
-                            if (!Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getChecked()) &&
-                                    Boolean.valueOf(dataPojo.getResults()[i].getDocs()[j].getCollected())) {
+                            if (!Boolean.parseBoolean(dataPojo.getResults()[i].getDocs()[j].getChecked()) &&
+                                    Boolean.parseBoolean(dataPojo.getResults()[i].getDocs()[j].getCollected())) {
                                 value++;
                                }
                             }
@@ -67,8 +67,8 @@ public class DataPresenter  {
 
                         if (dataPojo.getResults()[i].getAddDocs() != null){
                             for (int j=0;j<dataPojo.getResults()[i].getAddDocs().length;j++){
-                                if (!Boolean.valueOf(dataPojo.getResults()[i].getAddDocs()[j].getChecked()) &&
-                                        Boolean.valueOf(dataPojo.getResults()[i].getAddDocs()[j].getCollected()) ) {
+                                if (!Boolean.parseBoolean(dataPojo.getResults()[i].getAddDocs()[j].getChecked()) &&
+                                        Boolean.parseBoolean(dataPojo.getResults()[i].getAddDocs()[j].getCollected()) ) {
                                     addDocus++;
                                 }
                             }
@@ -90,17 +90,14 @@ public class DataPresenter  {
                     ArrayList<DataPojo.Results>  list = new ArrayList<>(Arrays.asList(dataPojo.getResults()));
                     SharedArray.setArray(list);
                     SharedArray.setFilterResult(list);
-
                     List<DataPojo.Results>  lists = new ArrayList<>(Arrays.asList(dataPojo.getResults()));
                     lists = lists.stream().filter(pulse -> pulse.getPendingDocsCount() == null ||  !pulse.getPendingDocsCount().equals("0")).collect(Collectors.toList());
-
                     // bottom nav view badge
-                    if(!role.equals(MainInterface.TEAMLEADER) && !role.equals(MainInterface.MASTER)) {
+                    if (Checkers.getRoleId(context) == Integer.parseInt(MainInterface.SALES) ) {
                         MainActivity.addSecondView(value+addDocus,context);
                         MainActivity.addThirdView( alermCount,context);
                         MainActivity.addFirstView(lists.size(),context);
                     }
-
                     dataModel.showDatas(dataPojo.getResults(),dataPojo.getCount(),value+addDocus,alermCount);
                 } else {
                     dataModel.showMessage(dataPojo.getStatus());

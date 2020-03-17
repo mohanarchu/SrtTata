@@ -3,6 +3,7 @@ package cbots.b_to_c.Clients;
 
 
 
+import cbots.b_to_c.CA.Models.CarModels;
 import cbots.b_to_c.details.UpdatePojo;
 import cbots.b_to_c.home.DataPojo;
 import cbots.b_to_c.login.LoginPojo;
@@ -23,11 +24,9 @@ import retrofit2.http.Query;
 public interface MainInterface {
 
     String TEAMLEADER = "507";
-    String SALES = "508";
+    String SALES = "508";   // finance excecutive
     String MASTER = "504";
-
     String CA = "509";
-
 
     @POST("mobile/exeLogin")
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
@@ -47,5 +46,11 @@ public interface MainInterface {
     @POST("socket/alarmDelete")
     @Headers({ "Content-Type: application/json;charset=UTF-8"} )
     Observable<UpdatePojo> cancelAlarm(@Header("access-token") String header, @Body JsonObject jsonObject);
+    @POST("mobile/masterData/modelList")
+    @Headers({ "Content-Type: application/json;charset=UTF-8"} )
+    Observable<CarModels> getModels(@Header("access-token") String header, @Body JsonObject jsonObject);
+    @POST("mobile/masterData/createOrder")
+    @Headers({ "Content-Type: application/json;charset=UTF-8"} )
+    Observable<UpdatePojo> createCustomer(@Header("access-token") String header, @Body JsonObject jsonObject);
 
 }

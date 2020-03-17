@@ -20,7 +20,7 @@ public class SplashScreen extends BaseActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-               // startActivity(new Intent(SplashScreen.this, CreateCustomerActivity.class));
+            //    startActivity(new Intent(SplashScreen.this, CreateCustomerActivity.class));
                 if (Checkers.getUserLoggedInStatus(getApplicationContext())) {
                     startActivity(new Intent(SplashScreen.this, MainActivity.class));
                     finish();

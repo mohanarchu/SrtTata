@@ -30,4 +30,5 @@
     <string name="new_password">New password</string>
     <string name="confiem_password">Confirm password</string>
     <string name="token">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImNib3RzIiwiZW1haWwiOiJyYW1lc2guYkBjYm90c29sdXRpb25zLmNvbSIsIm5hbWUiOiJjYm90cyIsIm1vYmlsZSI6OTYxMTI0MDg2NiwiaWF0IjoxNTgxNjUzODk4fQ.CEdhYuuc2QC6DWAERahpjVMLF5tVpGvIcdqyEg0umJw</string>
+    <string name="pan_number_pattern">[A-Z]{5}[0-9]{4}[A-Z]{1}</string>
 </resources>

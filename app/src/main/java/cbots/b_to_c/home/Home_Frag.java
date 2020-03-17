@@ -226,6 +226,7 @@ public class Home_Frag extends FragmentBase implements DataModel, OnChartValueSe
         }else if (e.getX() == 3 && e.getY() != 0 ){
             adapter.getFilter().filter(">2weeks");
         }
+
     }
 
     @Override

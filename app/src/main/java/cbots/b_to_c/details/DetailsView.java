@@ -319,18 +319,18 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         List<DataPojo.Results.AddDocs>  lists1 = new ArrayList<>(Arrays.asList(result.getAddDocs()));
         Collections.sort(lists, (mall1, mall2) -> {
 
-            boolean b1 = Boolean.valueOf(mall1.getCollected());
-            boolean b2 = Boolean.valueOf(mall2.getCollected());
+            boolean b1 = Boolean.parseBoolean(mall1.getCollected());
+            boolean b2 = Boolean.parseBoolean(mall2.getCollected());
             return (b1 != b2) ? (b1) ? -1 : 1 : 0;
         });
         Collections.sort(lists1, (mall1, mall2) -> {
 
-            boolean b1 = Boolean.valueOf(mall1.getCollected());
-            boolean b2 = Boolean.valueOf(mall2.getCollected());
+            boolean b1 = Boolean.parseBoolean(mall1.getCollected());
+            boolean b2 = Boolean.parseBoolean(mall2.getCollected());
             return (b1 != b2) ? (b1) ? -1 : 1 : 0;
         });
         for (DataPojo.Results.Docs myBean : result.getDocs()) {
-            if ( !Boolean.valueOf(myBean.getCollected())) {
+            if ( !Boolean.parseBoolean(myBean.getCollected())) {
         //        result.getDocs()[]
             }
         }
@@ -339,16 +339,11 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         documentRecycler.setAdapter(new
                 DocumentAdapter(lists,
                 lists1, getApplicationContext(), filter));
-
-
-        Log.i("TAG","Add docs"+result.getAddDocs().length);
-        switchAlternateNumber.setOn(Boolean.valueOf(result.getAlternateMobileToggle()));
-
+        switchAlternateNumber.setOn(Boolean.parseBoolean(result.getAlternateMobileToggle()));
         //  switchAlternateNumber.setOn(true);
         remarksEze.setText(result.getExeRemarks());
         List<String> dates = Arrays.asList(result.getContactFullAddress().split(","));
-
-        alternareState = Boolean.valueOf(result.getAlternateMobileToggle());
+        alternareState = Boolean.parseBoolean(result.getAlternateMobileToggle());
         booleans = new boolean[result.getDocs().length];
         addBooleans = new boolean[result.getAddDocs().length];
         dates1 = new String[result.getDocs().length];
@@ -369,8 +364,8 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
             StringBuilder values = new StringBuilder();
             if (result.getDocs() != null) {
                 for (int j = 0; j < result.getDocs().length; j++) {
-                    if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
-                            Boolean.valueOf(result.getDocs()[j].getCollected())) {
+                    if (!Boolean.parseBoolean(result.getDocs()[j].getChecked()) &&
+                            Boolean.parseBoolean(result.getDocs()[j].getCollected())) {
                         values.append(result.getDocs()[j].getProof()).append(",");
                         counts++;
                     }
@@ -378,8 +373,8 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
             }
             if (result.getAddDocs() != null) {
                 for (int j = 0; j < result.getAddDocs().length; j++) {
-                    if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
-                            Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
+                    if (!Boolean.parseBoolean(result.getAddDocs()[j].getChecked()) &&
+                            Boolean.parseBoolean(result.getAddDocs()[j].getCollected())) {
                         values.append(result.getAddDocs()[j].getProof());
                         counts++;
                     }
@@ -396,33 +391,34 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         if (result.getDocs() != null) {
             for (int i = 0; i < result.getDocs().length; i++) {
                 UploadDatas uploadDatas = new UploadDatas();
-                uploadDatas.setChecked(Boolean.valueOf(result.getDocs()[i].getChecked()));
-                uploadDatas.setCollected(Boolean.valueOf(result.getDocs()[i].getCollected()));
+                uploadDatas.setChecked(Boolean.parseBoolean(result.getDocs()[i].getChecked()));
+                uploadDatas.setCollected(Boolean.parseBoolean(result.getDocs()[i].getCollected()));
                 uploadDatas.setChekedDate(result.getDocs()[i].getCheckedDate());
                 uploadDatas.setDate(result.getDocs()[i].getDate() == null ? "" : result.getDocs()[i].getDate());
                 uploadDatas.setProof(result.getDocs()[i].getProof());
                 dates1[i] = result.getDocs()[i].getDate() == null ? "" : result.getDocs()[i].getDate();
-                if (Boolean.valueOf(result.getDocs()[i].getCollected()))
+                if (Boolean.parseBoolean(result.getDocs()[i].getCollected()))
                     booleans[i] = true;
-                else if (Boolean.valueOf(result.getDocs()[i].getChecked()))
+                else if (Boolean.parseBoolean(result.getDocs()[i].getChecked()))
                     booleans[i] = true;
                 else
                     booleans[i] = false;
                 uploadData.add(uploadDatas);
             }
         }
+
         if (result.getAddDocs() != null) {
             for (int i = 0; i < result.getAddDocs().length; i++) {
                 UploadDatas uploadDatas = new UploadDatas();
-                uploadDatas.setChecked(Boolean.valueOf(result.getAddDocs()[i].getChecked()));
-                uploadDatas.setCollected(Boolean.valueOf(result.getAddDocs()[i].getCollected()));
+                uploadDatas.setChecked(Boolean.parseBoolean(result.getAddDocs()[i].getChecked()));
+                uploadDatas.setCollected(Boolean.parseBoolean(result.getAddDocs()[i].getCollected()));
                 uploadDatas.setChekedDate(result.getDocs()[i].getCheckedDate());
                 uploadDatas.setDate(result.getAddDocs()[i].getDate() == null ? "" : result.getAddDocs()[i].getDate());
                 uploadDatas.setProof(result.getAddDocs()[i].getProof());
                 addDates[i] = result.getAddDocs()[i].getDate() == null ? "" : result.getAddDocs()[i].getDate();
-                if (Boolean.valueOf(result.getAddDocs()[i].getCollected()))
+                if (Boolean.parseBoolean(result.getAddDocs()[i].getCollected()))
                 addBooleans[i] =  true;
-                else if (Boolean.valueOf(result.getAddDocs()[i].getChecked()))
+                else if (Boolean.parseBoolean(result.getAddDocs()[i].getChecked()))
                     addBooleans[i] = true;
                 else
                     addBooleans[i] = false;
@@ -448,16 +444,16 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         String sms ="";
         if (result.getDocs() != null) {
             for (int j = 0; j < result.getDocs().length; j++) {
-                if (!Boolean.valueOf(result.getDocs()[j].getChecked()) &&
-                        !Boolean.valueOf(result.getDocs()[j].getCollected())) {
+                if (!Boolean.parseBoolean(result.getDocs()[j].getChecked()) &&
+                        !Boolean.parseBoolean(result.getDocs()[j].getCollected())) {
                     stringBuilder.append(result.getDocs()[j].getProof()).append("\n");
                 }
             }
         }
         if (result.getAddDocs() != null) {
             for (int j = 0; j < result.getAddDocs().length; j++) {
-                if (!Boolean.valueOf(result.getAddDocs()[j].getChecked()) &&
-                        !Boolean.valueOf(result.getAddDocs()[j].getCollected())) {
+                if (!Boolean.parseBoolean(result.getAddDocs()[j].getChecked()) &&
+                        !Boolean.parseBoolean(result.getAddDocs()[j].getCollected())) {
                     stringBuilder.append(result.getAddDocs()[j].getProof()).append("\n");
 
                 }
@@ -501,6 +497,7 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void success(int pos) {
         Intent intent = new Intent();
@@ -508,11 +505,9 @@ public class DetailsView extends BaseActivity implements UpdateModel,FragmentInt
         finish();
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
     private boolean checkCallPermission() {

@@ -13,185 +13,303 @@
 
     <ImageView
         android:padding="25dp"
+        android:id="@+id/imageOfSrt"
         android:src="@drawable/srttata"
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 
 
-
-
-    <LinearLayout
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:orientation="vertical"
+    <androidx.core.widget.NestedScrollView
+        android:layout_below="@id/imageOfSrt"
+        android:layout_above="@id/createCus"
+        android:foregroundGravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
+        android:layout_height="match_parent">
         <LinearLayout
+            android:gravity="center"
+
             android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Spinner
-                android:id="@+id/mrOrMs"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/radious"
-                android:layout_width="50dp"
-                android:layout_height="50dp">
+            android:layout_height="match_parent">
 
 
-            </Spinner>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/mrOrMs"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/radious"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+                </Spinner>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/radious"
+
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:layout_height="50dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+
+                        android:id="@+id/cusNameInput"
+                        android:textColor="@color/black"
+                        android:gravity="center|start"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:textSize="17dp"
+
+                        android:hint="Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_marginLeft="6dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/radious"
-
                 android:layout_gravity="center"
                 android:backgroundTint="@color/white"
                 android:gravity="center"
                 android:layout_height="50dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cusPanInput"
+                    android:gravity="center|start"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/black"
+                    android:paddingStart="10dp"
+                    android:singleLine="true"
+                    android:textSize="17dp"
 
-                    android:id="@+id/cusNameInput"
+                    android:hint="PAN number"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/radious"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:layout_height="50dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cusMobNumberInput"
+                    android:gravity="center|start"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/black"
+                    android:paddingStart="10dp"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textSize="17dp"
+                    android:hint="Mobile number"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/radious"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/cusvechileCategory"
+                    android:gravity="center|start"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:paddingStart="10dp"
+                    android:singleLine="true"
+                    android:textSize="17dp"
+                    android:textColor="@color/black"
+                    android:hint="Vechile category"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+
+                    android:layout_weight="1.2"
+                    android:layout_width="0dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/radious"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:id="@+id/cusVechleModel"
+                        android:gravity="center|start"
+                        android:layout_gravity="center"
+                        android:background="@null"
+
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:textSize="17dp"
+                        android:textColor="@color/black"
+
+                        android:hint="Vehicle model"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.6"
+                    android:id="@+id/vechileYear"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/radious"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp">
+                </androidx.appcompat.widget.AppCompatSpinner>
+            </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/radious"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:layout_height="50dp">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cusVechileColor"
                     android:gravity="center|start"
                     android:layout_gravity="center"
                     android:background="@null"
                     android:paddingBottom="10dp"
                     android:paddingStart="10dp"
                     android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="17dp"
-
-                    android:hint="Name"
+                    android:hint="Vehicle colour"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"/>
-
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_weight="1"
+
+                    android:gravity="center|start"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:textStyle="bold"
+                    android:paddingStart="10dp"
+                    android:singleLine="true"
+                    android:text="Finance option"
+                    android:textSize="17dp"
+                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/finSpinner"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/radious"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp">
+                </androidx.appcompat.widget.AppCompatSpinner>
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center|start"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:textStyle="bold"
+                    android:paddingStart="10dp"
+                    android:singleLine="true"
+                    android:text="Exchange vehicle"
+                    android:textSize="17dp"
+                    android:textColor="@color/white"
+                    android:hint="Exchange vehicle"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"/>
+
+                <RadioGroup
+                    android:id="@+id/radioGroupVehicle"
+                    android:weightSum="2"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+
+                    <RadioButton
+                        android:id="@+id/yes"
+                        android:text="Yes"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/white"
+                        android:layout_width="0dp"
+                        android:textColor="@color/white"
+                        android:layout_height="match_parent"/>
+
+                    <RadioButton
+                        android:id="@+id/no"
+                        android:textColor="@color/white"
+                        android:text="No"
+                        android:buttonTint="@color/white"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </RadioGroup>
+            </LinearLayout>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/radious"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cusPanInput"
-                android:gravity="center|start"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:singleLine="true"
-                android:textSize="17dp"
-
-                android:hint="PAN number"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/radious"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cusvechileCategory"
-                android:gravity="center|start"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:singleLine="true"
-                android:textSize="17dp"
-
-                android:hint="Vechile category"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/radious"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cusVechleModel"
-                android:gravity="center|start"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:singleLine="true"
-                android:textSize="17dp"
-
-                android:hint="Vechile model"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/radious"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:layout_height="50dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cusExchangeVechile"
-                android:gravity="center|start"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:singleLine="true"
-                android:textSize="17dp"
-
-                android:hint="Exchange vechile"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/radious"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:layout_height="50dp">
-
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cusVechileColor"
-                android:gravity="center|start"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:singleLine="true"
-                android:textSize="17dp"
-                android:hint="Vechile colour"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
     <androidx.cardview.widget.CardView
         app:cardCornerRadius="8dp"
         android:id="@+id/createCus"
@@ -204,6 +322,7 @@
         android:layout_width="150dp"
         android:layout_height="36dp">
         <TextView
+            android:textSize="17dp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:gravity="center"
