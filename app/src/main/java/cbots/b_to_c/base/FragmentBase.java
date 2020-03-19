@@ -1,10 +1,12 @@
 package cbots.b_to_c.base;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -62,6 +64,7 @@ public abstract class FragmentBase extends Fragment {
         builder.setCancelable(false); // if you want user to wait for some process to finish,
         builder.setView(R.layout.alery_dialogue_layout);
         dialog  = builder.create();
+       // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
     }
 

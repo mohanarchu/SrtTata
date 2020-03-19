@@ -11,6 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
+        android:configChanges="orientation"
+        android:screenOrientation="portrait"
         android:windowSoftInputMode="adjustNothing"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="M">
@@ -20,22 +22,16 @@
         <activity android:name=".LoginScreen" />
         <activity android:name=".config.ChangePassword" />
         <activity android:name=".appointmant.received.ReceivedAlerm" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".BaseActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".BaseActivity" />
         <activity
             android:name=".appointmant.alerm.Alerm"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysVisible" />
-        <activity
-            android:name=".search.SearchActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".search.SearchActivity" />
         <activity android:name=".team_leader.detailView.CaDetailActivity"/>
         <activity
             android:name=".SplashScreen"
+            android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -47,9 +43,9 @@
         </activity>
         <activity
             android:name=".details.DetailsView"
-            android:screenOrientation="portrait"
+
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".team_leader.detailView.CaDetailActivity" />
+
 
         <receiver
             android:name=".appointmant.alerm.Notification2"

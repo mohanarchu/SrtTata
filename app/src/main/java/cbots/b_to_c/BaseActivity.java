@@ -6,10 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -19,6 +28,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
     AlertDialog dialog;
+
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +44,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
         }
     }
-
 
     protected void showDialogue(){
         AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.this);
@@ -57,8 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void onViewBound() {
-
-
     }
 
     public void showToastMessage(String message){

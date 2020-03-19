@@ -28,10 +28,8 @@ public class CaPresenter {
             public void onSubscribe(Disposable d) {
 
             }
-
             @Override
             public void onNext(CarModels carModels) {
-
                 if (carModels.getStatus().equals("200")) {
                     caView.showCarModels(carModels.getValue());
                 } else {
@@ -39,12 +37,10 @@ public class CaPresenter {
                 }
                 caView.hideProgress();
             }
-
             @Override
             public void onError(Throwable e) {
                 caView.hideProgress();
             }
-
             @Override
             public void onComplete() {
                 caView.hideProgress();
@@ -57,12 +53,9 @@ public class CaPresenter {
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<UpdatePojo>() {
             @Override
             public void onSubscribe(Disposable d) {
-
             }
-
             @Override
             public void onNext(UpdatePojo carModels) {
-
                 if (carModels.getStatus().equals("200")) {
                    caView.showCreates();
                 } else {

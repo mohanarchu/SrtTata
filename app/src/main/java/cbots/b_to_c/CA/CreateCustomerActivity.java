@@ -1,5 +1,6 @@
 package cbots.b_to_c.CA;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -8,13 +9,16 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonObject;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -58,15 +62,17 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
     RadioGroup radioGroupVehicle;
     @BindView(R.id.cusMobNumberInput)
     TextInputEditText cusMobNumberInput;
-    @BindView(R.id.finSpinner)
-    AppCompatSpinner finSpinner;
+    @BindView(R.id.finOptions)
+    TextView finOptions;
     private RadioButton radioButton;
     String radioButtonvalue = "No";
+
 
     @Override
     protected int layoutRes() {
         return R.layout.activity_create_customer;
     }
+
 
     @Override
     protected void onViewBound() {
@@ -80,9 +86,10 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
         });
     }
 
+
     void setSpinner() {
         ArrayAdapter<String> aa = new ArrayAdapter<>(
-                getApplicationContext(), android.R.layout.simple_spinner_item, new String[]{"Mr", "Mrs" ,"Ms"});
+                getApplicationContext(), android.R.layout.simple_spinner_item, new String[]{"Mr", "Ms" ,"Mrs"});
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mrOrMs.setAdapter(aa);
         ArrayList<String> years = new ArrayList<>();
@@ -94,10 +101,8 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
                 getApplicationContext(), android.R.layout.simple_spinner_item, years);
         year.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vehicleYear.setAdapter(year);
-        ArrayAdapter<String> finAdapter = new ArrayAdapter<>(
-                getApplicationContext(), android.R.layout.simple_spinner_item, new String[]{"Cash", "Inhouse", "Outhouse"});
-        finAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        finSpinner.setAdapter(finAdapter);
+
+
     }
 
     boolean panNumberCheck(String panNumber) {
@@ -107,7 +112,7 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
     }
 
 
-    @OnClick({R.id.cusvechileCategory, R.id.cusVechleModel, R.id.createCus})
+    @OnClick({R.id.cusvechileCategory, R.id.cusVechleModel, R.id.createCus,R.id.finOptions})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cusvechileCategory:
@@ -126,30 +131,55 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
                     caPresenter.getModels(jsonObject);
                 }
                 break;
-            case R.id.createCus:
-                if (cusNameInput.getText().toString().isEmpty() || cusPanInput.getText().toString().isEmpty() ||
-                        cusvechileCategory.getText().toString().isEmpty() && cusVechleModel.getText().toString().isEmpty() &&
-                                cusVechileColor.getText().toString().isEmpty()) {
-                    showMessage("Fill all basic details");
-                } else {
-                    if (!panNumberCheck(cusPanInput.getText().toString().trim())) {
-                        showMessage("Enter valid PAN number");
-                        return;
+            case R.id.finOptions:
+                selected = 2;
+                ChooseFragment chooseFragment = new ChooseFragment();
+                String[] arrays = new String[]{"Cash","Inhouse","Outhouse"};
+                chooseFragment.setItems(new ArrayList(Arrays.asList(arrays)));
+                chooseFragment.setInterface(new ChooserAdapter.ModelClicked() {
+                    @Override
+                    public void clickedItemModel(String model) {
+                        finOptions.setText(model);
                     }
-                    jsonObject = new JsonObject();
-                    jsonObject.addProperty("cusName", mrOrMs.getSelectedItem().toString() + "." + cusNameInput.getText().toString());
-                    jsonObject.addProperty("vehicleModel", cusvechileCategory.getText().toString());
-                    jsonObject.addProperty("cusPan", cusPanInput.getText().toString());
-                    jsonObject.addProperty("vehicleVariant", cusVechleModel.getText().toString());
-                    jsonObject.addProperty("exchangeVehicle", radioButtonvalue);
-                    jsonObject.addProperty("vehicleColour", Objects.requireNonNull(cusVechileColor.getText()).toString());
-                    jsonObject.addProperty("vehicleYear", Objects.requireNonNull(vehicleYear.getSelectedItem()).toString());
-                    jsonObject.addProperty("cusMobile", Objects.requireNonNull(cusMobNumberInput.getText()).toString());
-                    jsonObject.addProperty("financeOption", Objects.requireNonNull(finSpinner.getSelectedItem()).toString());
-                    caPresenter.createCustomer(jsonObject);
-                }
+                });
+                chooseFragment.show(getSupportFragmentManager(),"Choose");
+                break;
+            case R.id.createCus:
+
+                showCheckCustomer();
+//                if (cusNameInput.getText().toString().isEmpty() || cusPanInput.getText().toString().isEmpty() ||
+//                        cusvechileCategory.getText().toString().isEmpty() && cusVechleModel.getText().toString().isEmpty() &&
+//                                cusVechileColor.getText().toString().isEmpty()) {
+//                    showMessage("Fill all basic details");
+//                } else {
+//                    if (!panNumberCheck(cusPanInput.getText().toString().trim())) {
+//                        showMessage("Enter valid PAN number");
+//                        return;
+//                    }
+//                    jsonObject = new JsonObject();
+//                    jsonObject.addProperty("cusName", mrOrMs.getSelectedItem().toString() + "." + cusNameInput.getText().toString());
+//                    jsonObject.addProperty("vehicleModel", cusvechileCategory.getText().toString());
+//                    jsonObject.addProperty("cusPan", cusPanInput.getText().toString());
+//                    jsonObject.addProperty("vehicleVariant", cusVechleModel.getText().toString());
+//                    jsonObject.addProperty("exchangeVehicle", radioButtonvalue);
+//                    jsonObject.addProperty("vehicleColour", Objects.requireNonNull(cusVechileColor.getText()).toString());
+//                    jsonObject.addProperty("vehicleYear", Objects.requireNonNull(vehicleYear.getSelectedItem()).toString());
+//                    jsonObject.addProperty("cusMobile", Objects.requireNonNull(cusMobNumberInput.getText()).toString());
+//                    jsonObject.addProperty("financeOption", Objects.requireNonNull(finOptions.getText()).toString());
+//                    caPresenter.createCustomer(jsonObject);
+//                }
                 break;
         }
+    }
+
+    void showCheckCustomer(){
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateCustomerActivity.this);
+        builder.setCancelable(true  ); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.custimer_check_layout);
+        dialog  = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
     }
 
     @Override
@@ -188,9 +218,8 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
             } else if (selected == 1) {
                 cusVechleModel.setText(model);
             }
-
         });
-        chooseFragment.show(getSupportFragmentManager(), "Chooser Fragment");
+        chooseFragment.show(getSupportFragmentManager(), "Choose");
     }
 
     @Override
@@ -198,10 +227,5 @@ public class CreateCustomerActivity extends BaseActivity implements CaPresenter.
         finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

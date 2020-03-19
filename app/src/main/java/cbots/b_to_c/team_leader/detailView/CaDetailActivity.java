@@ -16,7 +16,6 @@ public class CaDetailActivity extends BaseActivity {
 
     @Override
     protected void onViewBound() {
-
         TeamDetailView teamDetailView = new TeamDetailView();
         Bundle bundle  = new Bundle();
         bundle.putString("name",getIntent().getStringExtra("CaName"));

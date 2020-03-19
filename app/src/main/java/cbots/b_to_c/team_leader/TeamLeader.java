@@ -357,7 +357,6 @@ public class TeamLeader extends FragmentBase implements OnChartValueSelectedList
     @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick(R.id.teamViewText)
     public void onViewClicked() {
-
            showAlart();
     }
 

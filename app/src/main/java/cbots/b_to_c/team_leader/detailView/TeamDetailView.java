@@ -85,12 +85,13 @@ public class TeamDetailView extends FragmentBase implements TeamLeaderAdapter.Va
 
             name = intent.getString("name");
             caNameDetail.setText(name);
+            fromcaLogin = false;
             teamLeaderAdapter = new TeamLeaderAdapter(false,fromcaLogin);
             validate();
             addCustomer.setVisibility(View.GONE);
-            fromcaLogin = false;
 
         } else {
+
             mtdCfd.setVisibility(View.GONE);
             vechileFilter.setVisibility(View.GONE);
             addCustomer.setVisibility(View.VISIBLE);
@@ -103,8 +104,10 @@ public class TeamDetailView extends FragmentBase implements TeamLeaderAdapter.Va
             caNameDetail.setText(name);
             fromcaLogin = true;
             teamLeaderAdapter = new TeamLeaderAdapter(false,fromcaLogin);
+
         }
     }
+
     private void validate() {
         setRecycler();
         mtdCfd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -113,26 +116,19 @@ public class TeamDetailView extends FragmentBase implements TeamLeaderAdapter.Va
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getSelectedItem().toString();
                 if (item.equals("CFD")) {
-                    Map<String, Long> caArray =
-                            getPreviousMonth(getCurrentDate()).stream().collect(
-                                    Collectors.groupingBy(DataPojo.Results::getAgeing, Collectors.counting()));
+                    Map<String, Long> caArray = getPreviousMonth(getCurrentDate()).stream().collect(Collectors.groupingBy(DataPojo.Results::getAgeing, Collectors.counting()));
                     setCharts(caArray, false);
                     datasNotify(getPreviousMonth(getCurrentDate()));
                 } else if (item.equals("MTD")) {
-                    Map<String, Long> caArray = getMonthResult(getCurrentDate()).
-                            stream().collect(Collectors.groupingBy(DataPojo.Results::
-                            getAgeing, Collectors.counting()));
+                    Map<String, Long> caArray = getMonthResult(getCurrentDate()).stream().collect(Collectors.groupingBy(DataPojo.Results::getAgeing, Collectors.counting()));
                     setCharts(caArray, false);
                     datasNotify(getMonthResult(getCurrentDate()));
                 } else {
-                    Map<String, Long> caArray = getCaResult(name).stream().collect(
-                            Collectors.groupingBy(
-                                    DataPojo.Results::getAgeing, Collectors.counting()));
+                    Map<String, Long> caArray = getCaResult(name).stream().collect(Collectors.groupingBy(DataPojo.Results::getAgeing, Collectors.counting()));
                     setCharts(caArray, true);
                     datasNotify(getCaResult(name));
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -164,12 +160,13 @@ public class TeamDetailView extends FragmentBase implements TeamLeaderAdapter.Va
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
-
     }
 
-    Date getCurrentDate() {
+
+    private Date getCurrentDate() {
         NumberFormat f = new DecimalFormat("00");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
@@ -336,7 +333,6 @@ public class TeamDetailView extends FragmentBase implements TeamLeaderAdapter.Va
                     }
                     valueSet1.set(3, new BarEntry(3, floats3));
                 }
-
                 chartScreen.setCharts(teamCaBarchart, valueSet1, false, null, "teamleader");
             }
         }
